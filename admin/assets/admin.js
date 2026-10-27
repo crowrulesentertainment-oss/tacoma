@@ -57,11 +57,31 @@
       }catch(err){toast(err.message||"Sign-in failed. Check your credentials and try again.","error");}
       finally{button.disabled=false;button.textContent="Sign in securely";}
     });
+    sb.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        $("#login-form").hidden = true;
+        $("#recovery-form").hidden = false;
+        toast("Choose a new password for your account.","success");
+      }
+    });
+    $("#recovery-form")?.addEventListener("submit",async e=>{
+      e.preventDefault();clearToast();
+      const password=$("#new-password").value;
+      if(password.length<10){toast("Use at least 10 characters for the new password.","error");return;}
+      const button=$('button[type="submit"]',e.currentTarget);button.disabled=true;
+      try{
+        const {error}=await sb.auth.updateUser({password});
+        if(error)throw error;
+        toast("Password updated. Sign in with your new password.","success");
+        await sb.auth.signOut();$("#recovery-form").hidden=true;$("#login-form").hidden=false;
+      }catch(err){toast(err.message||"Password update failed.","error");}
+      finally{button.disabled=false;}
+    });
     $("#forgot-password")?.addEventListener("click",async e=>{
       e.preventDefault();clearToast();const email=$("#email").value.trim();
-      if(!email){toast("Enter your account email first, then choose password reset.","error");return;}
+      if(!email){toast("Enter your administrator email first, then choose password reset.","error");return;}
       const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+cfg.loginPath});
-      if(error)toast(error.message,"error");else toast("If password recovery is enabled for this project, check your inbox for the reset link.","success");
+      if(error)toast(error.message,"error");else toast("If password recovery is enabled, check your inbox for the reset link.","success");
     });
   }
   async function count(table,filters=[]){
@@ -157,6 +177,8 @@
     $("#content-form")?.addEventListener("submit",async e=>{
       e.preventDefault();clearToast();const btn=$('button[type="submit"]',e.currentTarget);btn.disabled=true;
       const val=id=>$("#"+id).value.trim();
+      if(val("content_type")==="event"&&!val("starts_at")){toast("Events need a start date and time.","error");btn.disabled=false;return;}
+      if(val("starts_at")&&val("ends_at")&&new Date(val("ends_at"))<new Date(val("starts_at"))){toast("The end date must be after the start date.","error");btn.disabled=false;return;}
       const payload={content_type:val("content_type"),title:val("title"),description:val("description"),category:val("category")||"general",organization:val("organization")||null,website_url:val("website_url")||null,location_text:val("location_text")||null,starts_at:val("starts_at")?new Date(val("starts_at")).toISOString():null,ends_at:val("ends_at")?new Date(val("ends_at")).toISOString():null,image_url:val("image_url")||null,status:val("status"),is_featured:$("#is_featured").checked,updated_at:new Date().toISOString(),published_at:val("status")==="published"?new Date().toISOString():null};
       try{
         const id=val("content-id");const result=id?await sb.from("community_hub_content").update(payload).eq("id",id):await sb.from("community_hub_content").insert(payload);
@@ -170,7 +192,16 @@
       const {error}=await sb.from("community_hub_content").update({status:"archived",updated_at:new Date().toISOString()}).eq("id",btn.dataset.archive);
       if(error)toast("Archive failed: "+error.message,"error");else{toast("Listing archived.","success");await load();}
     });
+    $("#content-form")?.addEventListener("change",e=>{
+      if(e.target.id==="content_type")$("#starts_at").required=e.target.value==="event";
+    });
     await load();
+    const params=new URLSearchParams(location.search);
+    if(params.get("new")==="event"){edit(null);$("#content_type").value="event";$("#starts_at").required=true;}
+    if(params.get("edit")){
+      const {data,error}=await sb.from("community_hub_content").select("*").eq("id",params.get("edit")).maybeSingle();
+      if(error)toast("Could not open listing: "+error.message,"error");else if(data)edit(data);
+    }
   }
   async function eventsPage(){
     const table=$("#events-table");if(!table)return;
@@ -191,7 +222,7 @@
     await check("Authentication session","Supabase Auth session is valid",async()=>{const {data:{user},error}=await sb.auth.getUser();if(error)throw error;if(!user||user.app_metadata?.role!=="admin")throw new Error("No authorized admin user");});
     await check("Submission table","Read access to community_hub_submissions",async()=>{const {error}=await sb.from("community_hub_submissions").select("id",{head:true,count:"exact"});if(error)throw error;});
     await check("Public content table","Read access to community_hub_content",async()=>{const {error}=await sb.from("community_hub_content").select("id",{head:true,count:"exact"});if(error)throw error;});
-    await check("Approval workflow","Atomic approve_community_hub_submission RPC is available",async()=>{const {error}=await sb.rpc("approve_community_hub_submission",{p_submission_id:"00000000-0000-0000-0000-000000000000",p_review_notes:"health-check"});if(error && !/not found|PGRST202|no rows|invalid input syntax/i.test(error.message))throw error;if(error)throw new Error("Approval RPC is not installed or not exposed yet.");});
+    await check("Approval workflow","Atomic approve_community_hub_submission RPC is available",async()=>{const {error}=await sb.rpc("approve_community_hub_submission",{p_submission_id:"00000000-0000-0000-0000-000000000000",p_review_notes:"health-check"});if(!error)return;if(/Submission not found|not accessible/i.test(error.message))return;if(/PGRST202|Could not find the function|function .* does not exist/i.test(error.message))throw new Error("Approval RPC is not installed or not exposed yet.");if(error.code==="42501")throw new Error("RPC exists, but admin role or RLS permission was denied.");throw error;});
     list.innerHTML=checks.map(c=>'<div class="health-row"><div><div class="health-title">'+html(c.label)+'</div><div class="health-detail">'+html(c.detail)+'</div></div>'+badge(c.state)+'</div>').join("");
     const overall=checks.every(c=>c.state==="connected");$("#health-overall").innerHTML=badge(overall?"connected":"warning");$("#health-checked").textContent="Checked "+new Date().toLocaleString();
     $("#health-refresh")?.addEventListener("click",systemHealth);
