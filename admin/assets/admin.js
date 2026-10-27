@@ -42,6 +42,8 @@
   }
   async function signIn(){
     const form=$("#login-form"); if(!form)return;
+    const recovering = new URLSearchParams(location.hash.slice(1)).get("type")==="recovery";
+    if(recovering){form.hidden=true;$("#recovery-form").hidden=false;toast("Choose a new password for your account.","success");}
     form.addEventListener("submit",async e=>{
       e.preventDefault();clearToast();
       const button=$('button[type="submit"]',form);button.disabled=true;button.textContent="Signing in…";
@@ -228,7 +230,7 @@
     $("#health-refresh")?.addEventListener("click",systemHealth);
   }
   document.addEventListener("DOMContentLoaded",async()=>{
-    if(isLogin){await sb.auth.getSession().then(({data})=>{if(data.session)location.replace(cfg.dashboardPath);});signIn();return;}
+    if(isLogin){const recovering=new URLSearchParams(location.hash.slice(1)).get("type")==="recovery";await sb.auth.getSession().then(({data})=>{if(data.session&&!recovering)location.replace(cfg.dashboardPath);});signIn();return;}
     try{const user=await requireAdmin();if(!user)return;await dashboard();await submissions();await contentManager();await eventsPage();await systemHealth();}catch(err){toast("Admin initialization failed: "+err.message,"error");}
   });
   window.CrowHubAdmin={supabase:sb};
