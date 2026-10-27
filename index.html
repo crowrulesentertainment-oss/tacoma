@@ -1,0 +1,760 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a12">
+  <meta name="description" content="Tacoma Community Hub by CrowRules Entertainment. Discover local resources, community stories, events, and ways to connect across Tacoma and the Pacific Northwest.">
+  <title>Tacoma Community Hub | CrowRules Entertainment</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080a12;
+      --panel: #101522;
+      --panel2: #151c2b;
+      --text: #f4f7ff;
+      --muted: #a7b0c4;
+      --cyan: #55e6f5;
+      --purple: #9b82ff;
+      --line: rgba(255,255,255,.11);
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+      line-height: 1.65;
+    }
+    body, button, input, select, textarea { font-family: Inter, sans-serif; }
+    a { color: var(--cyan); text-decoration: none; }
+    a:hover { color: white; }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible, input:focus-visible,
+    textarea:focus-visible, select:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 3px;
+    }
+    img { max-width: 100%; }
+    .container { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+    .eyebrow {
+      color: var(--cyan); font-size: .74rem; font-weight: 800;
+      letter-spacing: .19em; text-transform: uppercase;
+    }
+    h1, h2, h3, .brand-name {
+      font-family: "Barlow Condensed", sans-serif;
+      text-transform: uppercase; line-height: 1.02;
+    }
+    h2 { font-size: clamp(2.1rem, 4vw, 3.4rem); margin: 0 0 12px; }
+    h3 { font-size: 1.55rem; margin: 0 0 9px; }
+    p { margin-top: 0; }
+    .muted { color: var(--muted); }
+    .section { padding: 84px 0; }
+    .section-head { max-width: 720px; margin-bottom: 30px; }
+    .section-head p { color: var(--muted); }
+    .accent {
+      background: linear-gradient(100deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* Navigation */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(8,10,18,.93);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      min-height: 76px; display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; color: white; min-width: 0; }
+    .brand-mark {
+      display: grid; place-items: center; width: 44px; height: 44px;
+      border: 1px solid rgba(85,230,245,.55); border-radius: 12px;
+      color: var(--cyan); font-size: 1.35rem; font-weight: 800;
+      background: linear-gradient(135deg, #142331, #211832);
+    }
+    .brand-name { display: block; font-size: 1.35rem; letter-spacing: .04em; }
+    .brand-sub { display: block; color: var(--muted); font-size: .66rem; letter-spacing: .1em; }
+    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-links a { color: #d8deeb; font-size: .84rem; font-weight: 600; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-toggle {
+      display: none; border: 1px solid var(--line); background: var(--panel);
+      color: white; padding: 10px 13px; border-radius: 10px; cursor: pointer;
+    }
+
+    /* Buttons and cards */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; min-height: 46px; padding: 12px 19px;
+      border: 1px solid transparent; border-radius: 10px;
+      background: linear-gradient(100deg, var(--cyan), #8eacff);
+      color: #071018; font-weight: 800; font-size: .88rem;
+      cursor: pointer; transition: transform .2s, filter .2s;
+    }
+    .btn:hover { color: #071018; filter: brightness(1.1); transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: white; border-color: var(--line); }
+    .btn-secondary:hover { color: var(--cyan); background: var(--panel2); }
+    .btn-small { min-height: 38px; padding: 9px 13px; font-size: .8rem; }
+    .card {
+      background: linear-gradient(145deg, rgba(21,28,43,.95), rgba(12,16,27,.96));
+      border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 23px; min-width: 0;
+    }
+    .card:hover { border-color: rgba(85,230,245,.4); }
+    .icon-box {
+      width: 46px; height: 46px; display: grid; place-items: center;
+      background: rgba(85,230,245,.09); border: 1px solid rgba(85,230,245,.18);
+      border-radius: 13px; color: var(--cyan); font-size: 1.25rem; margin-bottom: 18px;
+    }
+    .grid { display: grid; gap: 18px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .tag {
+      display: inline-flex; border: 1px solid rgba(85,230,245,.22);
+      background: rgba(85,230,245,.07); color: var(--cyan);
+      padding: 5px 9px; border-radius: 999px;
+      font-size: .7rem; font-weight: 700; margin-bottom: 12px;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative; overflow: hidden; min-height: 590px;
+      display: flex; align-items: center;
+      background:
+        linear-gradient(90deg, rgba(8,10,18,.98) 0%, rgba(8,10,18,.85) 52%, rgba(8,10,18,.48) 100%),
+        linear-gradient(0deg, var(--bg) 0%, transparent 36%),
+        url("https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=2000&q=85") center/cover;
+    }
+    .hero::before {
+      content: ""; position: absolute; width: 430px; height: 430px;
+      right: -110px; top: 40px; border-radius: 50%;
+      background: rgba(123,83,255,.12); filter: blur(75px); pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 790px; padding: 85px 0 100px; }
+    .hero h1 { font-size: clamp(3.6rem, 9vw, 7.4rem); margin: 20px 0; letter-spacing: -.025em; }
+    .hero h1 span { display: block; }
+    .hero p { max-width: 650px; color: #c0c8d9; font-size: 1.08rem; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .hero-note { margin-top: 26px; color: #bac5d6; font-size: .8rem; }
+    .hero-note strong { color: var(--cyan); }
+
+    /* Highlights */
+    .ticker {
+      border-block: 1px solid var(--line); background: #0d111c;
+      padding: 17px 0;
+    }
+    .ticker-inner { display: flex; justify-content: space-between; gap: 22px; flex-wrap: wrap; }
+    .ticker-item { display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #d8deeb; }
+    .ticker-item span { color: var(--cyan); }
+
+    /* Resources */
+    .resource-toolbar {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+    }
+    .field {
+      width: 100%; min-height: 46px; background: #0a0e18;
+      color: var(--text); border: 1px solid var(--line);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .search-wrap { flex: 1 1 260px; }
+    .filter-wrap { flex: 0 1 230px; }
+    .resource-link { display: inline-block; margin-top: 10px; font-weight: 700; font-size: .85rem; }
+    .resource-card { display: flex; flex-direction: column; }
+    .resource-card .resource-bottom { margin-top: auto; padding-top: 10px; }
+    .results-count { font-size: .82rem; color: var(--muted); margin-bottom: 14px; }
+    .empty-state { padding: 25px; text-align: center; color: var(--muted); }
+
+    /* Stories */
+    .story-card { padding: 0; overflow: hidden; }
+    .story-art {
+      min-height: 155px; display: flex; align-items: flex-end; padding: 18px;
+      background: linear-gradient(135deg, #142f43, #29204c);
+    }
+    .story-art.purple { background: linear-gradient(135deg, #24234d, #40234a); }
+    .story-art.gold { background: linear-gradient(135deg, #443421, #24233d); }
+    .story-art span {
+      font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      color: white; border: 1px solid rgba(255,255,255,.3);
+      border-radius: 6px; padding: 5px 8px;
+    }
+    .story-body { padding: 21px; }
+    .story-body p { color: var(--muted); font-size: .9rem; }
+    .sample-label { color: #e6cc8c; font-size: .73rem; font-weight: 700; }
+
+    /* Community promise */
+    .promise {
+      border: 1px solid rgba(85,230,245,.22);
+      border-radius: 22px; padding: clamp(24px, 5vw, 48px);
+      background: radial-gradient(ellipse at top right, rgba(105,83,255,.12), transparent 55%), #101522;
+    }
+    .promise-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin-top: 25px; }
+    .promise-item { display: flex; align-items: flex-start; gap: 10px; color: #dce3f0; font-size: .9rem; }
+    .promise-item b { color: var(--cyan); }
+
+    /* Submit */
+    .submit-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 28px; align-items: start; }
+    .form-stack { display: grid; gap: 15px; }
+    .form-group label { display: block; font-size: .83rem; font-weight: 700; margin-bottom: 7px; }
+    textarea.field { min-height: 130px; resize: vertical; }
+    .checkbox-row { display: flex; gap: 10px; align-items: flex-start; font-size: .8rem; color: var(--muted); }
+    .checkbox-row input { margin-top: 5px; }
+    .form-notice {
+      display: none; border: 1px solid rgba(85,230,245,.25);
+      background: rgba(85,230,245,.06); border-radius: 10px;
+      padding: 14px; font-size: .88rem;
+    }
+    .form-notice.visible { display: block; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--line); background: #070910; padding: 48px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 35px; }
+    .footer-links { display: grid; gap: 9px; }
+    .footer-links a { color: var(--muted); font-size: .85rem; }
+    .footer-links a:hover { color: var(--cyan); }
+    .footer-heading { font-weight: 800; margin-bottom: 13px; }
+    .footer-bottom {
+      margin-top: 34px; padding-top: 20px; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      color: var(--muted); font-size: .77rem;
+    }
+    .notice-bar {
+      border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 16px; color: var(--muted); font-size: .82rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid-4 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .grid-3 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .nav-toggle { display: inline-block; }
+      .nav-links {
+        display: none; position: absolute; top: 76px; left: 0; right: 0;
+        background: #0c101b; border-bottom: 1px solid var(--line);
+        padding: 18px 22px 24px; align-items: stretch; gap: 0;
+      }
+      .nav-links.open { display: flex; flex-direction: column; }
+      .nav-links a { padding: 12px 0; border-bottom: 1px solid var(--line); }
+      .nav-links .btn { margin-top: 12px; }
+      .submit-layout { grid-template-columns: 1fr; }
+      .hero { min-height: 530px; }
+    }
+    @media (max-width: 600px) {
+      .container { width: min(100% - 30px, var(--max)); }
+      .section { padding: 62px 0; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .promise-list { grid-template-columns: 1fr; }
+      .hero { min-height: 520px; background-position: 58% center; }
+      .hero-content { padding: 70px 0 80px; }
+      .hero h1 { font-size: clamp(3.5rem, 16vw, 5rem); }
+      .ticker-inner { display: grid; grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 25px; }
+      .brand-sub { font-size: .59rem; }
+      .resource-toolbar > * { flex-basis: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="Tacoma Community Hub home">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span>
+          <span class="brand-name">CrowRules</span>
+          <span class="brand-sub">TACOMA COMMUNITY HUB</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false"
+              aria-controls="navLinks" aria-label="Toggle navigation">☰ Menu</button>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#resources">Resources</a>
+        <a href="#stories">Local Voices</a>
+        <a href="#events">Events</a>
+        <a href="#about">Our Promise</a>
+        <a href="#submit" class="btn btn-small">Get Involved</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <div class="eyebrow">CrowRules Entertainment presents</div>
+          <h1>Tacoma.<br><span class="accent">Connected.</span></h1>
+          <p>
+            A community-powered starting point for discovering local resources,
+            celebrating Tacoma's people, and finding ways to get involved.
+            Built around one simple belief: stronger communities start with connection.
+          </p>
+          <div class="hero-actions">
+            <a href="#resources" class="btn">Explore Resources <span aria-hidden="true">→</span></a>
+            <a href="#stories" class="btn btn-secondary">Discover Local Voices</a>
+          </div>
+          <div class="hero-note"><strong>FREE TO ACCESS.</strong> No membership fee. No donations collected.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-label="Our focus">
+      <div class="container ticker-inner">
+        <div class="ticker-item"><span>✦</span> Local people, real stories</div>
+        <div class="ticker-item"><span>✦</span> Community resources</div>
+        <div class="ticker-item"><span>✦</span> Events and connections</div>
+        <div class="ticker-item"><span>✦</span> Built from the ground up</div>
+      </div>
+    </div>
+
+    <section class="section" id="explore">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Your community, in one place</div>
+          <h2>Find your <span class="accent">connection.</span></h2>
+          <p>Start with what you need today, or discover something new happening in your community.</p>
+        </div>
+
+        <div class="grid grid-3">
+          <a class="card" href="#resources">
+            <div class="icon-box" aria-hidden="true">⌕</div>
+            <h3>Find Resources</h3>
+            <p class="muted">Explore links to established assistance programs, public services, and local organizations.</p>
+            <span class="resource-link">Explore directory →</span>
+          </a>
+          <a class="card" href="#stories">
+            <div class="icon-box" aria-hidden="true">✧</div>
+            <h3>Hear Local Voices</h3>
+            <p class="muted">Discover community stories and meet the people who make Tacoma special.</p>
+            <span class="resource-link">Read the stories →</span>
+          </a>
+          <a class="card" href="#submit">
+            <div class="icon-box" aria-hidden="true">＋</div>
+            <h3>Get Involved</h3>
+            <p class="muted">Suggest a resource, share a story idea, or tell us what the hub should include next.</p>
+            <span class="resource-link">Share an idea →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="resources" style="background:#0b0e17;border-block:1px solid var(--line)">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">A helpful place to start</div>
+          <h2>Community <span class="accent">resources.</span></h2>
+          <p>
+            A starter directory of established services. Availability, eligibility, and
+            program details are determined by each provider. Contact them directly to confirm.
+          </p>
+        </div>
+
+        <div class="resource-toolbar">
+          <div class="search-wrap">
+            <label for="resourceSearch" class="muted" style="display:block;font-size:.8rem;margin-bottom:6px">Search resources</label>
+            <input class="field" id="resourceSearch" type="search" placeholder="Try food, housing, library...">
+          </div>
+          <div class="filter-wrap">
+            <label for="resourceCategory" class="muted" style="display:block;font-size:.8rem;margin-bottom:6px">Filter by category</label>
+            <select class="field" id="resourceCategory">
+              <option value="all">All categories</option>
+              <option value="assistance">Community assistance</option>
+              <option value="government">Public services</option>
+              <option value="learning">Learning and community</option>
+              <option value="volunteer">Volunteering</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="results-count" id="resultsCount" aria-live="polite"></div>
+        <div class="grid grid-3" id="resourceGrid">
+          <article class="card resource-card" data-category="assistance" data-search="washington 211 food housing health care childcare assistance">
+            <div class="icon-box" aria-hidden="true">♡</div>
+            <span class="tag">Community assistance</span>
+            <h3>Washington 211</h3>
+            <p class="muted">Find connections to food, housing, healthcare, childcare, and other community services.</p>
+            <div class="resource-bottom"><a class="resource-link" href="https://wa211.org/" target="_blank" rel="noopener noreferrer">Visit Washington 211 ↗</a></div>
+          </article>
+
+          <article class="card resource-card" data-category="government" data-search="city of tacoma official services residents housing utility community resources">
+            <div class="icon-box" aria-hidden="true">⌂</div>
+            <span class="tag">Public services</span>
+            <h3>City of Tacoma</h3>
+            <p class="muted">Start with the city's official website for public services, community programs, and city information.</p>
+            <div class="resource-bottom"><a class="resource-link" href="https://tacoma.gov/" target="_blank" rel="noopener noreferrer">Visit City of Tacoma ↗</a></div>
+          </article>
+
+          <article class="card resource-card" data-category="learning" data-search="tacoma public library books computers classes family events learning">
+            <div class="icon-box" aria-hidden="true">▤</div>
+            <span class="tag">Learning and community</span>
+            <h3>Tacoma Public Library</h3>
+            <p class="muted">Explore library services, educational opportunities, public programs, and community events.</p>
+            <div class="resource-bottom"><a class="resource-link" href="https://www.tacomalibrary.org/" target="_blank" rel="noopener noreferrer">Visit the library ↗</a></div>
+          </article>
+
+          <article class="card resource-card" data-category="volunteer" data-search="pierce county volunteer opportunities community service">
+            <div class="icon-box" aria-hidden="true">♧</div>
+            <span class="tag">Volunteering</span>
+            <h3>Pierce County</h3>
+            <p class="muted">Explore volunteer opportunities and ways to contribute through existing county programs.</p>
+            <div class="resource-bottom"><a class="resource-link" href="https://www.piercecountywa.gov/714/Volunteer-Opportunities" target="_blank" rel="noopener noreferrer">View opportunities ↗</a></div>
+          </article>
+
+          <article class="card resource-card" data-category="assistance" data-search="211 emergency food housing shelter utility support local providers">
+            <div class="icon-box" aria-hidden="true">⌖</div>
+            <span class="tag">Finding assistance</span>
+            <h3>Locate Local Support</h3>
+            <p class="muted">Use Washington 211 to look for local providers and ask about current eligibility and availability.</p>
+            <div class="resource-bottom"><a class="resource-link" href="https://wa211.org/" target="_blank" rel="noopener noreferrer">Search local support ↗</a></div>
+          </article>
+
+          <article class="card resource-card" data-category="government" data-search="washington state official benefits employment family public services">
+            <div class="icon-box" aria-hidden="true">◎</div>
+            <span class="tag">Public services</span>
+            <h3>Washington State</h3>
+            <p class="muted">Access official state information and locate the relevant agency for your needs.</p>
+            <div class="resource-bottom"><a class="resource-link" href="https://wa.gov/" target="_blank" rel="noopener noreferrer">Visit WA.gov ↗</a></div>
+          </article>
+        </div>
+        <p class="muted" style="font-size:.8rem;margin-top:20px">This is an initial directory, not a comprehensive list. CrowRules does not determine eligibility, provide these services, or guarantee availability.</p>
+      </div>
+    </section>
+
+    <section class="section" id="stories">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">The people make the place</div>
+          <h2>Local <span class="accent">voices.</span></h2>
+          <p>Every community has stories worth hearing. Help us identify the people, places, and projects that deserve a spotlight.</p>
+        </div>
+
+        <div class="grid grid-3">
+          <article class="card story-card">
+            <div class="story-art"><span>Community spotlight</span></div>
+            <div class="story-body">
+              <div class="sample-label">STORY IDEA</div>
+              <h3>The People Who Show Up</h3>
+              <p>A proposed series recognizing neighbors and volunteers who make a difference through everyday acts of service.</p>
+              <a class="resource-link" href="#submit" data-story="The People Who Show Up">Suggest someone →</a>
+            </div>
+          </article>
+
+          <article class="card story-card">
+            <div class="story-art purple"><span>Local business</span></div>
+            <div class="story-body">
+              <div class="sample-label">STORY IDEA</div>
+              <h3>Built in Tacoma</h3>
+              <p>Meet local makers, independent business owners, and creative people building something of their own.</p>
+              <a class="resource-link" href="#submit" data-story="Built in Tacoma">Suggest a business →</a>
+            </div>
+          </article>
+
+          <article class="card story-card">
+            <div class="story-art gold"><span>Community history</span></div>
+            <div class="story-body">
+              <div class="sample-label">STORY IDEA</div>
+              <h3>Our Tacoma Memories</h3>
+              <p>Invite residents to share neighborhood memories, personal histories, and what makes their community feel like home.</p>
+              <a class="resource-link" href="#submit" data-story="Our Tacoma Memories">Suggest a story →</a>
+            </div>
+          </article>
+        </div>
+        <div class="notice-bar" style="margin-top:20px">
+          These are proposed story themes, not published interviews or verified profiles. No person's participation is implied.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="events" style="background:#0b0e17;border-block:1px solid var(--line)">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Be part of the community</div>
+          <h2>Community <span class="accent">events.</span></h2>
+          <p>Discover activities through established local organizations. We will add a curated calendar as events are verified.</p>
+        </div>
+        <div class="grid grid-2">
+          <article class="card">
+            <span class="tag">Explore programs</span>
+            <h3>Library Events & Activities</h3>
+            <p class="muted">Check official library listings for programs, classes, family activities, and public events.</p>
+            <a class="btn btn-secondary" href="https://www.tacomalibrary.org/" target="_blank" rel="noopener noreferrer">Explore library programs ↗</a>
+          </article>
+          <article class="card">
+            <span class="tag">Get involved</span>
+            <h3>Volunteer Opportunities</h3>
+            <p class="muted">Explore established community service opportunities and confirm the details with the organizer.</p>
+            <a class="btn btn-secondary" href="https://www.piercecountywa.gov/714/Volunteer-Opportunities" target="_blank" rel="noopener noreferrer">Explore opportunities ↗</a>
+          </article>
+        </div>
+        <p class="muted" style="font-size:.8rem;margin-top:18px">No specific event dates are advertised here until they have been checked against the organizer's current information.</p>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="promise">
+          <div class="eyebrow">Our community commitment</div>
+          <h2>People first. <span class="accent">Always.</span></h2>
+          <p class="muted" style="max-width:760px">
+            Tacoma Community Hub is being developed as a free community information
+            and storytelling initiative of CrowRules Entertainment. We are starting
+            small and growing at a pace our available resources allow.
+          </p>
+          <div class="promise-list">
+            <div class="promise-item"><b>✓</b><span>Free access to the hub and its public information.</span></div>
+            <div class="promise-item"><b>✓</b><span>No donations or payments collected through this site.</span></div>
+            <div class="promise-item"><b>✓</b><span>Links to existing organizations remain under their control.</span></div>
+            <div class="promise-item"><b>✓</b><span>Community submissions require appropriate permission.</span></div>
+            <div class="promise-item"><b>✓</b><span>Respectful participation and community moderation.</span></div>
+            <div class="promise-item"><b>✓</b><span>Honest communication about what we can and cannot provide.</span></div>
+          </div>
+          <div style="margin-top:28px">
+            <h3>Our no-money policy</h3>
+            <p class="muted">
+              Tacoma Community Hub does not solicit or accept donations, distribute financial
+              assistance, or promise grants or benefits. No payment is required to access
+              the site. If you choose to support an external organization, you deal directly
+              with that organization under its own policies.
+            </p>
+          </div>
+          <div style="margin-top:24px">
+            <h3>Privacy and submissions</h3>
+            <p class="muted">
+              Do not submit passwords, financial account information, medical records, or
+              sensitive personal details. Before this site accepts real submissions, CrowRules
+              must configure a secure submission channel and publish a complete privacy notice
+              explaining collection, use, retention, and deletion.
+            </p>
+          </div>
+          <div style="margin-top:24px">
+            <h3>Our role</h3>
+            <p class="muted">
+              We share community information and connect visitors to existing providers.
+              We are not a government agency, charitable organization, emergency service,
+              or substitute for professional advice. Provider links do not imply endorsement.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="submit">
+      <div class="container">
+        <div class="submit-layout">
+          <div>
+            <div class="eyebrow">Help shape the hub</div>
+            <h2>Your community.<br><span class="accent">Your voice.</span></h2>
+            <p class="muted">
+              What resource should we add? Which local story deserves attention?
+              What would make this hub more useful to Tacoma residents?
+            </p>
+            <div class="card" style="margin-top:24px">
+              <h3>Before submitting</h3>
+              <p class="muted" style="font-size:.88rem">
+                This starter page has no submission server. The form below demonstrates
+                the interface only; it does not transmit or save your information.
+              </p>
+              <p class="muted" style="font-size:.88rem;margin-bottom:0">
+                Do not enter private or sensitive information. A secure submission method
+                must be configured before accepting real submissions.
+              </p>
+            </div>
+          </div>
+
+          <form class="card form-stack" id="suggestionForm">
+            <div class="form-group">
+              <label for="submissionType">What would you like to suggest?</label>
+              <select class="field" id="submissionType" required>
+                <option value="">Choose a topic</option>
+                <option>Community resource</option>
+                <option>Community event</option>
+                <option>Local story or person</option>
+                <option>Local organization or business</option>
+                <option>Website feedback</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="submissionTitle">Title or organization name</label>
+              <input class="field" id="submissionTitle" maxlength="120" required
+                     placeholder="What should we know about?">
+            </div>
+            <div class="form-group">
+              <label for="submissionDetails">Details</label>
+              <textarea class="field" id="submissionDetails" maxlength="1500" required
+                        placeholder="Share a brief, non-sensitive description."></textarea>
+            </div>
+            <label class="checkbox-row">
+              <input type="checkbox" id="permissionCheck" required>
+              <span>I understand this is a demonstration form and that nothing will be sent or saved.</span>
+            </label>
+            <button class="btn" type="submit">Preview My Suggestion →</button>
+            <div class="form-notice" id="formNotice" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="#home">
+            <span class="brand-mark" aria-hidden="true">C</span>
+            <span>
+              <span class="brand-name">CrowRules</span>
+              <span class="brand-sub">TACOMA COMMUNITY HUB</span>
+            </span>
+          </a>
+          <p class="muted" style="max-width:350px;margin-top:18px">
+            A community-focused initiative connecting Tacoma residents with local
+            information, stories, and opportunities.
+          </p>
+          <p class="eyebrow">One company. One universe.</p>
+        </div>
+        <div>
+          <div class="footer-heading">Explore</div>
+          <div class="footer-links">
+            <a href="#resources">Resource Directory</a>
+            <a href="#stories">Local Voices</a>
+            <a href="#events">Community Events</a>
+            <a href="#submit">Suggest a Resource</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-heading">Important information</div>
+          <div class="footer-links">
+            <a href="#about">Our Community Promise</a>
+            <a href="#about">No-Donations Policy</a>
+            <a href="#about">Privacy and Submissions</a>
+            <a href="https://tacoma.gov/" target="_blank" rel="noopener noreferrer">Official City of Tacoma ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> CrowRules Entertainment. All rights reserved.</span>
+        <span>Built from the ground up for Tacoma.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    "use strict";
+
+    // Mobile navigation
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.textContent = isOpen ? "✕ Close" : "☰ Menu";
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.textContent = "☰ Menu";
+      });
+    });
+
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Search and category filtering
+    const searchInput = document.getElementById("resourceSearch");
+    const categorySelect = document.getElementById("resourceCategory");
+    const resourceCards = [...document.querySelectorAll(".resource-card")];
+    const resultsCount = document.getElementById("resultsCount");
+
+    function filterResources() {
+      const query = searchInput.value.trim().toLowerCase();
+      const category = categorySelect.value;
+      let visible = 0;
+
+      resourceCards.forEach(card => {
+        const searchable = (
+          card.dataset.search + " " + card.textContent
+        ).toLowerCase();
+
+        const matchesQuery = searchable.includes(query);
+        const matchesCategory =
+          category === "all" || card.dataset.category === category;
+        const show = matchesQuery && matchesCategory;
+
+        card.hidden = !show;
+        if (show) visible++;
+      });
+
+      resultsCount.textContent =
+        `${visible} ${visible === 1 ? "resource" : "resources"} shown`;
+
+      let empty = document.getElementById("resourceEmpty");
+      if (visible === 0) {
+        if (!empty) {
+          empty = document.createElement("div");
+          empty.id = "resourceEmpty";
+          empty.className = "empty-state";
+          empty.textContent = "No matching resources. Try a different search or category.";
+          document.getElementById("resourceGrid").appendChild(empty);
+        }
+      } else if (empty) {
+        empty.remove();
+      }
+    }
+
+    searchInput.addEventListener("input", filterResources);
+    categorySelect.addEventListener("change", filterResources);
+    filterResources();
+
+    // Story suggestion shortcuts
+    document.querySelectorAll("[data-story]").forEach(link => {
+      link.addEventListener("click", () => {
+        const title = document.getElementById("submissionTitle");
+        const type = document.getElementById("submissionType");
+        title.value = link.dataset.story;
+        type.value = "Local story or person";
+      });
+    });
+
+    // Safe demo form: no network request, storage, or personal data transmission.
+    const suggestionForm = document.getElementById("suggestionForm");
+    const formNotice = document.getElementById("formNotice");
+
+    suggestionForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      if (!suggestionForm.reportValidity()) return;
+
+      const type = document.getElementById("submissionType").value;
+      const title = document.getElementById("submissionTitle").value.trim();
+      const details = document.getElementById("submissionDetails").value.trim();
+
+      formNotice.textContent =
+        "DEMO PREVIEW ONLY — Nothing has been submitted or saved. " +
+        "Type: " + type + ". Title: " + title + ". " +
+        "Details: " + details +
+        ". Connect a secure submission service before accepting real suggestions.";
+
+      formNotice.classList.add("visible");
+    });
+  </script>
+</body>
+</html>
