@@ -1,0 +1,1278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d19">
+  <meta name="description" content="CrowRules Community Voices celebrates the stories, ideas, creators and perspectives of Tacoma and Pierce County, Washington.">
+  <title>Community Voices | CrowRules</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080d19;
+      --panel: #111d31;
+      --cyan: #45e7ff;
+      --purple: #a77bff;
+      --white: #f4f7ff;
+      --muted: #a5b2c9;
+      --line: rgba(128,177,220,.19);
+      --gold: #ffd27d;
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--white);
+      background:
+        radial-gradient(ellipse at 15% 5%, rgba(39,118,180,.13), transparent 34%),
+        radial-gradient(ellipse at 90% 25%, rgba(132,70,220,.10), transparent 34%),
+        var(--bg);
+      font-family: Montserrat, sans-serif;
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+
+    a:focus-visible, button:focus-visible,
+    input:focus-visible, textarea:focus-visible,
+    select:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 36px));
+      margin-inline: auto;
+    }
+
+    h1, h2, h3, .brand-name {
+      font-family: Orbitron, sans-serif;
+      line-height: 1.3;
+    }
+
+    h2 { font-size: clamp(1.5rem, 3vw, 2.15rem); }
+    p { color: var(--muted); }
+
+    .eyebrow {
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: .72rem;
+      font-weight: 800;
+    }
+
+    /* Shared CrowRules navigation */
+    .site-header {
+      position: relative;
+      z-index: 20;
+      background: rgba(7,12,24,.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 45px;
+      height: 45px;
+      border: 1px solid rgba(69,231,255,.65);
+      border-radius: 13px;
+      background: linear-gradient(145deg, rgba(69,231,255,.16), rgba(167,123,255,.19));
+      color: var(--cyan);
+      font-family: Orbitron, sans-serif;
+      font-weight: 800;
+    }
+
+    .brand-name { font-size: 1.02rem; font-weight: 800; }
+    .brand-tagline { display: block; color: var(--muted); font-size: .62rem; }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: .76rem;
+      font-weight: 700;
+      color: #c4d0e3;
+    }
+
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] { color: var(--cyan); }
+
+    .nav-toggle {
+      display: none;
+      color: var(--white);
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+    }
+
+    /* Animated cinematic Tacoma hero */
+    .hero {
+      position: relative;
+      min-height: 485px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      isolation: isolate;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-scene {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(180deg, rgba(10,17,33,.04), rgba(8,13,25,.93)),
+        linear-gradient(110deg, #102c49, #263b59 48%, #40355e);
+      transition: background 1s ease;
+    }
+
+    .hero-scene::before {
+      content: "";
+      position: absolute;
+      inset: auto -3% -2%;
+      height: 60%;
+      background:
+        linear-gradient(180deg, transparent, rgba(5,10,20,.97)),
+        repeating-linear-gradient(90deg,
+          transparent 0 30px,
+          rgba(3,8,18,.7) 31px 53px,
+          transparent 54px 79px);
+      clip-path: polygon(
+        0 42%,5% 42%,5% 22%,9% 22%,9% 46%,
+        14% 46%,14% 14%,17% 14%,17% 38%,
+        23% 38%,23% 27%,28% 27%,28% 48%,
+        34% 48%,34% 19%,38% 19%,38% 40%,
+        44% 40%,44% 7%,47% 7%,47% 39%,
+        53% 39%,53% 25%,58% 25%,58% 46%,
+        64% 46%,64% 18%,68% 18%,68% 41%,
+        74% 41%,74% 29%,79% 29%,79% 46%,
+        84% 46%,84% 13%,88% 13%,88% 40%,
+        94% 40%,94% 26%,100% 26%,100% 100%,0 100%
+      );
+    }
+
+    .hero-scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 72% 25%, rgba(69,231,255,.18), transparent 30%),
+        linear-gradient(90deg, rgba(5,10,20,.78), rgba(5,10,20,.12));
+    }
+
+    .hero-scene.sunny {
+      background:
+        linear-gradient(180deg, rgba(10,17,33,.04), rgba(8,13,25,.94)),
+        linear-gradient(110deg, #1d4569, #7b6a81 65%, #c49c75);
+    }
+
+    .hero-scene.cloudy {
+      background:
+        linear-gradient(180deg, rgba(10,17,33,.04), rgba(8,13,25,.95)),
+        linear-gradient(110deg, #273a50, #4c5267 55%, #655a75);
+    }
+
+    .hero-scene.rainy {
+      background:
+        linear-gradient(180deg, rgba(10,17,33,.04), rgba(8,13,25,.96)),
+        linear-gradient(110deg, #0e2439, #283e55 55%, #45415d);
+    }
+
+    .hero-scene.night {
+      background:
+        linear-gradient(180deg, rgba(6,10,28,.04), rgba(8,13,25,.94)),
+        linear-gradient(110deg, #080f27, #182344 58%, #34274e);
+    }
+
+    .rain-layer {
+      position: absolute;
+      inset: -80px 0 0;
+      pointer-events: none;
+      opacity: 0;
+      background-image: repeating-linear-gradient(
+        105deg, transparent 0 27px,
+        rgba(202,229,255,.23) 28px 29px,
+        transparent 30px 49px
+      );
+      animation: rain 0.55s linear infinite;
+    }
+
+    .hero-scene.rainy .rain-layer { opacity: .45; }
+
+    @keyframes rain {
+      from { transform: translateY(-80px); }
+      to { transform: translateY(80px); }
+    }
+
+    .hero-content {
+      padding: 72px 0 85px;
+      max-width: 800px;
+    }
+
+    .hero h1 {
+      margin: 15px 0;
+      font-size: clamp(2.35rem, 6vw, 4.7rem);
+      letter-spacing: -.045em;
+      text-shadow: 0 4px 30px rgba(0,0,0,.35);
+    }
+
+    .gradient-text {
+      color: var(--cyan);
+      background: linear-gradient(90deg, var(--cyan), #c0a0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-copy {
+      max-width: 650px;
+      color: #d4e0f0;
+      font-size: 1rem;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 27px; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 45px;
+      padding: 11px 17px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: .81rem;
+      cursor: pointer;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+
+    .button-primary {
+      background: linear-gradient(105deg, #31d8f6, #8c83ff);
+      color: #07101d;
+      border-color: transparent;
+    }
+
+    .button-secondary {
+      color: var(--white);
+      background: rgba(10,18,33,.68);
+    }
+
+    .weather-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 24px;
+      padding: 8px 12px;
+      border: 1px solid rgba(191,217,246,.2);
+      border-radius: 999px;
+      background: rgba(7,14,27,.6);
+      color: #d8e7fa;
+      font-size: .72rem;
+    }
+
+    .weather-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #7fffc0;
+      box-shadow: 0 0 12px currentColor;
+    }
+
+    main { padding: 52px 0 72px; }
+    .section { margin-bottom: 58px; }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-bottom: 23px;
+    }
+
+    .section-heading h2 { margin: 8px 0 0; }
+    .section-heading p { max-width: 620px; margin-bottom: 0; }
+
+    /* Story categories */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 15px;
+    }
+
+    .category-card {
+      min-height: 155px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(23,39,64,.85), rgba(12,20,35,.92));
+      color: var(--white);
+      text-align: left;
+      cursor: pointer;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .category-card:hover, .category-card.active {
+      transform: translateY(-3px);
+      border-color: rgba(69,231,255,.65);
+    }
+
+    .category-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 13px;
+      border-radius: 12px;
+      border: 1px solid rgba(69,231,255,.22);
+      background: rgba(69,231,255,.08);
+      font-size: 1.2rem;
+    }
+
+    .category-card h3 { font-size: .88rem; margin: 0 0 7px; }
+    .category-card p { margin: 0; font-size: .75rem; line-height: 1.6; }
+
+    /* Featured editorial panel */
+    .feature-panel {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(145deg, #14263e, #0c1425);
+    }
+
+    .feature-art {
+      position: relative;
+      min-height: 310px;
+      display: flex;
+      align-items: end;
+      padding: 30px;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(69,231,255,.28), transparent 27%),
+        radial-gradient(ellipse at 25% 75%, rgba(167,123,255,.3), transparent 40%),
+        linear-gradient(135deg, #102a45, #201d3f 65%, #0a1323);
+    }
+
+    .feature-art::before {
+      content: "COMMUNITY";
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      font-family: Orbitron, sans-serif;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: .08em;
+      color: rgba(244,247,255,.13);
+    }
+
+    .feature-art::after {
+      content: "";
+      position: absolute;
+      inset: 30% 0 0;
+      background: linear-gradient(180deg, transparent, rgba(5,10,20,.85));
+    }
+
+    .feature-art-label { position: relative; z-index: 1; }
+    .feature-art-label strong {
+      display: block;
+      font-family: Orbitron, sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2.3rem);
+    }
+
+    .feature-copy { padding: clamp(24px, 4vw, 42px); }
+    .feature-copy h2 { margin: 10px 0 14px; }
+    .feature-copy p { font-size: .87rem; }
+
+    .feature-note {
+      margin-top: 20px;
+      padding: 13px 15px;
+      border-left: 3px solid var(--purple);
+      background: rgba(167,123,255,.07);
+      font-size: .77rem;
+      color: #d2d8e7;
+    }
+
+    /* Search and story cards */
+    .story-panel {
+      padding: clamp(18px, 3vw, 30px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(16,29,49,.96), rgba(10,17,31,.96));
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) 230px auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #d7e3f4;
+      font-size: .76rem;
+      font-weight: 800;
+    }
+
+    .field input, .field select {
+      width: 100%;
+      min-height: 47px;
+      border: 1px solid rgba(159,187,223,.25);
+      border-radius: 10px;
+      background: #0a1323;
+      color: var(--white);
+      padding: 11px 13px;
+    }
+
+    .field input::placeholder { color: #8493ab; }
+
+    .filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+
+    .filter-chip {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(13,24,41,.8);
+      color: #cbd7e9;
+      font-size: .72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .filter-chip:hover, .filter-chip.active {
+      color: var(--cyan);
+      border-color: var(--cyan);
+      background: rgba(69,231,255,.08);
+    }
+
+    .results-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .results-bar strong { color: var(--white); }
+    .results-bar span { color: var(--muted); font-size: .75rem; }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 16px;
+    }
+
+    .story-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      overflow: hidden;
+      background: rgba(18,31,51,.78);
+      transition: transform .2s, border-color .2s;
+    }
+
+    .story-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(167,123,255,.55);
+    }
+
+    .story-visual {
+      min-height: 125px;
+      display: flex;
+      align-items: end;
+      padding: 18px;
+      background:
+        radial-gradient(ellipse at 70% 25%, rgba(69,231,255,.24), transparent 30%),
+        linear-gradient(135deg, #193d59, #292044);
+    }
+
+    .story-card:nth-child(3n + 2) .story-visual {
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(167,123,255,.32), transparent 35%),
+        linear-gradient(135deg, #2d2449, #12263a);
+    }
+
+    .story-card:nth-child(3n) .story-visual {
+      background:
+        radial-gradient(ellipse at 75% 30%, rgba(255,210,125,.18), transparent 30%),
+        linear-gradient(135deg, #25384a, #18203d);
+    }
+
+    .story-visual span {
+      font-family: Orbitron, sans-serif;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: rgba(244,247,255,.9);
+      text-transform: uppercase;
+    }
+
+    .story-body { display: flex; flex-direction: column; flex: 1; padding: 20px; }
+    .story-tag {
+      color: var(--cyan);
+      font-size: .66rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .story-body h3 { font-size: .95rem; margin: 9px 0; }
+    .story-body p { font-size: .78rem; margin: 0 0 17px; }
+
+    .story-footer {
+      margin-top: auto;
+      padding-top: 13px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .68rem;
+    }
+
+    .story-footer strong { color: var(--gold); }
+
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 35px 15px;
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+    }
+
+    .empty-state h3 { margin-top: 0; }
+    .empty-state p { max-width: 500px; margin-inline: auto; }
+
+    /* Creator spotlight */
+    .creator-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 15px;
+    }
+
+    .creator-card {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(16,29,49,.76);
+    }
+
+    .creator-symbol {
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      border: 1px solid rgba(167,123,255,.35);
+      border-radius: 16px;
+      background: rgba(167,123,255,.1);
+      font-size: 1.45rem;
+      margin-bottom: 17px;
+    }
+
+    .creator-card h3 { margin: 0 0 9px; font-size: .95rem; }
+    .creator-card p { font-size: .78rem; margin: 0; }
+
+    .creator-card .small-label {
+      display: inline-block;
+      margin-top: 16px;
+      color: var(--gold);
+      font-size: .67rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    /* Submission CTA */
+    .submission-panel {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      align-items: center;
+      gap: 24px;
+      padding: clamp(24px,4vw,40px);
+      border: 1px solid rgba(69,231,255,.24);
+      border-radius: 24px;
+      background:
+        radial-gradient(ellipse at 100% 0%, rgba(167,123,255,.18), transparent 45%),
+        linear-gradient(115deg, rgba(16,43,66,.9), rgba(18,23,46,.9));
+    }
+
+    .submission-panel h2 { margin: 8px 0 12px; }
+    .submission-panel p { max-width: 700px; margin: 0; font-size: .85rem; }
+
+    .notice {
+      padding: 17px 19px;
+      border: 1px solid rgba(255,210,125,.24);
+      border-radius: 14px;
+      background: rgba(255,210,125,.055);
+      color: #d9d7d0;
+      font-size: .77rem;
+    }
+
+    .notice strong { color: var(--gold); }
+
+    footer {
+      padding: 32px 0;
+      background: rgba(6,10,19,.8);
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-inner p { font-size: .72rem; margin: 5px 0; }
+
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; }
+    .footer-links a { color: var(--muted); font-size: .74rem; text-decoration: none; }
+    .footer-links a:hover { color: var(--cyan); }
+
+    @media (max-width: 980px) {
+      .category-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .story-grid, .creator-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .nav-links { gap: 10px; }
+      .nav-links a { font-size: .69rem; }
+    }
+
+    @media (max-width: 700px) {
+      .nav { min-height: 70px; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 18px;
+        background: rgba(7,12,24,.98);
+        border-bottom: 1px solid var(--line);
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 8px 5px; font-size: .85rem; }
+      .hero { min-height: 460px; }
+      .hero-content { padding: 55px 0 70px; }
+      .section-heading { align-items: start; flex-direction: column; }
+      .feature-panel { grid-template-columns: 1fr; }
+      .feature-art { min-height: 225px; }
+      .search-row { grid-template-columns: 1fr; }
+      .submission-panel { grid-template-columns: 1fr; }
+      .story-grid, .creator-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 430px) {
+      .container { width: calc(100% - 26px); }
+      .category-grid { gap: 10px; }
+      .category-card { padding: 14px; min-height: 150px; }
+      .category-card h3 { font-size: .78rem; }
+      .category-card p { font-size: .7rem; }
+      .hero h1 { font-size: 2.25rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="../index.html" aria-label="CrowRules Community Hub home">
+        <span class="brand-mark" aria-hidden="true">CR</span>
+        <span>
+          <span class="brand-name">CrowRules</span>
+          <span class="brand-tagline">ONE COMPANY. ONE UNIVERSE.</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button"
+        aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="../index.html">Community Home</a>
+        <a href="../resources/index.html">Resources</a>
+        <a href="../services/index.html">Services</a>
+        <a href="../education/index.html">Education</a>
+        <a href="../events/index.html">Events</a>
+        <a href="../directory/index.html">Directory</a>
+        <a href="index.html" aria-current="page">Community Voices</a>
+        <a href="../get-involved/index.html">Get Involved</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-scene night" id="heroScene" aria-hidden="true">
+      <div class="rain-layer"></div>
+    </div>
+
+    <div class="container hero-content">
+      <div class="eyebrow">CrowRules Community Hub · Tacoma, Washington</div>
+      <h1 id="heroTitle">Every Community<br>Has a <span class="gradient-text">Story.</span></h1>
+      <p class="hero-copy">
+        Meet the people, ideas, creative work and everyday experiences that
+        shape Tacoma and Pierce County. Community Voices is a place to listen,
+        learn, share perspectives and celebrate the people who make this region home.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="#stories">Explore Stories <span aria-hidden="true">↗</span></a>
+        <a class="button button-secondary" href="#shareYourVoice">Share Your Voice</a>
+      </div>
+
+      <div class="weather-chip" aria-live="polite">
+        <span class="weather-dot" aria-hidden="true"></span>
+        <span id="weatherText">Tacoma, WA · Every voice matters</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section" aria-labelledby="categoriesTitle">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">Many perspectives, one community</div>
+          <h2 id="categoriesTitle">Explore Community Voices</h2>
+        </div>
+        <p>From neighborhood experiences to local creativity, discover different ways people contribute to life in the South Sound.</p>
+      </div>
+
+      <div class="category-grid">
+        <button class="category-card" type="button" data-category="people">
+          <span class="category-icon" aria-hidden="true">🧑‍🤝‍🧑</span>
+          <h3>People & Personal Stories</h3>
+          <p>Experiences, milestones, challenges and the lessons people want to share.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="creators">
+          <span class="category-icon" aria-hidden="true">🎬</span>
+          <h3>Local Creators</h3>
+          <p>Meet artists, filmmakers, podcasters, writers and independent creators.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="business">
+          <span class="category-icon" aria-hidden="true">💡</span>
+          <h3>Small Business Stories</h3>
+          <p>Ideas, lessons and perspectives from people building local businesses.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="neighborhood">
+          <span class="category-icon" aria-hidden="true">🏙️</span>
+          <h3>Neighborhood Perspectives</h3>
+          <p>Local identity, neighborhood pride and experiences across Pierce County.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="arts">
+          <span class="category-icon" aria-hidden="true">🎨</span>
+          <h3>Arts & Culture</h3>
+          <p>Creative projects, cultural experiences, performance and expression.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="community">
+          <span class="category-icon" aria-hidden="true">🤝</span>
+          <h3>Community Impact</h3>
+          <p>Volunteer efforts, local initiatives and people helping their neighbors.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="ideas">
+          <span class="category-icon" aria-hidden="true">🗣️</span>
+          <h3>Ideas & Conversations</h3>
+          <p>Thoughtful perspectives about local life, opportunities and shared concerns.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="youth">
+          <span class="category-icon" aria-hidden="true">🌱</span>
+          <h3>Youth & Next Generation</h3>
+          <p>Young voices, learning experiences, creativity and future aspirations.</p>
+        </button>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="featuredTitle">
+      <div class="feature-panel">
+        <div class="feature-art" role="img" aria-label="Abstract cinematic artwork representing the many voices of a community">
+          <div class="feature-art-label">
+            <span class="eyebrow">The Community Voices mission</span>
+            <strong>Real People.<br>Real Perspectives.</strong>
+          </div>
+        </div>
+
+        <div class="feature-copy">
+          <div class="eyebrow">Our editorial approach</div>
+          <h2 id="featuredTitle">A Platform for Local Stories</h2>
+          <p>
+            A community is more than a map. It is made up of individual
+            experiences, family histories, creative ambitions, neighborhood
+            connections and people working toward something better.
+          </p>
+          <p>
+            CrowRules Community Voices aims to make those experiences easier
+            to discover while treating contributors with respect and giving
+            readers room to encounter perspectives different from their own.
+          </p>
+          <div class="feature-note">
+            <strong>Our promise:</strong> Published interviews and personal stories
+            should be clearly identified, reviewed with contributors and presented
+            with appropriate context. Placeholder themes on this page are not real interviews.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="stories" aria-labelledby="storiesTitle">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">Stories, ideas & perspectives</div>
+          <h2 id="storiesTitle">Explore the Story Desk</h2>
+        </div>
+        <p>Browse editorial themes that can guide future interviews, essays, creator profiles and community conversations.</p>
+      </div>
+
+      <div class="story-panel">
+        <div class="search-row">
+          <div class="field">
+            <label for="storySearch">Search story themes</label>
+            <input id="storySearch" type="search"
+              placeholder="Try creators, Tacoma, business, neighborhoods..."
+              autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label for="storyCategory">Story category</label>
+            <select id="storyCategory">
+              <option value="all">All categories</option>
+              <option value="people">People & personal stories</option>
+              <option value="creators">Local creators</option>
+              <option value="business">Small business</option>
+              <option value="neighborhood">Neighborhoods</option>
+              <option value="arts">Arts & culture</option>
+              <option value="community">Community impact</option>
+              <option value="ideas">Ideas & conversations</option>
+              <option value="youth">Youth & next generation</option>
+            </select>
+          </div>
+
+          <button class="button button-primary" id="clearFilters" type="button">Clear Filters</button>
+        </div>
+
+        <div class="filter-row" aria-label="Quick story category filters">
+          <button class="filter-chip active" data-quick="all" type="button">All themes</button>
+          <button class="filter-chip" data-quick="people" type="button">Personal stories</button>
+          <button class="filter-chip" data-quick="creators" type="button">Creators</button>
+          <button class="filter-chip" data-quick="business" type="button">Business</button>
+          <button class="filter-chip" data-quick="neighborhood" type="button">Neighborhoods</button>
+          <button class="filter-chip" data-quick="arts" type="button">Arts & culture</button>
+          <button class="filter-chip" data-quick="community" type="button">Community impact</button>
+          <button class="filter-chip" data-quick="ideas" type="button">Conversations</button>
+          <button class="filter-chip" data-quick="youth" type="button">Youth</button>
+        </div>
+
+        <div class="results-bar">
+          <strong id="resultsCount" aria-live="polite">9 editorial themes</strong>
+          <span>Editorial concepts · Not published interviews</span>
+        </div>
+
+        <div class="story-grid" id="storyGrid">
+          <article class="story-card" data-category="people" data-search="personal stories life lessons resilience family change community experience">
+            <div class="story-visual"><span>Life & Experience</span></div>
+            <div class="story-body">
+              <span class="story-tag">People & Personal Stories</span>
+              <h3>The Stories That Shape Us</h3>
+              <p>A future interview and essay series about turning points, lessons learned, challenges overcome and experiences that influence how people see their community.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Contributor stories</div>
+            </div>
+          </article>
+
+          <article class="story-card" data-category="creators arts" data-search="local creators artists filmmakers podcasters writers musicians creative process">
+            <div class="story-visual"><span>Behind the Work</span></div>
+            <div class="story-body">
+              <span class="story-tag">Local Creators</span>
+              <h3>Made in the South Sound</h3>
+              <p>A proposed creator spotlight exploring local creative work, inspiration, practical challenges and what it takes to make an idea real.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Creator profiles</div>
+            </div>
+          </article>
+
+          <article class="story-card" data-category="business community" data-search="small business entrepreneurs local business owners startup lessons customers neighborhood">
+            <div class="story-visual"><span>Building Something</span></div>
+            <div class="story-body">
+              <span class="story-tag">Small Business</span>
+              <h3>Building Local</h3>
+              <p>A future conversation series with local entrepreneurs about starting out, serving customers and growing in a changing regional economy.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Business perspectives</div>
+            </div>
+          </article>
+
+          <article class="story-card" data-category="neighborhood" data-search="neighborhood pride Tacoma Pierce County local identity history change community">
+            <div class="story-visual"><span>Our Neighborhoods</span></div>
+            <div class="story-body">
+              <span class="story-tag">Neighborhood Perspectives</span>
+              <h3>What Makes This Place Home?</h3>
+              <p>A proposed collection of neighborhood memories, local identity, places people value and hopes for the future of their communities.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Neighborhood voices</div>
+            </div>
+          </article>
+
+          <article class="story-card" data-category="arts creators" data-search="arts culture music theater film visual arts creative expression Tacoma">
+            <div class="story-visual"><span>Art & Expression</span></div>
+            <div class="story-body">
+              <span class="story-tag">Arts & Culture</span>
+              <h3>Creative Life in Tacoma</h3>
+              <p>A future look at how artists and cultural organizations make work, build audiences and contribute to the region's creative identity.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Arts features</div>
+            </div>
+          </article>
+
+          <article class="story-card" data-category="community people" data-search="volunteers community service mutual aid neighbors helping neighbors nonprofit">
+            <div class="story-visual"><span>People Helping People</span></div>
+            <div class="story-body">
+              <span class="story-tag">Community Impact</span>
+              <h3>The Work That Brings Us Together</h3>
+              <p>A proposed spotlight on community projects, volunteers and practical ways neighbors support one another.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Community profiles</div>
+            </div>
+          </article>
+
+          <article class="story-card" data-category="ideas neighborhood" data-search="community conversations ideas local issues perspectives listening respectful discussion">
+            <div class="story-visual"><span>Let's Talk</span></div>
+            <div class="story-body">
+              <span class="story-tag">Ideas & Conversations</span>
+              <h3>Many Views, Shared Community</h3>
+              <p>A future conversation format for thoughtful local perspectives, respectful disagreement and ideas that deserve a closer look.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Community conversations</div>
+            </div>
+          </article>
+
+          <article class="story-card" data-category="youth people" data-search="youth next generation students young people learning creativity goals future">
+            <div class="story-visual"><span>What's Next</span></div>
+            <div class="story-body">
+              <span class="story-tag">Youth & Next Generation</span>
+              <h3>Looking Toward Tomorrow</h3>
+              <p>A potential series celebrating youth creativity, aspirations and learning, with appropriate permissions and privacy protections.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Youth perspectives</div>
+            </div>
+          </article>
+
+          <article class="story-card" data-category="business people ideas" data-search="lessons learned starting from scratch persistence building project creative business">
+            <div class="story-visual"><span>Starting From Scratch</span></div>
+            <div class="story-body">
+              <span class="story-tag">Ideas & Personal Stories</span>
+              <h3>The Reality of Building an Idea</h3>
+              <p>A proposed behind-the-scenes format about persistence, setbacks, practical lessons and the realities of building something from the ground up.</p>
+              <div class="story-footer"><strong>Planned series</strong> · Behind the scenes</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="empty-state" id="emptyState" role="status">
+          <h3>No matching themes found</h3>
+          <p>Try a different search term or category to explore the available editorial concepts.</p>
+          <button class="button button-secondary" id="emptyClear" type="button">Show all themes</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="creatorSpotlight" aria-labelledby="creatorTitle">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">Local talent deserves a spotlight</div>
+          <h2 id="creatorTitle">The Creator Spotlight</h2>
+        </div>
+        <p>A future directory-style feature for discovering creators and the work they make in and around Tacoma.</p>
+      </div>
+
+      <div class="creator-grid">
+        <article class="creator-card">
+          <div class="creator-symbol" aria-hidden="true">🎙️</div>
+          <h3>Podcasters & Broadcasters</h3>
+          <p>Show hosts, audio storytellers and independent media creators sharing conversations and ideas.</p>
+          <span class="small-label">Creator category</span>
+        </article>
+
+        <article class="creator-card">
+          <div class="creator-symbol" aria-hidden="true">🎥</div>
+          <h3>Filmmakers & Video Creators</h3>
+          <p>Independent filmmakers, video producers, editors and people telling stories through moving images.</p>
+          <span class="small-label">Creator category</span>
+        </article>
+
+        <article class="creator-card">
+          <div class="creator-symbol" aria-hidden="true">✍️</div>
+          <h3>Writers & Visual Artists</h3>
+          <p>Authors, illustrators, photographers, designers and artists working across different creative forms.</p>
+          <span class="small-label">Creator category</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="shareYourVoice" aria-labelledby="shareTitle">
+      <div class="submission-panel">
+        <div>
+          <div class="eyebrow">Your story belongs in the conversation</div>
+          <h2 id="shareTitle">Share Your Voice</h2>
+          <p>
+            Are you a Tacoma-area creator, resident, community organizer or
+            business owner with a story to tell? CrowRules plans to develop a
+            contributor process for interviews, profiles, essays and community
+            perspectives. Get Involved is the starting point for learning about
+            opportunities to participate.
+          </p>
+        </div>
+        <a class="button button-primary" href="../get-involved/index.html">Get Involved <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <div class="notice">
+      <strong>Editorial transparency:</strong>
+      The story titles and descriptions on this page are proposed editorial themes,
+      not reports of completed interviews. No individual is represented as a real
+      contributor unless an actual, appropriately reviewed profile is added.
+      Future submissions should be published with contributor permission, clear
+      attribution and appropriate safeguards for private or sensitive information.
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <a class="brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">CR</span>
+          <span>
+            <span class="brand-name">CrowRules</span>
+            <span class="brand-tagline">ONE COMPANY. ONE UNIVERSE.</span>
+          </span>
+        </a>
+        <p>Celebrating the voices and stories of Tacoma and Pierce County.</p>
+        <p>© <span id="currentYear"></span> CrowRules Entertainment.</p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="../index.html">Community Home</a>
+        <a href="../directory/index.html">Directory</a>
+        <a href="../events/index.html">Events</a>
+        <a href="../resources/index.html">Resources</a>
+        <a href="../get-involved/index.html">Get Involved</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    "use strict";
+
+    document.getElementById("currentYear").textContent =
+      new Date().getFullYear();
+
+    // Mobile navigation
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    navToggle.addEventListener("click", () => {
+      const open = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(open));
+      navToggle.textContent = open ? "Close ✕" : "Menu ☰";
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.textContent = "Menu ☰";
+      });
+    });
+
+    // Story theme search and filtering
+    const searchInput = document.getElementById("storySearch");
+    const categorySelect = document.getElementById("storyCategory");
+    const storyCards = [...document.querySelectorAll(".story-card")];
+    const categoryCards = [...document.querySelectorAll(".category-card")];
+    const quickFilters = [...document.querySelectorAll("[data-quick]")];
+    const resultsCount = document.getElementById("resultsCount");
+    const storyGrid = document.getElementById("storyGrid");
+    const emptyState = document.getElementById("emptyState");
+
+    function applyFilters() {
+      const term = searchInput.value.trim().toLowerCase();
+      const category = categorySelect.value;
+      let visible = 0;
+
+      storyCards.forEach(card => {
+        const text = (
+          card.textContent + " " + card.dataset.search
+        ).toLowerCase();
+
+        const categories = card.dataset.category.split(/\s+/);
+        const matchesTerm = !term || text.includes(term);
+        const matchesCategory =
+          category === "all" || categories.includes(category);
+        const show = matchesTerm && matchesCategory;
+
+        card.hidden = !show;
+        if (show) visible++;
+      });
+
+      resultsCount.textContent =
+        visible + (visible === 1 ? " editorial theme" : " editorial themes");
+
+      storyGrid.style.display = visible ? "grid" : "none";
+      emptyState.style.display = visible ? "none" : "block";
+
+      quickFilters.forEach(button => {
+        button.classList.toggle("active", button.dataset.quick === category);
+      });
+
+      categoryCards.forEach(button => {
+        button.classList.toggle("active", button.dataset.category === category);
+      });
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    categorySelect.addEventListener("change", applyFilters);
+
+    quickFilters.forEach(button => {
+      button.addEventListener("click", () => {
+        categorySelect.value = button.dataset.quick;
+        applyFilters();
+      });
+    });
+
+    categoryCards.forEach(button => {
+      button.addEventListener("click", () => {
+        categorySelect.value = button.dataset.category;
+        applyFilters();
+
+        document.getElementById("stories").scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto" : "smooth"
+        });
+      });
+    });
+
+    function clearFilters() {
+      searchInput.value = "";
+      categorySelect.value = "all";
+      applyFilters();
+    }
+
+    document.getElementById("clearFilters")
+      .addEventListener("click", clearFilters);
+
+    document.getElementById("emptyClear")
+      .addEventListener("click", clearFilters);
+
+    // Tacoma weather: Open-Meteo endpoint, no API key required.
+    async function loadTacomaWeather() {
+      const scene = document.getElementById("heroScene");
+      const weatherText = document.getElementById("weatherText");
+
+      try {
+        const url =
+          "https://api.open-meteo.com/v1/forecast" +
+          "?latitude=47.2529&longitude=-122.4443" +
+          "&current=temperature_2m,weather_code,is_day" +
+          "&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles";
+
+        const response = await fetch(url, {
+          headers: { "Accept": "application/json" }
+        });
+
+        if (!response.ok) throw new Error("Weather unavailable");
+
+        const data = await response.json();
+        const current = data.current;
+        const code = Number(current.weather_code);
+        const temp = Math.round(Number(current.temperature_2m));
+        const isDay = Number(current.is_day) === 1;
+
+        scene.classList.remove("sunny", "cloudy", "rainy", "night");
+
+        let description = "Current conditions";
+
+        if (code === 0) {
+          description = "Clear skies";
+          scene.classList.add(isDay ? "sunny" : "night");
+        } else if ([1, 2].includes(code)) {
+          description = "Partly cloudy";
+          scene.classList.add(isDay ? "sunny" : "night");
+        } else if ([3, 45, 48].includes(code)) {
+          description = code === 3 ? "Overcast" : "Foggy";
+          scene.classList.add("cloudy");
+        } else if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) {
+          description = "Rainy";
+          scene.classList.add("rainy");
+        } else if ([71, 73, 75, 77, 85, 86].includes(code)) {
+          description = "Snow conditions";
+          scene.classList.add("cloudy");
+        } else if ([95, 96, 99].includes(code)) {
+          description = "Thunderstorm conditions";
+          scene.classList.add("rainy");
+        } else {
+          scene.classList.add(isDay ? "cloudy" : "night");
+        }
+
+        weatherText.textContent =
+          "Tacoma, WA · " + description + " · " + temp + "°F";
+      } catch (error) {
+        scene.classList.add("night");
+        weatherText.textContent = "Tacoma, WA · Every voice matters";
+      }
+    }
+
+    applyFilters();
+    loadTacomaWeather();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d19">
+  <meta name="description" content="Discover Tacoma and Pierce County organizations, nonprofits, local businesses, arts, culture, education and community resources with the CrowRules Community Hub.">
+  <title>Community Directory | CrowRules</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080d19;
+      --bg2: #0d1525;
+      --panel: rgba(17, 29, 49, .86);
+      --cyan: #45e7ff;
+      --purple: #a77bff;
+      --white: #f4f7ff;
+      --muted: #a5b2c9;
+      --line: rgba(128, 177, 220, .18);
+      --green: #7fffc0;
+      --gold: #ffd27d;
+      --radius: 20px;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .28);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--white);
+      background:
+        radial-gradient(ellipse at 15% 8%, rgba(39, 118, 180, .13), transparent 35%),
+        radial-gradient(ellipse at 90% 22%, rgba(132, 70, 220, .10), transparent 32%),
+        var(--bg);
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+
+    a:focus-visible, button:focus-visible,
+    input:focus-visible, select:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 36px));
+      margin-inline: auto;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: .72rem;
+      font-weight: 800;
+    }
+
+    h1, h2, h3, .brand-name {
+      font-family: 'Orbitron', sans-serif;
+      line-height: 1.25;
+    }
+
+    h2 { font-size: clamp(1.45rem, 3vw, 2.15rem); }
+    p { color: var(--muted); }
+    .muted { color: var(--muted); }
+
+    /* Navigation */
+    .site-header {
+      position: relative;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 12, 24, .91);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 45px;
+      height: 45px;
+      border: 1px solid rgba(69, 231, 255, .65);
+      border-radius: 13px;
+      background: linear-gradient(145deg, rgba(69, 231, 255, .16), rgba(167, 123, 255, .19));
+      color: var(--cyan);
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      box-shadow: 0 0 25px rgba(69, 231, 255, .09);
+    }
+
+    .brand-name { font-size: 1.02rem; font-weight: 800; }
+    .brand-tagline { color: var(--muted); font-size: .64rem; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 17px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 700;
+      color: #c4d0e3;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] { color: var(--cyan); }
+
+    .nav-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--white);
+      padding: 9px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* Cinematic Tacoma weather hero */
+    .hero {
+      position: relative;
+      min-height: 490px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      isolation: isolate;
+      border-bottom: 1px solid var(--line);
+      background: #101e35;
+    }
+
+    .hero-scene, .hero-scene::before, .hero-scene::after {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-scene {
+      z-index: -3;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(10, 17, 33, .05), rgba(8, 13, 25, .9)),
+        linear-gradient(110deg, #102c49 0%, #263b59 40%, #40355e 100%);
+      transition: background 1.2s ease;
+    }
+
+    .hero-scene::before {
+      content: "";
+      inset: auto -5% -10% -5%;
+      height: 62%;
+      background:
+        linear-gradient(180deg, transparent, rgba(5, 10, 20, .94)),
+        repeating-linear-gradient(90deg,
+          transparent 0 34px,
+          rgba(3, 8, 18, .65) 35px 59px,
+          transparent 60px 83px);
+      clip-path: polygon(
+        0 35%, 5% 35%, 5% 22%, 8% 22%, 8% 44%,
+        12% 44%, 12% 12%, 15% 12%, 15% 36%,
+        20% 36%, 20% 29%, 25% 29%, 25% 45%,
+        30% 45%, 30% 19%, 34% 19%, 34% 38%,
+        40% 38%, 40% 8%, 43% 8%, 43% 38%,
+        50% 38%, 50% 26%, 55% 26%, 55% 43%,
+        60% 43%, 60% 18%, 65% 18%, 65% 42%,
+        72% 42%, 72% 25%, 76% 25%, 76% 42%,
+        81% 42%, 81% 12%, 85% 12%, 85% 38%,
+        92% 38%, 92% 25%, 97% 25%, 97% 42%, 100% 42%,
+        100% 100%, 0 100%
+      );
+      opacity: .88;
+    }
+
+    .hero-scene::after {
+      content: "";
+      background:
+        radial-gradient(ellipse at 70% 28%, rgba(69, 231, 255, .18), transparent 27%),
+        linear-gradient(90deg, rgba(5, 10, 20, .82), rgba(5, 10, 20, .15) 78%);
+    }
+
+    .hero-scene.sunny {
+      background:
+        linear-gradient(180deg, rgba(31, 60, 93, .05), rgba(8, 13, 25, .92)),
+        linear-gradient(115deg, #1d4569, #7b6a81 65%, #c49c75);
+    }
+
+    .hero-scene.cloudy {
+      background:
+        linear-gradient(180deg, rgba(10, 17, 33, .1), rgba(8, 13, 25, .95)),
+        linear-gradient(110deg, #273a50, #4c5267 55%, #655a75);
+    }
+
+    .hero-scene.rainy {
+      background:
+        linear-gradient(180deg, rgba(10, 17, 33, .1), rgba(8, 13, 25, .94)),
+        linear-gradient(110deg, #0e2439, #283e55 55%, #45415d);
+    }
+
+    .hero-scene.night {
+      background:
+        linear-gradient(180deg, rgba(6, 10, 28, .05), rgba(8, 13, 25, .92)),
+        linear-gradient(110deg, #080f27, #182344 58%, #34274e);
+    }
+
+    .hero-content {
+      padding-block: 72px 88px;
+      max-width: 780px;
+    }
+
+    .hero h1 {
+      margin: 14px 0 18px;
+      font-size: clamp(2.2rem, 6vw, 4.65rem);
+      letter-spacing: -.045em;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, .35);
+    }
+
+    .gradient-text {
+      color: var(--cyan);
+      background: linear-gradient(90deg, var(--cyan), #c0a0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-copy {
+      max-width: 640px;
+      color: #d4e0f0;
+      font-size: clamp(.95rem, 2vw, 1.08rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 45px;
+      padding: 11px 17px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: transform .2s, border-color .2s, background .2s;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+
+    .button-primary {
+      background: linear-gradient(105deg, #31d8f6, #8c83ff);
+      color: #07101d;
+      border-color: transparent;
+    }
+
+    .button-secondary {
+      color: var(--white);
+      background: rgba(10, 18, 33, .64);
+    }
+
+    .weather-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-top: 24px;
+      border: 1px solid rgba(191, 217, 246, .2);
+      background: rgba(7, 14, 27, .58);
+      color: #d8e7fa;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .72rem;
+    }
+
+    .weather-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px currentColor;
+    }
+
+    .rain-layer {
+      position: absolute;
+      inset: -100px 0 0;
+      z-index: -1;
+      opacity: 0;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(
+        105deg, transparent 0 28px,
+        rgba(202, 229, 255, .23) 29px 30px,
+        transparent 31px 48px
+      );
+      background-size: 100% 180px;
+      animation: rainfall .55s linear infinite;
+    }
+
+    .hero-scene.rainy .rain-layer { opacity: .45; }
+
+    @keyframes rainfall {
+      from { transform: translateY(-90px); }
+      to { transform: translateY(90px); }
+    }
+
+    /* Main content */
+    main { padding: 52px 0 72px; }
+
+    .section { margin-bottom: 58px; }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 23px;
+    }
+
+    .section-heading h2 { margin: 8px 0 0; }
+    .section-heading p { margin-bottom: 0; max-width: 620px; }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .category-card {
+      position: relative;
+      padding: 21px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(23, 39, 64, .82), rgba(12, 20, 35, .9));
+      min-height: 164px;
+      cursor: pointer;
+      text-align: left;
+      color: var(--white);
+      transition: transform .22s, border-color .22s, box-shadow .22s;
+    }
+
+    .category-card:hover, .category-card.active {
+      transform: translateY(-3px);
+      border-color: rgba(69, 231, 255, .65);
+      box-shadow: 0 12px 35px rgba(20, 165, 220, .09);
+    }
+
+    .category-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(69, 231, 255, .22);
+      background: rgba(69, 231, 255, .08);
+      font-size: 1.25rem;
+    }
+
+    .category-card h3 { font-size: .94rem; margin: 0 0 7px; }
+    .category-card p { margin: 0; font-size: .76rem; line-height: 1.6; }
+
+    /* Search */
+    .directory-panel {
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(16, 29, 49, .96), rgba(10, 17, 31, .96));
+      border-radius: 24px;
+      padding: clamp(18px, 3vw, 30px);
+      box-shadow: var(--shadow);
+    }
+
+    .search-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 240px auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #d7e3f4;
+      font-size: .76rem;
+      font-weight: 800;
+    }
+
+    .field input, .field select {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(159, 187, 223, .25);
+      background: #0a1323;
+      color: var(--white);
+      padding: 12px 13px;
+      border-radius: 10px;
+    }
+
+    .field input::placeholder { color: #8493ab; }
+
+    .search-note {
+      font-size: .73rem;
+      margin: 13px 0 0;
+    }
+
+    .quick-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0 25px;
+    }
+
+    .filter-chip {
+      border: 1px solid var(--line);
+      color: #cbd7e9;
+      background: rgba(13, 24, 41, .8);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .73rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .filter-chip:hover, .filter-chip.active {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(69, 231, 255, .08);
+    }
+
+    .results-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 15px;
+      margin-bottom: 18px;
+    }
+
+    .results-bar strong { color: var(--white); }
+    .results-bar span { color: var(--muted); font-size: .78rem; }
+
+    .listing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .listing-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: rgba(18, 31, 51, .76);
+      transition: transform .2s, border-color .2s;
+    }
+
+    .listing-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(167, 123, 255, .55);
+    }
+
+    .listing-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .listing-icon {
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      flex-shrink: 0;
+      border-radius: 13px;
+      background: rgba(167, 123, 255, .1);
+      border: 1px solid rgba(167, 123, 255, .22);
+      font-size: 1.25rem;
+    }
+
+    .listing-category {
+      display: inline-block;
+      padding: 5px 8px;
+      color: #c9bbff;
+      background: rgba(167, 123, 255, .1);
+      border-radius: 7px;
+      font-size: .63rem;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .listing-card h3 {
+      font-size: .97rem;
+      margin: 0 0 9px;
+    }
+
+    .listing-card p {
+      margin: 0 0 15px;
+      font-size: .79rem;
+      line-height: 1.7;
+    }
+
+    .listing-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: auto;
+      padding: 0 0 17px;
+    }
+
+    .meta-pill {
+      color: #c6d3e6;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: .65rem;
+    }
+
+    .listing-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: .76rem;
+      font-weight: 800;
+    }
+
+    .listing-link:hover { color: #c2f7ff; }
+
+    .empty-state {
+      display: none;
+      padding: 38px 18px;
+      border: 1px dashed rgba(159, 187, 223, .3);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .empty-state h3 { margin-top: 0; }
+    .empty-state p { max-width: 460px; margin-inline: auto; }
+
+    /* Helpful external directories */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .resource-card {
+      display: block;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      text-decoration: none;
+      background: rgba(15, 27, 46, .7);
+      transition: border-color .2s, transform .2s;
+    }
+
+    .resource-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+    }
+
+    .resource-card h3 { font-size: .93rem; margin: 0 0 9px; }
+    .resource-card p { margin: 0 0 13px; font-size: .78rem; }
+    .resource-card span { color: var(--cyan); font-size: .74rem; font-weight: 800; }
+
+    /* Community submission prompt */
+    .submit-banner {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 25px;
+      align-items: center;
+      padding: clamp(24px, 4vw, 40px);
+      border: 1px solid rgba(69, 231, 255, .24);
+      border-radius: 24px;
+      background:
+        radial-gradient(ellipse at 100% 0%, rgba(167, 123, 255, .18), transparent 45%),
+        linear-gradient(115deg, rgba(16, 43, 66, .9), rgba(18, 23, 46, .9));
+    }
+
+    .submit-banner h2 { margin: 8px 0 12px; }
+    .submit-banner p { max-width: 690px; margin-bottom: 0; font-size: .87rem; }
+
+    .verification-note {
+      padding: 18px 20px;
+      border: 1px solid rgba(255, 210, 125, .25);
+      background: rgba(255, 210, 125, .055);
+      border-radius: 14px;
+      color: #d9d7d0;
+      font-size: .78rem;
+    }
+
+    .verification-note strong { color: var(--gold); }
+
+    footer {
+      border-top: 1px solid var(--line);
+      background: rgba(6, 10, 19, .8);
+      padding: 32px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-inner p { font-size: .73rem; margin: 5px 0; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 16px; }
+    .footer-links a { color: var(--muted); font-size: .75rem; text-decoration: none; }
+    .footer-links a:hover { color: var(--cyan); }
+
+    @media (max-width: 980px) {
+      .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .nav-links { gap: 11px; }
+      .nav-links a { font-size: .72rem; }
+    }
+
+    @media (max-width: 700px) {
+      .nav { min-height: 70px; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: 18px;
+        background: rgba(7, 12, 24, .98);
+        border-bottom: 1px solid var(--line);
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 8px 5px; font-size: .85rem; }
+      .hero { min-height: 465px; }
+      .hero-content { padding-block: 55px 70px; }
+      .section-heading { align-items: start; flex-direction: column; }
+      .search-grid { grid-template-columns: 1fr; }
+      .listing-grid, .resource-grid { grid-template-columns: 1fr; }
+      .submit-banner { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 430px) {
+      .container { width: min(100% - 26px, 1160px); }
+      .brand-tagline { font-size: .57rem; }
+      .category-grid { gap: 10px; }
+      .category-card { padding: 15px; min-height: 158px; }
+      .category-card h3 { font-size: .81rem; }
+      .category-card p { font-size: .71rem; }
+      .hero h1 { font-size: 2.25rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="../index.html" aria-label="CrowRules Community Hub home">
+        <span class="brand-mark" aria-hidden="true">CR</span>
+        <span>
+          <span class="brand-name">CrowRules</span>
+          <span class="brand-tagline" style="display:block">ONE COMPANY. ONE UNIVERSE.</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button"
+        aria-expanded="false" aria-controls="navLinks">Menu ☰</button>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="../index.html">Community Home</a>
+        <a href="../resources/index.html">Resources</a>
+        <a href="../services/index.html">Services</a>
+        <a href="../education/index.html">Education</a>
+        <a href="../events/index.html">Events</a>
+        <a href="index.html" aria-current="page">Directory</a>
+        <a href="../voices/index.html">Community Voices</a>
+        <a href="../get-involved/index.html">Get Involved</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-scene night" id="heroScene" aria-hidden="true">
+      <div class="rain-layer"></div>
+    </div>
+
+    <div class="container hero-content">
+      <div class="eyebrow">CrowRules Community Hub · Tacoma, Washington</div>
+      <h1 id="heroTitle">Discover Your<br><span class="gradient-text">Community.</span></h1>
+      <p class="hero-copy">
+        Find the organizations, local businesses, nonprofits, creative spaces,
+        and community networks that help Tacoma and Pierce County thrive.
+        Your next connection could be right around the corner.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="#directorySearch">Explore the Directory <span aria-hidden="true">↗</span></a>
+        <a class="button button-secondary" href="#communityResources">Community Resources</a>
+      </div>
+
+      <div class="weather-chip" aria-live="polite">
+        <span class="weather-dot" aria-hidden="true"></span>
+        <span id="weatherText">Tacoma, WA · Local community, connected</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section" aria-labelledby="categoriesTitle">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">Find your place</div>
+          <h2 id="categoriesTitle">Explore by Category</h2>
+        </div>
+        <p>Choose a starting point. Use the directory search below to find a specific organization or type of business.</p>
+      </div>
+
+      <div class="category-grid">
+        <button class="category-card" type="button" data-category="nonprofit">
+          <span class="category-icon" aria-hidden="true">🤝</span>
+          <h3>Nonprofits & Community</h3>
+          <p>Community organizations, advocacy, neighborhood groups and volunteer networks.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="business">
+          <span class="category-icon" aria-hidden="true">🏪</span>
+          <h3>Local Businesses</h3>
+          <p>Discover independent businesses and find trusted regional business directories.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="arts">
+          <span class="category-icon" aria-hidden="true">🎨</span>
+          <h3>Arts & Culture</h3>
+          <p>Museums, performing arts, cultural organizations, makers and creative communities.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="education">
+          <span class="category-icon" aria-hidden="true">📚</span>
+          <h3>Education & Learning</h3>
+          <p>Learning opportunities, libraries, youth programs and educational organizations.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="family">
+          <span class="category-icon" aria-hidden="true">🏡</span>
+          <h3>Family & Youth</h3>
+          <p>Family-oriented organizations, youth activities and community connections.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="services">
+          <span class="category-icon" aria-hidden="true">🧭</span>
+          <h3>Community Services</h3>
+          <p>Explore community support organizations and public-service information.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="environment">
+          <span class="category-icon" aria-hidden="true">🌿</span>
+          <h3>Environment & Outdoors</h3>
+          <p>Environmental groups, parks, conservation and outdoor activities.</p>
+        </button>
+
+        <button class="category-card" type="button" data-category="civic">
+          <span class="category-icon" aria-hidden="true">🏙️</span>
+          <h3>Neighborhood & Civic</h3>
+          <p>Neighborhood networks, civic participation and local government information.</p>
+        </button>
+      </div>
+    </section>
+
+    <section class="section" id="directorySearch" aria-labelledby="directoryTitle">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">The local directory</div>
+          <h2 id="directoryTitle">Find Local Connections</h2>
+        </div>
+        <p>Search the starter listings by name, category or description. Listings link to external websites so you can verify current details.</p>
+      </div>
+
+      <div class="directory-panel">
+        <div class="search-grid">
+          <div class="field">
+            <label for="searchInput">Search the directory</label>
+            <input id="searchInput" type="search"
+              placeholder="Try arts, youth, business, community..."
+              autocomplete="off">
+          </div>
+
+          <div class="field">
+            <label for="categorySelect">Filter by category</label>
+            <select id="categorySelect">
+              <option value="all">All categories</option>
+              <option value="nonprofit">Nonprofits & Community</option>
+              <option value="business">Local Businesses</option>
+              <option value="arts">Arts & Culture</option>
+              <option value="education">Education & Learning</option>
+              <option value="family">Family & Youth</option>
+              <option value="services">Community Services</option>
+              <option value="environment">Environment & Outdoors</option>
+              <option value="civic">Neighborhood & Civic</option>
+            </select>
+          </div>
+
+          <button class="button button-primary" id="clearFilters" type="button">Clear Filters</button>
+        </div>
+
+        <p class="search-note">This is an independently curated community directory. CrowRules does not endorse or certify every listed organization.</p>
+
+        <div class="quick-filters" aria-label="Quick category filters">
+          <button class="filter-chip active" type="button" data-quick="all">All listings</button>
+          <button class="filter-chip" type="button" data-quick="nonprofit">Nonprofits</button>
+          <button class="filter-chip" type="button" data-quick="business">Businesses</button>
+          <button class="filter-chip" type="button" data-quick="arts">Arts & culture</button>
+          <button class="filter-chip" type="button" data-quick="education">Education</button>
+          <button class="filter-chip" type="button" data-quick="family">Family & youth</button>
+          <button class="filter-chip" type="button" data-quick="services">Services</button>
+          <button class="filter-chip" type="button" data-quick="environment">Environment</button>
+          <button class="filter-chip" type="button" data-quick="civic">Civic</button>
+        </div>
+
+        <div class="results-bar">
+          <strong id="resultsCount" aria-live="polite">12 starter listings</strong>
+          <span>Serving Tacoma & Pierce County</span>
+        </div>
+
+        <div class="listing-grid" id="listingGrid">
+          <article class="listing-card" data-category="business" data-search="tacoma pierce county chamber business directory local businesses small business networking">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🏪</span>
+              <span class="listing-category">Business</span>
+            </div>
+            <h3>Tacoma-Pierce County Chamber</h3>
+            <p>Explore a regional business directory, professional connections and resources for businesses in the South Sound.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Business network</span>
+              <span class="meta-pill">Pierce County</span>
+            </div>
+            <a class="listing-link" href="https://business.tacomachamber.org/list" target="_blank" rel="noopener noreferrer">
+              Explore business directory <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="arts" data-search="tacoma creates arts culture heritage science nonprofit funded organizations">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🎨</span>
+              <span class="listing-category">Arts & Culture</span>
+            </div>
+            <h3>Tacoma Creates</h3>
+            <p>Discover arts, culture, heritage and science organizations, including its published funded-organization cohort.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Arts</span>
+              <span class="meta-pill">Culture</span>
+            </div>
+            <a class="listing-link" href="https://www.tacomacreates.org/funded-organizations" target="_blank" rel="noopener noreferrer">
+              Browse organizations <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="arts" data-search="arts culture coalition pierce county museums cultural organizations heritage science">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🖼️</span>
+              <span class="listing-category">Arts & Culture</span>
+            </div>
+            <h3>Arts & Culture Coalition of Pierce County</h3>
+            <p>Explore a regional network of arts, culture, science and heritage organizations across Tacoma and Pierce County.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Regional network</span>
+              <span class="meta-pill">Culture</span>
+            </div>
+            <a class="listing-link" href="https://www.artsandculturecoalition.org/" target="_blank" rel="noopener noreferrer">
+              Explore the coalition <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="services" data-search="united way pierce county community resiliency youth opportunity financial security healthy community nonprofit">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🤝</span>
+              <span class="listing-category">Community Services</span>
+            </div>
+            <h3>United Way of Pierce County</h3>
+            <p>Learn about regional community initiatives, volunteer opportunities and programs supporting local well-being.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Community impact</span>
+              <span class="meta-pill">Volunteer</span>
+            </div>
+            <a class="listing-link" href="https://www.uwpc.org/" target="_blank" rel="noopener noreferrer">
+              Visit official website <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="services nonprofit" data-search="tacoma community house immigrant refugee education employment english language community support">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🏡</span>
+              <span class="listing-category">Community Services</span>
+            </div>
+            <h3>Tacoma Community House</h3>
+            <p>Explore community-based programs and support related to education, employment and immigrant and refugee services.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Community nonprofit</span>
+              <span class="meta-pill">Learning</span>
+            </div>
+            <a class="listing-link" href="https://www.tacomacommunityhouse.org/" target="_blank" rel="noopener noreferrer">
+              Visit official website <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="arts family" data-search="museum of glass tacoma art glass exhibitions workshops education family">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">✨</span>
+              <span class="listing-category">Arts & Culture</span>
+            </div>
+            <h3>Museum of Glass</h3>
+            <p>Discover contemporary glass art, exhibitions, glassmaking demonstrations and educational experiences.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Museum</span>
+              <span class="meta-pill">Arts education</span>
+            </div>
+            <a class="listing-link" href="https://www.museumofglass.org/" target="_blank" rel="noopener noreferrer">
+              Plan a visit <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="arts education family" data-search="greentrike children's museum tacoma kids youth families learning play">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🧩</span>
+              <span class="listing-category">Family & Youth</span>
+            </div>
+            <h3>Greentrike</h3>
+            <p>Explore play-based learning, children's museum experiences and programs serving children and families.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Children & families</span>
+              <span class="meta-pill">Learning</span>
+            </div>
+            <a class="listing-link" href="https://greentrike.org/" target="_blank" rel="noopener noreferrer">
+              Visit official website <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="education arts" data-search="tacoma public library programs learning books digital resources community">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">📚</span>
+              <span class="listing-category">Education</span>
+            </div>
+            <h3>Tacoma Public Library</h3>
+            <p>Find library locations, reading resources, community programs and learning opportunities.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Library</span>
+              <span class="meta-pill">Public programs</span>
+            </div>
+            <a class="listing-link" href="https://www.tacomalibrary.org/" target="_blank" rel="noopener noreferrer">
+              Explore library resources <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="arts education family" data-search="tacoma art museum pacific northwest art exhibitions education family">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🖌️</span>
+              <span class="listing-category">Arts & Culture</span>
+            </div>
+            <h3>Tacoma Art Museum</h3>
+            <p>Explore art exhibitions, regional artists and opportunities to experience visual arts in downtown Tacoma.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Art museum</span>
+              <span class="meta-pill">Downtown Tacoma</span>
+            </div>
+            <a class="listing-link" href="https://www.tacomaartmuseum.org/" target="_blank" rel="noopener noreferrer">
+              Explore the museum <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="nonprofit environment civic" data-search="historic tacoma preservation architecture heritage neighborhoods community nonprofit">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🏛️</span>
+              <span class="listing-category">Neighborhood & Civic</span>
+            </div>
+            <h3>Historic Tacoma</h3>
+            <p>Learn about historic preservation, Tacoma's built heritage and efforts to protect local character.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Preservation</span>
+              <span class="meta-pill">Local heritage</span>
+            </div>
+            <a class="listing-link" href="https://historictacoma.org/" target="_blank" rel="noopener noreferrer">
+              Visit official website <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="nonprofit environment" data-search="hilltop urban gardens hug Tacoma urban farming culture art community gardening">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🌱</span>
+              <span class="listing-category">Environment</span>
+            </div>
+            <h3>Hilltop Urban Gardens</h3>
+            <p>Discover a community-led organization connecting urban agriculture, culture, art and neighborhood resilience.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Urban agriculture</span>
+              <span class="meta-pill">Community-led</span>
+            </div>
+            <a class="listing-link" href="https://www.hilltopurbangardens.com/" target="_blank" rel="noopener noreferrer">
+              Learn more <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+
+          <article class="listing-card" data-category="civic nonprofit" data-search="new tacoma neighborhood council downtown stadium dome district neighborhood residents">
+            <div class="listing-top">
+              <span class="listing-icon" aria-hidden="true">🏙️</span>
+              <span class="listing-category">Neighborhood & Civic</span>
+            </div>
+            <h3>New Tacoma Neighborhood Council</h3>
+            <p>Explore neighborhood representation and community initiatives in its downtown, Stadium and Dome District service area.</p>
+            <div class="listing-meta">
+              <span class="meta-pill">Neighborhood</span>
+              <span class="meta-pill">Civic participation</span>
+            </div>
+            <a class="listing-link" href="https://www.cityoftacoma.org/" target="_blank" rel="noopener noreferrer">
+              Find City neighborhood information <span aria-hidden="true">↗</span>
+            </a>
+          </article>
+        </div>
+
+        <div class="empty-state" id="emptyState" role="status">
+          <h3>No matching listings found</h3>
+          <p>Try another search term or category. You can also explore the regional directories below for more organizations and businesses.</p>
+          <button class="button button-secondary" id="emptyClear" type="button">Show all listings</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="communityResources" aria-labelledby="resourcesTitle">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">Go further</div>
+          <h2 id="resourcesTitle">More Ways to Discover Tacoma</h2>
+        </div>
+        <p>These external directories can help you discover more local organizations, businesses and public resources beyond our starter listings.</p>
+      </div>
+
+      <div class="resource-grid">
+        <a class="resource-card" href="https://business.tacomachamber.org/list" target="_blank" rel="noopener noreferrer">
+          <h3>Business Directory</h3>
+          <p>Search the Tacoma-Pierce County Chamber's business directory by name and industry.</p>
+          <span>Explore businesses ↗</span>
+        </a>
+
+        <a class="resource-card" href="https://www.tacomacreates.org/funded-organizations" target="_blank" rel="noopener noreferrer">
+          <h3>Arts & Culture Organizations</h3>
+          <p>Browse Tacoma Creates' published funded organizations across arts, culture, heritage and science.</p>
+          <span>Discover organizations ↗</span>
+        </a>
+
+        <a class="resource-card" href="https://www.cityoftacoma.org/" target="_blank" rel="noopener noreferrer">
+          <h3>City of Tacoma</h3>
+          <p>Find official city departments, civic information, neighborhood resources and public services.</p>
+          <span>Visit the City ↗</span>
+        </a>
+
+        <a class="resource-card" href="https://www.piercecountywa.gov/" target="_blank" rel="noopener noreferrer">
+          <h3>Pierce County Government</h3>
+          <p>Explore county programs, departments, public information and regional services.</p>
+          <span>Visit Pierce County ↗</span>
+        </a>
+
+        <a class="resource-card" href="https://www.metroparkstacoma.org/" target="_blank" rel="noopener noreferrer">
+          <h3>Parks & Recreation</h3>
+          <p>Explore parks, recreation opportunities, public spaces and community activities.</p>
+          <span>Explore Metro Parks ↗</span>
+        </a>
+
+        <a class="resource-card" href="https://www.uwpc.org/" target="_blank" rel="noopener noreferrer">
+          <h3>Community Connections</h3>
+          <p>Explore United Way of Pierce County's community initiatives and opportunities to get involved.</p>
+          <span>Find out more ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="submitTitle">
+      <div class="submit-banner">
+        <div>
+          <div class="eyebrow">Built for the community</div>
+          <h2 id="submitTitle">Know a Local Organization?</h2>
+          <p>
+            CrowRules is building a community directory designed to make local
+            organizations and businesses easier to discover. Future improvements
+            can include community-submitted listings, organization profiles,
+            neighborhood filters and a listing review process.
+          </p>
+        </div>
+        <a class="button button-primary" href="../get-involved/index.html">Get Involved <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <div class="verification-note">
+      <strong>Directory note:</strong>
+      These starter listings link to external organizations and information sources.
+      CrowRules does not certify listings, guarantee services, or independently
+      verify every detail. Websites, services, eligibility, hours and accessibility
+      can change. Confirm information directly with the organization before visiting
+      or relying on a service. Inclusion does not imply endorsement.
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <a class="brand" href="../index.html">
+          <span class="brand-mark" aria-hidden="true">CR</span>
+          <span>
+            <span class="brand-name">CrowRules</span>
+            <span class="brand-tagline" style="display:block">ONE COMPANY. ONE UNIVERSE.</span>
+          </span>
+        </a>
+        <p>Connecting Tacoma and Pierce County, one community at a time.</p>
+        <p>© <span id="currentYear"></span> CrowRules Entertainment.</p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="../index.html">Community Home</a>
+        <a href="../resources/index.html">Resources</a>
+        <a href="../services/index.html">Services</a>
+        <a href="../events/index.html">Events</a>
+        <a href="../voices/index.html">Community Voices</a>
+        <a href="../get-involved/index.html">Get Involved</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    "use strict";
+
+    // Current year
+    document.getElementById("currentYear").textContent =
+      new Date().getFullYear();
+
+    // Mobile navigation
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+      navToggle.textContent = isOpen ? "Close ✕" : "Menu ☰";
+    });
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.textContent = "Menu ☰";
+      });
+    });
+
+    // Directory search and category filters
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const listingCards = [...document.querySelectorAll(".listing-card")];
+    const categoryCards = [...document.querySelectorAll(".category-card")];
+    const quickFilters = [...document.querySelectorAll("[data-quick]")];
+    const resultsCount = document.getElementById("resultsCount");
+    const emptyState = document.getElementById("emptyState");
+    const listingGrid = document.getElementById("listingGrid");
+
+    function applyFilters() {
+      const term = searchInput.value.trim().toLowerCase();
+      const category = categorySelect.value;
+      let visible = 0;
+
+      listingCards.forEach(card => {
+        const text = (card.textContent + " " + card.dataset.search).toLowerCase();
+        const categories = card.dataset.category.split(/\s+/);
+        const matchesTerm = !term || text.includes(term);
+        const matchesCategory = category === "all" || categories.includes(category);
+        const show = matchesTerm && matchesCategory;
+
+        card.hidden = !show;
+        if (show) visible++;
+      });
+
+      resultsCount.textContent =
+        visible + (visible === 1 ? " listing" : " listings");
+
+      listingGrid.style.display = visible ? "grid" : "none";
+      emptyState.style.display = visible ? "none" : "block";
+
+      quickFilters.forEach(button => {
+        button.classList.toggle("active", button.dataset.quick === category);
+      });
+
+      categoryCards.forEach(button => {
+        button.classList.toggle("active", button.dataset.category === category);
+      });
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    categorySelect.addEventListener("change", applyFilters);
+
+    quickFilters.forEach(button => {
+      button.addEventListener("click", () => {
+        categorySelect.value = button.dataset.quick;
+        applyFilters();
+      });
+    });
+
+    categoryCards.forEach(button => {
+      button.addEventListener("click", () => {
+        categorySelect.value = button.dataset.category;
+        applyFilters();
+        document.getElementById("directorySearch").scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "auto" : "smooth"
+        });
+      });
+    });
+
+    function clearFilters() {
+      searchInput.value = "";
+      categorySelect.value = "all";
+      applyFilters();
+    }
+
+    document.getElementById("clearFilters").addEventListener("click", clearFilters);
+    document.getElementById("emptyClear").addEventListener("click", clearFilters);
+
+    // Tacoma weather: Open-Meteo public forecast endpoint, no API key required.
+    // Weather changes the scene treatment, not the page's usability.
+    async function loadTacomaWeather() {
+      const scene = document.getElementById("heroScene");
+      const weatherText = document.getElementById("weatherText");
+
+      try {
+        const endpoint =
+          "https://api.open-meteo.com/v1/forecast" +
+          "?latitude=47.2529&longitude=-122.4443" +
+          "&current=temperature_2m,weather_code,is_day" +
+          "&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles";
+
+        const response = await fetch(endpoint, {
+          headers: { "Accept": "application/json" }
+        });
+
+        if (!response.ok) throw new Error("Weather service unavailable");
+
+        const data = await response.json();
+        const current = data.current;
+        const code = Number(current.weather_code);
+        const temp = Math.round(Number(current.temperature_2m));
+        const isDay = Number(current.is_day) === 1;
+
+        scene.classList.remove("sunny", "cloudy", "rainy", "night");
+
+        let description = "Current conditions";
+        if ([0].includes(code)) {
+          description = "Clear skies";
+          scene.classList.add(isDay ? "sunny" : "night");
+        } else if ([1, 2].includes(code)) {
+          description = "Partly cloudy";
+          scene.classList.add(isDay ? "sunny" : "night");
+        } else if ([3, 45, 48].includes(code)) {
+          description = code === 3 ? "Overcast" : "Foggy";
+          scene.classList.add("cloudy");
+        } else if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) {
+          description = "Rain in the forecast";
+          scene.classList.add("rainy");
+        } else if ([71, 73, 75, 77, 85, 86].includes(code)) {
+          description = "Snow conditions";
+          scene.classList.add("cloudy");
+        } else if ([95, 96, 99].includes(code)) {
+          description = "Thunderstorm conditions";
+          scene.classList.add("rainy");
+        } else {
+          scene.classList.add(isDay ? "cloudy" : "night");
+        }
+
+        weatherText.textContent =
+          "Tacoma, WA · " + description + " · " + temp + "°F";
+      } catch (error) {
+        // Graceful fallback: keep the cinematic scene and page working.
+        scene.classList.add("night");
+        weatherText.textContent = "Tacoma, WA · Local community, connected";
+      }
+    }
+
+    applyFilters();
+    loadTacomaWeather();
+  </script>
+</body>
+</html>

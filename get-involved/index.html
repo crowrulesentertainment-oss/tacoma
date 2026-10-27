@@ -1,0 +1,1338 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d18">
+  <meta name="description" content="Get involved with the CrowRules Community Hub. Discover ways to volunteer, support Tacoma-area creators, share community resources, and help strengthen Pierce County.">
+  <title>Get Involved | CrowRules Community Hub</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080d18;
+      --bg-soft: #0d1525;
+      --panel: rgba(16, 27, 46, .88);
+      --panel-light: #142239;
+      --text: #f3f7ff;
+      --muted: #a9b7cc;
+      --cyan: #51e5ff;
+      --purple: #a58aff;
+      --pink: #f27cff;
+      --line: rgba(128, 177, 224, .19);
+      --green: #81f3c1;
+      --gold: #ffd58a;
+      --radius: 22px;
+      --max: 1180px;
+      --shadow: 0 20px 60px rgba(0, 0, 0, .27);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 10% 8%, rgba(36, 104, 159, .12), transparent 35%),
+        radial-gradient(ellipse at 90% 35%, rgba(116, 67, 172, .10), transparent 38%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Inter", sans-serif;
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+
+    a:focus-visible, button:focus-visible,
+    input:focus-visible, select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .topline {
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink));
+    }
+
+    header {
+      position: sticky;
+      z-index: 50;
+      top: 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 12, 23, .9);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      min-width: 205px;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, rgba(81,229,255,.2), rgba(165,138,255,.23));
+      border: 1px solid rgba(81,229,255,.42);
+      color: var(--cyan);
+      font-family: "Orbitron", sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 0 25px rgba(81,229,255,.09);
+    }
+
+    .brand-name {
+      display: block;
+      font-family: "Orbitron", sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .8px;
+    }
+
+    .brand-sub {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 9px 11px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: color .2s, background .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] {
+      color: var(--cyan);
+      background: rgba(81,229,255,.08);
+    }
+
+    .nav-toggle {
+      display: none;
+      color: var(--text);
+      background: var(--panel-light);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+    }
+
+    /* Cinematic Tacoma hero */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      min-height: 590px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: #101b30;
+    }
+
+    .hero-scene {
+      position: absolute;
+      z-index: -3;
+      inset: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(6,12,24,.12), rgba(6,12,24,.88)),
+        linear-gradient(110deg, #142c4c, #382e57 55%, #101b30);
+      transition: filter 1.5s ease, background 1.5s ease;
+    }
+
+    .hero-scene::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 72% 24%, rgba(100, 196, 255, .28), transparent 28%),
+        linear-gradient(180deg, transparent 35%, rgba(5,10,19,.35));
+      animation: atmosphere 12s ease-in-out infinite alternate;
+    }
+
+    .hero-scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .22;
+      background-image: radial-gradient(rgba(255,255,255,.55) .65px, transparent .65px);
+      background-size: 5px 5px;
+      mix-blend-mode: soft-light;
+    }
+
+    .sky-glow {
+      position: absolute;
+      width: 330px;
+      height: 330px;
+      right: 13%;
+      top: 0;
+      border-radius: 50%;
+      background: rgba(91, 184, 255, .13);
+      filter: blur(50px);
+      transition: background 1s;
+    }
+
+    .rain-layer {
+      position: absolute;
+      inset: -30%;
+      opacity: 0;
+      transform: rotate(13deg);
+      background-image: repeating-linear-gradient(
+        180deg,
+        transparent 0 24px,
+        rgba(178, 220, 255, .23) 25px,
+        transparent 26px 43px
+      );
+      background-size: 20px 44px;
+      animation: rainfall .65s linear infinite;
+      transition: opacity 1s;
+    }
+
+    .fog-layer {
+      position: absolute;
+      width: 140%;
+      height: 45%;
+      left: -20%;
+      bottom: 12%;
+      opacity: .12;
+      background: linear-gradient(90deg, transparent, rgba(190,218,255,.28), transparent);
+      filter: blur(22px);
+      animation: fogmove 18s ease-in-out infinite alternate;
+    }
+
+    .mountains {
+      position: absolute;
+      inset: auto 0 0;
+      width: 100%;
+      height: 52%;
+      color: #081222;
+    }
+
+    .mountains .ridge-back { fill: #15233b; opacity: .85; }
+    .mountains .ridge-front { fill: #091222; }
+    .mountains .water { fill: #101e34; opacity: .9; }
+
+    .city-lights {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 12%;
+      height: 22%;
+      opacity: .65;
+      background-image:
+        radial-gradient(circle, #ffd68a 1px, transparent 2px),
+        radial-gradient(circle, #7ce7ff 1px, transparent 2px);
+      background-size: 49px 28px, 71px 35px;
+      background-position: 12px 7px, 28px 18px;
+      mask-image: linear-gradient(transparent, black 25%, black 70%, transparent);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding-block: 94px 110px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 25px;
+      height: 2px;
+      background: currentColor;
+      box-shadow: 0 0 12px currentColor;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 850px;
+      margin: 18px 0;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(38px, 6.2vw, 75px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      text-wrap: balance;
+      text-shadow: 0 8px 40px rgba(0,0,0,.35);
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(90deg, #fff, var(--cyan) 48%, #c8b7ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .hero-copy {
+      max-width: 670px;
+      color: #d5e0f0;
+      font-size: clamp(16px, 2vw, 19px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      min-height: 47px;
+      padding: 12px 19px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      color: #04101b;
+      background: linear-gradient(110deg, var(--cyan), #b5f4ff);
+      box-shadow: 0 8px 28px rgba(81,229,255,.16);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      border-color: rgba(190,210,255,.3);
+      background: rgba(11,20,37,.56);
+    }
+
+    .hero-bottom {
+      position: absolute;
+      z-index: 3;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-top: 1px solid rgba(196,220,255,.15);
+      background: rgba(5,10,20,.52);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-bottom-inner {
+      min-height: 61px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      color: #d0dced;
+      font-size: 12px;
+    }
+
+    .weather-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .weather-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(129,243,193,.7);
+    }
+
+    .hero[data-weather="rain"] .rain-layer,
+    .hero[data-weather="storm"] .rain-layer { opacity: .7; }
+
+    .hero[data-weather="cloud"] .sky-glow { background: rgba(135,163,200,.10); }
+    .hero[data-weather="rain"] .sky-glow,
+    .hero[data-weather="storm"] .sky-glow { background: rgba(80,120,178,.12); }
+    .hero[data-weather="snow"] .sky-glow { background: rgba(200,225,255,.24); }
+
+    .hero[data-weather="clear"] .hero-scene {
+      background: linear-gradient(180deg, #244a75, #453e65 58%, #101b30);
+    }
+
+    .hero[data-weather="rain"] .hero-scene,
+    .hero[data-weather="storm"] .hero-scene {
+      background: linear-gradient(180deg, #1b2c43, #272b43 58%, #101b30);
+    }
+
+    .hero[data-weather="cloud"] .hero-scene {
+      background: linear-gradient(180deg, #45566d, #34384f 58%, #101b30);
+    }
+
+    .hero[data-weather="snow"] .hero-scene {
+      background: linear-gradient(180deg, #64788f, #3b4d69 58%, #101b30);
+    }
+
+    /* Main content */
+
+    main { padding-bottom: 90px; }
+
+    .intro-strip {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 28px;
+      align-items: center;
+      padding-block: 52px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .intro-strip h2 {
+      margin-bottom: 10px;
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(22px, 3vw, 32px);
+      line-height: 1.3;
+    }
+
+    .intro-strip p { margin-bottom: 0; color: var(--muted); }
+
+    .principle {
+      border-left: 2px solid var(--cyan);
+      padding: 12px 0 12px 20px;
+      color: #dce8f8;
+      font-size: 14px;
+    }
+
+    .principle strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--cyan);
+    }
+
+    .section { padding-top: 72px; }
+
+    .section-head {
+      max-width: 780px;
+      margin-bottom: 28px;
+    }
+
+    .section-kicker {
+      margin-bottom: 10px;
+      color: var(--purple);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2.3px;
+    }
+
+    h2 {
+      font-family: "Orbitron", sans-serif;
+      font-size: clamp(25px, 3.5vw, 39px);
+      line-height: 1.25;
+      letter-spacing: -.8px;
+      margin-bottom: 13px;
+    }
+
+    .section-head p { color: var(--muted); margin-bottom: 0; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+      padding: 25px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(150deg, rgba(20,34,57,.94), rgba(10,17,31,.95));
+      box-shadow: var(--shadow);
+      transition: transform .22s, border-color .22s;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 25px;
+      right: 25px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      opacity: .75;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(81,229,255,.42);
+    }
+
+    .card-icon {
+      display: grid;
+      place-items: center;
+      width: 47px;
+      height: 47px;
+      margin-bottom: 20px;
+      border-radius: 14px;
+      color: var(--cyan);
+      background: rgba(81,229,255,.09);
+      border: 1px solid rgba(81,229,255,.18);
+      font-size: 22px;
+    }
+
+    .card:nth-child(3n + 2) .card-icon {
+      color: var(--purple);
+      background: rgba(165,138,255,.1);
+      border-color: rgba(165,138,255,.23);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 17px;
+    }
+
+    .card-link {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .card-link:hover { text-decoration: underline; }
+
+    .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      margin-top: 23px;
+      padding: 17px 19px;
+      border: 1px solid rgba(255,213,138,.2);
+      border-radius: 15px;
+      background: rgba(255,213,138,.045);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .notice-icon { color: var(--gold); font-size: 18px; }
+    .notice strong { color: var(--text); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+      counter-reset: step;
+    }
+
+    .step {
+      counter-increment: step;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(14,23,40,.75);
+    }
+
+    .step::before {
+      content: "0" counter(step);
+      display: block;
+      margin-bottom: 19px;
+      color: var(--cyan);
+      font-family: "Orbitron", sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .step h3 { font-size: 15px; margin-bottom: 8px; }
+    .step p { color: var(--muted); font-size: 12px; margin-bottom: 0; }
+
+    .contribute-layout {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .feature-panel {
+      position: relative;
+      overflow: hidden;
+      padding: 31px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(165,138,255,.25);
+      background:
+        radial-gradient(ellipse at 100% 0%, rgba(165,138,255,.18), transparent 42%),
+        linear-gradient(150deg, #17233c, #0d1425);
+    }
+
+    .feature-panel h3 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 23px;
+      line-height: 1.35;
+    }
+
+    .feature-panel p, .feature-panel li { color: var(--muted); font-size: 13px; }
+
+    .feature-panel ul { padding-left: 20px; margin-bottom: 0; }
+    .feature-panel li + li { margin-top: 8px; }
+
+    .contribution-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .contribution {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(13,22,39,.8);
+    }
+
+    .contribution-mark {
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(81,229,255,.09);
+      color: var(--cyan);
+    }
+
+    .contribution h3 { margin-bottom: 4px; font-size: 14px; }
+    .contribution p { margin-bottom: 0; color: var(--muted); font-size: 12px; }
+
+    .boundaries {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .boundary {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(14,23,40,.72);
+    }
+
+    .boundary h3 { font-size: 15px; }
+    .boundary p { color: var(--muted); font-size: 13px; margin-bottom: 0; }
+
+    .boundary .mini-label {
+      display: inline-block;
+      margin-bottom: 11px;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .boundary:nth-child(even) .mini-label { color: var(--purple); }
+
+    .final-cta {
+      position: relative;
+      overflow: hidden;
+      margin-top: 80px;
+      padding: clamp(28px, 5vw, 58px);
+      border: 1px solid rgba(81,229,255,.25);
+      border-radius: 26px;
+      background:
+        radial-gradient(ellipse at 85% 15%, rgba(81,229,255,.13), transparent 35%),
+        radial-gradient(ellipse at 10% 100%, rgba(165,138,255,.13), transparent 35%),
+        #0e182b;
+      text-align: center;
+    }
+
+    .final-cta h2 { max-width: 730px; margin-inline: auto; }
+    .final-cta p { max-width: 690px; margin: 0 auto 23px; color: var(--muted); }
+    .final-cta .hero-actions { justify-content: center; }
+
+    .small-note {
+      margin-top: 18px !important;
+      margin-bottom: 0 !important;
+      font-size: 11px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      background: rgba(5,9,17,.65);
+      padding: 34px 0 24px;
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+      padding-bottom: 25px;
+    }
+
+    .footer-brand { max-width: 390px; }
+    .footer-brand p { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+
+    .footer-links {
+      display: flex;
+      gap: 12px 19px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover { color: var(--cyan); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+      color: #8392a8;
+      font-size: 11px;
+    }
+
+    @keyframes atmosphere {
+      from { transform: scale(1); opacity: .7; }
+      to { transform: scale(1.1); opacity: 1; }
+    }
+
+    @keyframes rainfall {
+      from { background-position: 0 0; }
+      to { background-position: -10px 44px; }
+    }
+
+    @keyframes fogmove {
+      from { transform: translateX(-5%); }
+      to { transform: translateX(10%); }
+    }
+
+    @media (max-width: 1000px) {
+      .nav { flex-wrap: wrap; padding-block: 12px; }
+      .nav-toggle { display: inline-block; }
+      .nav-links {
+        display: none;
+        flex: 0 0 100%;
+        justify-content: flex-start;
+        padding-bottom: 8px;
+      }
+      .nav-links.open { display: flex; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 700px) {
+      .container { width: min(100% - 28px, var(--max)); }
+      .hero { min-height: 620px; }
+      .hero-inner { padding-block: 75px 115px; }
+      h1 { letter-spacing: -1.3px; }
+      .hero-bottom-inner { padding-block: 12px; }
+      .intro-strip, .contribute-layout { grid-template-columns: 1fr; }
+      .intro-strip { gap: 20px; }
+      .cards, .steps, .boundaries { grid-template-columns: 1fr; }
+      .card { padding: 22px; }
+      .section { padding-top: 55px; }
+      .final-cta { margin-top: 55px; }
+      .brand { min-width: 0; }
+      .footer-top { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topline"></div>
+
+  <header>
+    <div class="container nav">
+      <a class="brand" href="../index.html" aria-label="CrowRules Community Hub home">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span>
+          <span class="brand-name">CrowRules</span>
+          <span class="brand-sub">Community Hub</span>
+        </span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button"
+        aria-expanded="false" aria-controls="navLinks">
+        ☰ Menu
+      </button>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="../index.html">Home</a>
+        <a href="../resources/index.html">Resources</a>
+        <a href="../services/index.html">Services</a>
+        <a href="../education/index.html">Education</a>
+        <a href="../events/index.html">Events</a>
+        <a href="../directory/index.html">Directory</a>
+        <a href="../voices/index.html">Voices</a>
+        <a href="index.html" aria-current="page">Get Involved</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="hero" data-weather="cloud">
+    <div class="hero-scene" aria-hidden="true">
+      <div class="sky-glow"></div>
+      <div class="rain-layer"></div>
+      <div class="fog-layer"></div>
+
+      <svg class="mountains" viewBox="0 0 1440 440" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <path class="ridge-back" d="M0 235 L100 185 L180 220 L300 130 L390 190 L490 105 L590 205 L720 145 L825 202 L925 122 L1040 195 L1140 130 L1240 210 L1340 155 L1440 215 L1440 440 L0 440 Z"/>
+        <path class="ridge-front" d="M0 290 L120 250 L240 275 L350 220 L480 270 L610 225 L720 270 L860 225 L960 275 L1080 220 L1200 260 L1320 225 L1440 265 L1440 440 L0 440 Z"/>
+        <path class="water" d="M0 315 Q220 300 420 320 T820 316 T1220 322 T1440 315 L1440 440 L0 440 Z"/>
+      </svg>
+
+      <div class="city-lights"></div>
+    </div>
+
+    <div class="container hero-inner">
+      <span class="eyebrow">Tacoma · Pierce County · Washington</span>
+      <h1>Be part of what<br><span class="gradient-text">we build together.</span></h1>
+      <p class="hero-copy">
+        A stronger community starts with people who care. Discover ways to contribute your
+        time, share your creativity, highlight local resources, and help the CrowRules
+        Community Hub grow from the ground up.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#ways-to-help">Explore Ways to Help <span aria-hidden="true">↘</span></a>
+        <a class="btn btn-secondary" href="#share-ideas">Share an Idea</a>
+      </div>
+    </div>
+
+    <div class="hero-bottom">
+      <div class="container hero-bottom-inner">
+        <span class="weather-status">
+          <span class="weather-dot" aria-hidden="true"></span>
+          <span id="weatherText" aria-live="polite">Tacoma, Washington · Community starts here</span>
+        </span>
+        <span>One company. One universe.</span>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="container intro-strip">
+      <div>
+        <h2>A community hub is built by its community.</h2>
+        <p>
+          The goal is simple: make it easier for people in Tacoma and Pierce County to
+          discover opportunities, find helpful information, support local talent, and
+          connect with the place they call home.
+        </p>
+      </div>
+      <div class="principle">
+        <strong>Start where you are.</strong>
+        You don't need a big budget, a professional title, or a huge following to make a
+        meaningful contribution. Useful information, thoughtful ideas, and local knowledge
+        all matter.
+      </div>
+    </section>
+
+    <section class="container section" id="ways-to-help">
+      <div class="section-head">
+        <div class="section-kicker">Find your way in</div>
+        <h2>Ways to get involved</h2>
+        <p>
+          Choose the kind of contribution that works for you. Participation can be small,
+          occasional, creative, practical, or community-focused.
+        </p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">♡</div>
+          <h3>Support Community Resources</h3>
+          <p>
+            Help people discover useful local programs, public services, family resources,
+            education opportunities, and support organizations.
+          </p>
+          <a class="card-link" href="../resources/index.html">Explore Resources <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">✦</div>
+          <h3>Highlight Local Creators</h3>
+          <p>
+            Help bring attention to Tacoma-area podcasters, filmmakers, musicians, writers,
+            photographers, artists, and independent storytellers.
+          </p>
+          <a class="card-link" href="../voices/index.html">Explore Community Voices <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">▦</div>
+          <h3>Improve the Local Directory</h3>
+          <p>
+            Identify useful local organizations, community groups, services, creative spaces,
+            and businesses that residents may want to discover.
+          </p>
+          <a class="card-link" href="../directory/index.html">Explore the Directory <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">◷</div>
+          <h3>Spread the Word About Events</h3>
+          <p>
+            Help people find public gatherings, cultural celebrations, workshops, educational
+            activities, neighborhood events, and volunteer opportunities.
+          </p>
+          <a class="card-link" href="../events/index.html">Explore Events <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">⌘</div>
+          <h3>Contribute Digital Skills</h3>
+          <p>
+            If opportunities become available, help with web development, accessibility,
+            research, quality assurance, design, documentation, or content organization.
+          </p>
+          <a class="card-link" href="#creator-contributions">See Contribution Areas <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">◎</div>
+          <h3>Bring Local Knowledge</h3>
+          <p>
+            Share what makes your neighborhood, school, community organization, or part of
+            Pierce County valuable. Local knowledge can reveal what directories miss.
+          </p>
+          <a class="card-link" href="#share-ideas">Explore Ideas <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+
+      <div class="notice">
+        <span class="notice-icon" aria-hidden="true">ⓘ</span>
+        <div>
+          <strong>Current project status:</strong> This is an informational page for the
+          Community Hub. It does not enroll volunteers, submit listings, or send messages.
+          A live intake process must be configured before visitors can submit contributions
+          directly through the website.
+        </div>
+      </div>
+    </section>
+
+    <section class="container section" id="creator-contributions">
+      <div class="section-head">
+        <div class="section-kicker">Bring your strengths</div>
+        <h2>What could you contribute?</h2>
+        <p>
+          A community project needs many different skills. You don't have to do everything;
+          one useful contribution can make a difference.
+        </p>
+      </div>
+
+      <div class="contribute-layout">
+        <div class="feature-panel">
+          <div class="section-kicker">Build from the ground up</div>
+          <h3>Make room for local talent.</h3>
+          <p>
+            CrowRules is developing a community resource that puts Tacoma-area information,
+            stories, and opportunities in one place. Contributors can help shape what that
+            experience becomes.
+          </p>
+          <ul>
+            <li>Keep information accurate and understandable.</li>
+            <li>Help residents discover existing community work.</li>
+            <li>Make the experience welcoming and accessible.</li>
+            <li>Respect people's time, privacy, and creative ownership.</li>
+          </ul>
+        </div>
+
+        <div class="contribution-list">
+          <article class="contribution">
+            <div class="contribution-mark" aria-hidden="true">⌘</div>
+            <div>
+              <h3>Technology & Website Development</h3>
+              <p>Front-end development, responsive design, accessibility checks, testing, documentation, and site improvements.</p>
+            </div>
+          </article>
+
+          <article class="contribution">
+            <div class="contribution-mark" aria-hidden="true">✎</div>
+            <div>
+              <h3>Writing, Research & Editing</h3>
+              <p>Fact-checking, writing clear descriptions, organizing public information, editing submissions, and maintaining source links.</p>
+            </div>
+          </article>
+
+          <article class="contribution">
+            <div class="contribution-mark" aria-hidden="true">◉</div>
+            <div>
+              <h3>Video, Audio & Creative Media</h3>
+              <p>Community interviews, photography, video production, podcasts, visual storytelling, and creator spotlights—with permission.</p>
+            </div>
+          </article>
+
+          <article class="contribution">
+            <div class="contribution-mark" aria-hidden="true">⌕</div>
+            <div>
+              <h3>Community Research & Verification</h3>
+              <p>Finding official websites, checking public event information, reviewing directory entries, and identifying outdated links.</p>
+            </div>
+          </article>
+
+          <article class="contribution">
+            <div class="contribution-mark" aria-hidden="true">♧</div>
+            <div>
+              <h3>Outreach & Community Connections</h3>
+              <p>Helping introduce the project to local organizations, community groups, artists, educators, and neighborhood networks.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="container section" id="share-ideas">
+      <div class="section-head">
+        <div class="section-kicker">Your perspective matters</div>
+        <h2>Ideas that can move the hub forward</h2>
+        <p>
+          You don't have to volunteer regularly to help. Identifying a gap or pointing out
+          something useful can be just as valuable.
+        </p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">＋</div>
+          <h3>Suggest a Missing Resource</h3>
+          <p>
+            Identify a public resource, nonprofit program, family support service, educational
+            opportunity, or community service that should be easier to find.
+          </p>
+          <a class="card-link" href="../resources/index.html">Review Resources <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">⌂</div>
+          <h3>Recommend a Community Organization</h3>
+          <p>
+            Help identify local organizations, neighborhood groups, cultural associations,
+            and public-interest services for future research and verification.
+          </p>
+          <a class="card-link" href="../directory/index.html">Review Directory <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">✧</div>
+          <h3>Suggest a Story or Topic</h3>
+          <p>
+            Highlight a local issue, community achievement, creative project, neighborhood
+            perspective, or question that deserves thoughtful coverage.
+          </p>
+          <a class="card-link" href="../voices/index.html">Explore Story Themes <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+
+      <div class="notice">
+        <span class="notice-icon" aria-hidden="true">!</span>
+        <div>
+          <strong>Suggestions are not yet being collected on this page.</strong>
+          The links above help you explore existing sections; they do not transmit a
+          recommendation to CrowRules. A verified contact method or submission form can be
+          added when the project has a confirmed intake process.
+        </div>
+      </div>
+    </section>
+
+    <section class="container section" id="how-it-works">
+      <div class="section-head">
+        <div class="section-kicker">A thoughtful approach</div>
+        <h2>How contributions should work</h2>
+        <p>
+          Good community participation is transparent, respectful, and realistic about what
+          a small project can currently deliver.
+        </p>
+      </div>
+
+      <div class="steps">
+        <article class="step">
+          <h3>Choose a focus</h3>
+          <p>Decide what interests you, how much time you can offer, and what kind of contribution feels manageable.</p>
+        </article>
+
+        <article class="step">
+          <h3>Start with reliable information</h3>
+          <p>Use official sources where possible. Clearly distinguish verified facts, personal opinions, and suggestions.</p>
+        </article>
+
+        <article class="step">
+          <h3>Respect people and permissions</h3>
+          <p>Get appropriate consent before publishing someone's story, image, recording, or other personal contribution.</p>
+        </article>
+
+        <article class="step">
+          <h3>Build at a sustainable pace</h3>
+          <p>Focus on achievable improvements. Don't promise services, partnerships, or publication dates that aren't confirmed.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section" id="transparency">
+      <div class="section-head">
+        <div class="section-kicker">Clear expectations</div>
+        <h2>Participation with transparency</h2>
+        <p>
+          The project should be honest about its current capacity and about what it asks
+          of anyone who chooses to help.
+        </p>
+      </div>
+
+      <div class="boundaries">
+        <article class="boundary">
+          <span class="mini-label">Community first</span>
+          <h3>No pay-to-be-listed requirement</h3>
+          <p>
+            The Community Hub is intended to help people discover useful local information.
+            This page does not offer paid placement, paid membership, or a subscription
+            requirement for participation.
+          </p>
+        </article>
+
+        <article class="boundary">
+          <span class="mini-label">Volunteer expectations</span>
+          <h3>Volunteer work must be understood clearly</h3>
+          <p>
+            CrowRules is being built from the ground up with limited resources. Any volunteer
+            opportunity must clearly state its scope and expectations. There is no promise
+            of payment, future employment, or future compensation.
+          </p>
+        </article>
+
+        <article class="boundary">
+          <span class="mini-label">Accuracy & trust</span>
+          <h3>Verify before publishing</h3>
+          <p>
+            Local services, eligibility rules, event dates, contact information, and opening
+            hours can change. Entries should be checked against reliable sources and corrected
+            when they become outdated.
+          </p>
+        </article>
+
+        <article class="boundary">
+          <span class="mini-label">Safety & respect</span>
+          <h3>Protect privacy and dignity</h3>
+          <p>
+            Don't submit private information, confidential records, or another person's
+            contact details without permission. Stories about sensitive situations require
+            particular care, consent, and safeguards.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container final-cta">
+      <div class="section-kicker">One community. Many voices.</div>
+      <h2>Help shape what Tacoma's community hub can become.</h2>
+      <p>
+        Explore the current pages, discover local resources, learn about community voices,
+        and identify the improvements that would make this hub more useful to the people
+        who live here.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="../index.html">Explore the Community Hub</a>
+        <a class="btn btn-secondary" href="../voices/index.html">Discover Local Voices</a>
+        <a class="btn btn-secondary" href="../resources/index.html">Find Resources</a>
+      </div>
+      <p class="small-note">
+        This page is informational. Direct volunteer registration, partnership requests,
+        and content submissions are not active until a working contact or intake method
+        is added.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="../index.html">
+            <span class="brand-mark" aria-hidden="true">C</span>
+            <span>
+              <span class="brand-name">CrowRules</span>
+              <span class="brand-sub">Community Hub</span>
+            </span>
+          </a>
+          <p>
+            Connecting people with community resources, local perspectives, opportunities,
+            and stories across Tacoma and Pierce County, Washington.
+          </p>
+        </div>
+
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="../index.html">Home</a>
+          <a href="../resources/index.html">Resources</a>
+          <a href="../services/index.html">Services</a>
+          <a href="../education/index.html">Education</a>
+          <a href="../events/index.html">Events</a>
+          <a href="../directory/index.html">Directory</a>
+          <a href="../voices/index.html">Voices</a>
+          <a href="index.html" aria-current="page">Get Involved</a>
+        </nav>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> CrowRules Entertainment. All rights reserved.</span>
+        <span>One company. One universe.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    "use strict";
+
+    // Mobile navigation
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    navToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        navToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Live Tacoma weather from Open-Meteo.
+    // No API key or backend is required. The hero still works if the request fails.
+    const hero = document.getElementById("hero");
+    const weatherText = document.getElementById("weatherText");
+
+    function weatherDescription(code, isDay) {
+      if (code === 0) return isDay ? "Clear skies" : "Clear night";
+      if ([1, 2].includes(code)) return "Mostly clear / partly cloudy";
+      if (code === 3) return "Overcast";
+      if ([45, 48].includes(code)) return "Foggy";
+      if ([51, 53, 55, 56, 57].includes(code)) return "Drizzle";
+      if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "Rain";
+      if ([71, 73, 75, 77, 85, 86].includes(code)) return "Snow";
+      if ([95, 96, 99].includes(code)) return "Thunderstorms";
+      return "Current conditions";
+    }
+
+    function weatherType(code) {
+      if (code === 0) return "clear";
+      if ([1, 2, 3, 45, 48].includes(code)) return "cloud";
+      if ([71, 73, 75, 77, 85, 86].includes(code)) return "snow";
+      if ([95, 96, 99].includes(code)) return "storm";
+      if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "rain";
+      return "cloud";
+    }
+
+    async function updateTacomaWeather() {
+      const url =
+        "https://api.open-meteo.com/v1/forecast" +
+        "?latitude=47.2529&longitude=-122.4443" +
+        "&current=temperature_2m,weather_code,is_day" +
+        "&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles";
+
+      try {
+        const response = await fetch(url, { cache: "no-store" });
+        if (!response.ok) throw new Error("Weather service unavailable");
+
+        const data = await response.json();
+        const current = data.current;
+
+        if (!current || typeof current.weather_code !== "number") {
+          throw new Error("Weather data unavailable");
+        }
+
+        const description = weatherDescription(
+          current.weather_code,
+          current.is_day === 1
+        );
+
+        hero.dataset.weather = weatherType(current.weather_code);
+
+        const temp = Number(current.temperature_2m);
+        const temperature = Number.isFinite(temp) ? ` · ${Math.round(temp)}°F` : "";
+        weatherText.textContent = `Tacoma, Washington · ${description}${temperature}`;
+      } catch (error) {
+        hero.dataset.weather = "cloud";
+        weatherText.textContent = "Tacoma, Washington · Community starts here";
+      }
+    }
+
+    updateTacomaWeather();
+  </script>
+</body>
+</html>
