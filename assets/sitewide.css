@@ -1,4 +1,5 @@
 /* CrowRules Tacoma Community Hub — shared sitewide usability layer. */
+.crh-nav-host { position: relative; }
 :root { --crh-cyan: #5ee7ff; --crh-purple: #a78bfa; --crh-panel: #0b1322; }
 html { scroll-padding-top: 100px; }
 .crh-skip-link {
