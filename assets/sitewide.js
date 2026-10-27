@@ -57,6 +57,7 @@
     if (nav && !nav.querySelector(".crh-menu-toggle")) {
       const host = nav.parentElement;
       if (host) {
+        host.classList.add("crh-nav-host");
         if (!nav.id) nav.id = "crh-primary-navigation";
         const toggle = document.createElement("button");
         toggle.type = "button";
