@@ -725,7 +725,132 @@
         transition-duration: .01ms !important;
       }
     }
-  </style>
+  
+/* CrowRules cinematic weather treatment — shared across all Community Hub pages. */
+.hero.cr-cinematic-hero {
+  --cr-sky-top:#142a46; --cr-sky-mid:#3d5368; --cr-sky-low:#d08c72;
+  --cr-atmosphere:rgba(160,205,255,.14);
+  position:relative; isolation:isolate; overflow:hidden;
+  background-color:#101a2c;
+  background-image:
+    radial-gradient(ellipse at 76% 25%, rgba(255,214,157,.38), transparent 21%),
+    linear-gradient(180deg,var(--cr-sky-top) 0%,var(--cr-sky-mid) 43%,var(--cr-sky-low) 72%,#17283a 100%);
+  background-size:cover;
+  transition:background-color 1.8s ease, filter 1.8s ease;
+}
+.hero.cr-cinematic-hero::before {
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(4,9,18,.08) 0%,rgba(4,9,18,.08) 35%,rgba(4,9,18,.46) 72%,#070b15 100%),
+    radial-gradient(ellipse at 50% 100%,rgba(7,11,21,.05),rgba(7,11,21,.62) 95%);
+}
+.hero.cr-cinematic-hero::after {
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.2;
+  background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.025) 4px,transparent 5px);
+  mix-blend-mode:soft-light;
+}
+.hero.cr-cinematic-hero > :not(.cr-weather-atmosphere):not(.hero-scene):not(.scene) {
+  position:relative; z-index:3;
+}
+.hero.cr-cinematic-hero > .hero-scene,
+.hero.cr-cinematic-hero > .scene { z-index:0 !important; }
+.cr-weather-atmosphere {
+  position:absolute; inset:0; z-index:2; overflow:hidden; pointer-events:none;
+  opacity:1; contain:paint;
+}
+.cr-weather-atmosphere .cr-cloudbank {
+  position:absolute; left:-20%; right:-20%; top:3%; height:56%;
+  opacity:.65; filter:blur(13px);
+  background:
+    radial-gradient(ellipse at 14% 54%,rgba(230,238,247,.52) 0 9%,transparent 26%),
+    radial-gradient(ellipse at 31% 34%,rgba(218,231,245,.43) 0 12%,transparent 30%),
+    radial-gradient(ellipse at 55% 48%,rgba(205,220,237,.34) 0 13%,transparent 32%),
+    radial-gradient(ellipse at 78% 28%,rgba(235,240,247,.4) 0 10%,transparent 28%);
+  animation:cr-cloud-drift 70s ease-in-out infinite alternate;
+}
+.cr-weather-atmosphere .cr-ridge {
+  position:absolute; left:-5%; right:-5%; bottom:9%; height:35%;
+  background:linear-gradient(180deg,rgba(49,68,82,.58),rgba(12,24,37,.96));
+  clip-path:polygon(0 60%,7% 49%,13% 57%,20% 25%,28% 48%,36% 35%,44% 56%,53% 14%,60% 42%,67% 34%,74% 56%,82% 22%,90% 49%,100% 39%,100% 100%,0 100%);
+  filter:blur(1px); opacity:.72;
+}
+.cr-weather-atmosphere .cr-city {
+  position:absolute; left:0; right:0; bottom:0; height:28%;
+  background:
+    linear-gradient(180deg,transparent,rgba(5,12,23,.96)),
+    repeating-linear-gradient(90deg,transparent 0 2.3%,rgba(6,13,24,.94) 2.4% 3.5%,transparent 3.6% 4.2%);
+  clip-path:polygon(0 48%,4% 48%,4% 27%,7% 27%,7% 54%,11% 54%,11% 35%,14% 35%,14% 16%,16% 16%,16% 50%,21% 50%,21% 39%,24% 39%,24% 58%,29% 58%,29% 29%,32% 29%,32% 45%,38% 45%,38% 22%,41% 22%,41% 7%,43% 22%,43% 48%,48% 48%,48% 34%,53% 34%,53% 56%,58% 56%,58% 26%,62% 26%,62% 44%,68% 44%,68% 36%,72% 36%,72% 54%,77% 54%,77% 24%,80% 24%,80% 45%,85% 45%,85% 32%,90% 32%,90% 53%,95% 53%,95% 38%,100% 38%,100% 100%,0 100%);
+  opacity:.85;
+}
+.cr-weather-atmosphere .cr-surface {
+  position:absolute; left:0; right:0; bottom:0; height:16%;
+  background:repeating-linear-gradient(176deg,transparent 0 8px,rgba(161,211,236,.11) 9px,transparent 12px 23px);
+  opacity:.22; transform:perspective(300px) rotateX(12deg); transform-origin:bottom;
+}
+.cr-weather-atmosphere .cr-rain {
+  position:absolute; inset:-30% -10% 0;
+  background-image:repeating-linear-gradient(105deg,transparent 0 31px,rgba(204,232,255,.38) 32px,transparent 33px 58px);
+  background-size:180px 210px; opacity:0; transform:translateX(-8%);
+}
+.cr-weather-atmosphere .cr-mist {
+  position:absolute; left:-25%; right:-25%; bottom:9%; height:34%;
+  background:linear-gradient(180deg,transparent,rgba(208,225,239,.24) 42%,rgba(208,225,239,.07) 70%,transparent);
+  filter:blur(18px); opacity:0;
+}
+.cr-weather-atmosphere .cr-flash { position:absolute; inset:0; background:#eaf5ff; opacity:0; mix-blend-mode:screen; }
+.cr-weather-atmosphere .cr-snow {
+  position:absolute; inset:-15% 0 0; opacity:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.9) 0 1.4px,transparent 2px),radial-gradient(circle,rgba(222,242,255,.8) 0 1px,transparent 2px);
+  background-size:93px 113px,151px 167px;
+}
+.cr-weather-atmosphere .cr-glow {
+  position:absolute; top:9%; right:13%; width:clamp(65px,10vw,145px); aspect-ratio:1; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,246,216,.96) 0%,rgba(255,211,143,.66) 24%,rgba(255,190,120,.18) 52%,transparent 72%);
+  filter:blur(1px); opacity:.85; animation:cr-sun-pulse 8s ease-in-out infinite;
+}
+.cr-weather-atmosphere .cr-stars {
+  position:absolute; inset:0; opacity:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.9) 0 1px,transparent 1.8px),radial-gradient(circle,rgba(198,221,255,.75) 0 1px,transparent 1.7px);
+  background-size:113px 97px,173px 139px;
+}
+.cr-weather-readout {
+  position:absolute; z-index:5; right:clamp(14px,3vw,38px); top:clamp(14px,3vw,34px);
+  display:flex; align-items:center; gap:10px; max-width:calc(100% - 28px);
+  padding:9px 12px; border:1px solid rgba(225,239,255,.2); border-radius:999px;
+  color:#edf7ff; background:rgba(5,12,23,.56); backdrop-filter:blur(14px);
+  box-shadow:0 10px 35px rgba(0,0,0,.16); font:700 10px/1.2 Inter,system-ui,sans-serif;
+  letter-spacing:.08em; text-transform:uppercase;
+}
+.cr-weather-readout .cr-weather-dot { width:7px;height:7px;border-radius:50%;background:#8de7ff;box-shadow:0 0 12px #8de7ff;flex:none; }
+.cr-weather-readout .cr-weather-temp { font-size:13px;letter-spacing:0;color:#fff; }
+.hero.cr-weather-clear {--cr-sky-top:#32648a;--cr-sky-mid:#8a9caa;--cr-sky-low:#d8a985;--cr-atmosphere:rgba(255,221,172,.2)}
+.hero.cr-weather-cloudy {--cr-sky-top:#2b455f;--cr-sky-mid:#758594;--cr-sky-low:#7c8792}
+.hero.cr-weather-rain {--cr-sky-top:#142a40;--cr-sky-mid:#354d63;--cr-sky-low:#536477}
+.hero.cr-weather-storm {--cr-sky-top:#090f21;--cr-sky-mid:#252e43;--cr-sky-low:#343a4c}
+.hero.cr-weather-fog {--cr-sky-top:#526777;--cr-sky-mid:#84949e;--cr-sky-low:#9ba9ae}
+.hero.cr-weather-snow {--cr-sky-top:#6a8197;--cr-sky-mid:#a8b7c3;--cr-sky-low:#d0d9df}
+.hero.cr-weather-night {--cr-sky-top:#030817;--cr-sky-mid:#111e37;--cr-sky-low:#172840}
+.hero.cr-weather-clear .cr-glow {opacity:.95}
+.hero.cr-weather-cloudy .cr-cloudbank {opacity:.9}
+.hero.cr-weather-rain .cr-cloudbank,.hero.cr-weather-storm .cr-cloudbank {opacity:1;filter:blur(17px)}
+.hero.cr-weather-rain .cr-rain,.hero.cr-weather-storm .cr-rain {opacity:.72;animation:cr-rain-fall .58s linear infinite}
+.hero.cr-weather-storm .cr-rain {opacity:.9;animation-duration:.42s}
+.hero.cr-weather-storm .cr-flash {animation:cr-lightning 11s linear infinite}
+.hero.cr-weather-fog .cr-mist {opacity:.9;animation:cr-mist-drift 18s ease-in-out infinite alternate}
+.hero.cr-weather-snow .cr-snow {opacity:.88;animation:cr-snow-fall 15s linear infinite}
+.hero.cr-weather-rain .cr-surface,.hero.cr-weather-storm .cr-surface {opacity:.9}
+.hero.cr-weather-night .cr-stars {opacity:.9}
+.hero.cr-weather-night .cr-glow {opacity:.15}
+@keyframes cr-cloud-drift {from{transform:translateX(-2%)}to{transform:translateX(3%)}}
+@keyframes cr-rain-fall {to{background-position:-70px 210px}}
+@keyframes cr-snow-fall {to{background-position:45px 320px,-35px 420px}}
+@keyframes cr-mist-drift {from{transform:translateX(-7%)}to{transform:translateX(7%)}}
+@keyframes cr-sun-pulse {50%{transform:scale(1.06);filter:blur(2px)}}
+@keyframes cr-lightning {0%,79%,82%,88%,100%{opacity:0}80%,86%{opacity:.14}81%,87%{opacity:0}}
+@media(max-width:640px){.cr-weather-readout{top:12px;right:12px;font-size:9px;padding:8px 10px}.hero.cr-cinematic-hero{background-position:center}.cr-weather-atmosphere .cr-glow{right:9%;top:13%}}
+@media(prefers-reduced-motion:reduce){.cr-weather-atmosphere *, .cr-weather-readout *{animation:none!important;transition:none!important}}
+
+</style>
 </head>
 
 <body>
@@ -1274,5 +1399,68 @@
     applyFilters();
     loadTacomaWeather();
   </script>
+
+<script>
+/* Shared live-weather cinematic hero. Open-Meteo provides current conditions for Tacoma; no API key. */
+(() => {
+  "use strict";
+  const hero = document.querySelector(".hero");
+  if (!hero) return;
+  hero.classList.add("cr-cinematic-hero");
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let atmosphere = hero.querySelector(".cr-weather-atmosphere");
+  if (!atmosphere) {
+    atmosphere = document.createElement("div");
+    atmosphere.className = "cr-weather-atmosphere";
+    atmosphere.setAttribute("aria-hidden", "true");
+    atmosphere.innerHTML = '<div class="cr-cloudbank"></div><div class="cr-ridge"></div><div class="cr-city"></div><div class="cr-surface"></div><div class="cr-rain"></div><div class="cr-mist"></div><div class="cr-flash"></div><div class="cr-snow"></div><div class="cr-glow"></div><div class="cr-stars"></div>';
+    hero.prepend(atmosphere);
+  }
+  let readout = hero.querySelector(".cr-weather-readout");
+  if (!readout) {
+    readout = document.createElement("div");
+    readout.className = "cr-weather-readout";
+    readout.setAttribute("role", "status");
+    readout.setAttribute("aria-live", "polite");
+    readout.innerHTML = '<span class="cr-weather-dot" aria-hidden="true"></span><span class="cr-weather-label">Tacoma · Weather live</span><span class="cr-weather-temp">—°F</span>';
+    hero.appendChild(readout);
+  }
+  const label = readout.querySelector(".cr-weather-label");
+  const temp = readout.querySelector(".cr-weather-temp");
+  function setWeather(code, isDay, temperature) {
+    const type = code === 0 ? "clear" :
+      [45,48].includes(code) ? "fog" :
+      [71,73,75,77,85,86].includes(code) ? "snow" :
+      [95,96,99].includes(code) ? "storm" :
+      [51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code) ? "rain" :
+      [1,2,3].includes(code) ? "cloudy" : "cloudy";
+    hero.classList.remove("cr-weather-clear","cr-weather-cloudy","cr-weather-rain","cr-weather-storm","cr-weather-fog","cr-weather-snow","cr-weather-night");
+    hero.classList.add("cr-weather-" + (isDay ? type : "night"));
+    const names = {clear:isDay?"Clear skies":"Clear night",cloudy:"Cloudy skies",rain:"Rain in Tacoma",storm:"Thunderstorm conditions",fog:"Fog / low visibility",snow:"Snow in Tacoma"};
+    label.textContent = "Tacoma · " + (isDay ? names[type] : "Night · " + names[type]);
+    temp.textContent = Number.isFinite(temperature) ? Math.round(temperature) + "°F" : "Live";
+    hero.dataset.crWeather = type;
+  }
+  async function refresh() {
+    try {
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=47.2529&longitude=-122.4443&current=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles";
+      const response = await fetch(url, {cache:"no-store"});
+      if (!response.ok) throw new Error("Weather request failed");
+      const data = await response.json();
+      const current = data && data.current;
+      if (!current || typeof current.weather_code !== "number") throw new Error("No current conditions");
+      setWeather(current.weather_code, current.is_day === 1, Number(current.temperature_2m));
+    } catch (_) {
+      label.textContent = "Tacoma · Weather unavailable";
+      temp.textContent = "—°F";
+      hero.classList.add("cr-weather-cloudy");
+    }
+  }
+  if (reduceMotion) atmosphere.querySelectorAll("*").forEach(node => { node.style.animation = "none"; });
+  refresh();
+  window.setInterval(refresh, 15 * 60 * 1000);
+})();
+</script>
+
 </body>
 </html>
