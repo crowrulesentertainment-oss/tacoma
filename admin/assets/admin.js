@@ -47,7 +47,7 @@
     form.addEventListener("submit",async e=>{
       e.preventDefault();clearToast();
       const button=$('button[type="submit"]',form);button.disabled=true;button.textContent="Signing in…";
-      const email=$("#email").value.trim();const password=$("#password").value;
+      const email=cfg.adminEmail;const password=$("#password").value;
       try{
         const {data,error}=await sb.auth.signInWithPassword({email,password});
         if(error)throw error;
@@ -80,8 +80,7 @@
       finally{button.disabled=false;}
     });
     $("#forgot-password")?.addEventListener("click",async e=>{
-      e.preventDefault();clearToast();const email=$("#email").value.trim();
-      if(!email){toast("Enter your administrator email first, then choose password reset.","error");return;}
+      e.preventDefault();clearToast();const email=cfg.adminEmail;
       const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+cfg.loginPath});
       if(error)toast(error.message,"error");else toast("If password recovery is enabled, check your inbox for the reset link.","success");
     });
