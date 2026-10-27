@@ -1,0 +1,61 @@
+/* CrowRules Tacoma Community Hub — shared sitewide usability layer. */
+.crh-nav-host { position: relative; }
+:root { --crh-cyan: #5ee7ff; --crh-purple: #a78bfa; --crh-panel: #0b1322; }
+html { scroll-padding-top: 100px; }
+.crh-skip-link {
+  position: fixed; z-index: 99999; top: 12px; left: 12px;
+  transform: translateY(-160%); padding: 12px 16px; border-radius: 10px;
+  background: #f5f8ff; color: #07111c; font-weight: 800;
+  box-shadow: 0 8px 30px #0008; text-decoration: none;
+}
+.crh-skip-link:focus { transform: translateY(0); outline: 3px solid var(--crh-cyan); outline-offset: 3px; }
+.crh-reading-progress {
+  position: fixed; z-index: 99990; inset: 0 auto auto 0; height: 3px; width: 0;
+  pointer-events: none; background: linear-gradient(90deg, var(--crh-cyan), var(--crh-purple));
+  box-shadow: 0 0 14px #5ee7ff55; transition: width .08s linear;
+}
+.crh-menu-toggle {
+  display: none; align-items: center; justify-content: center; gap: 9px;
+  min-height: 42px; padding: 9px 13px; border: 1px solid #5ee7ff55;
+  border-radius: 12px; color: #f5f8ff; background: #0c1728;
+  font-weight: 800; cursor: pointer;
+}
+.crh-menu-toggle .crh-menu-icon { display: inline-grid; gap: 4px; }
+.crh-menu-toggle .crh-menu-icon i { display: block; width: 17px; height: 2px; background: currentColor; border-radius: 2px; }
+.crh-menu-toggle:hover, .crh-menu-toggle:focus-visible { border-color: var(--crh-cyan); background: #13243a; }
+.crh-back-top {
+  position: fixed; z-index: 9990; right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom)); display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 14px; border: 1px solid #5ee7ff66; border-radius: 999px;
+  color: #f7fbff; background: #0b1424ee; box-shadow: 0 10px 32px #0006;
+  font: 700 13px/1.2 Inter, Montserrat, system-ui, sans-serif; cursor: pointer;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+}
+.crh-back-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.crh-back-top:hover { background: #14243b; border-color: var(--crh-cyan); }
+.crh-menu-toggle:focus-visible, .crh-back-top:focus-visible { outline: 3px solid var(--crh-cyan); outline-offset: 4px; }
+@media (max-width: 960px) {
+  .crh-menu-toggle { display: inline-flex; flex-shrink: 0; }
+  .navlinks, .nav-links {
+    display: none; position: absolute !important; z-index: 9998; top: calc(100% + 8px);
+    left: 0; right: 0; width: 100%; max-height: min(72vh, 520px); overflow: auto;
+    flex-direction: column !important; align-items: stretch !important; gap: 0 !important;
+    padding: 10px; border: 1px solid #8ca8d533; border-radius: 16px;
+    background: #080e1bf7; box-shadow: 0 22px 55px #0009; backdrop-filter: blur(18px);
+  }
+  .navlinks.crh-open, .nav-links.crh-open { display: flex !important; }
+  .navlinks a, .nav-links a { display: block; padding: 12px 13px; border-radius: 9px; font-size: 14px !important; }
+  .navlinks a:hover, .nav-links a:hover, .navlinks a:focus-visible, .nav-links a:focus-visible { background: #15253b; }
+  .nav, .topbar .nav, header .nav, .topbar .nav-inner, header .nav-inner { position: relative; }
+}
+@media (max-width: 520px) {
+  .crh-menu-toggle { min-width: 42px; padding: 9px 11px; }
+  .crh-menu-toggle .crh-menu-label { display: none; }
+  .crh-back-top { right: 12px; bottom: 12px; padding: 12px; }
+  .crh-back-top .crh-back-label { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  .crh-reading-progress, .crh-back-top { transition: none !important; }
+}
