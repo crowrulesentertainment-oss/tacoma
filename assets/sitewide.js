@@ -215,3 +215,17 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addCommunityLink, {once:true});
   else addCommunityLink();
 })();
+
+/* Put privacy and contribution standards within easy reach on community modules. */
+(() => {
+  const addPolicyLinks = () => {
+    const footer = document.querySelector(".addon-foot");
+    if (!footer || footer.querySelector("[data-cr-policy-links]")) return;
+    const nav = document.createElement("p");
+    nav.dataset.crPolicyLinks = "true";
+    nav.innerHTML = '<a href="https://crowrulesentertainment-oss.github.io/tacoma/privacy/">Privacy notice</a> · <a href="https://crowrulesentertainment-oss.github.io/tacoma/community-guidelines/">Community guidelines</a> · <a href="https://crowrulesentertainment-oss.github.io/tacoma/trust/">Trust & verification</a>';
+    footer.append(nav);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addPolicyLinks, {once:true});
+  else addPolicyLinks();
+})();
