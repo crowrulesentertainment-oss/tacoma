@@ -131,12 +131,12 @@
 (() => {
   "use strict";
   const boot = () => {
-    const heroes = [...document.querySelectorAll(".hero")].filter(hero => !hero.closest(".admin-shell"));
+    const heroes = [...document.querySelectorAll(".hero, .addon-hero")].filter(hero => !hero.closest(".admin-shell"));
     if (!heroes.length) return;
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const markup = '<div class="cr-gw-sun"></div><div class="cr-gw-cloud c1"></div><div class="cr-gw-cloud c2"></div><div class="cr-gw-haze"></div><div class="cr-gw-rain"></div><div class="cr-gw-snow"></div><div class="cr-gw-lightning"></div><div class="cr-gw-stars"></div><div class="cr-gw-skyline"></div><div class="cr-gw-reflection"></div>';
     const views = heroes.map(hero => {
-      hero.classList.add("cr-global-cinematic-hero");
+      hero.classList.add("hero", "cr-global-cinematic-hero");
       let scene = hero.querySelector(":scope > .cr-global-weather-scene");
       if (!scene) {
         scene = document.createElement("div");
@@ -198,4 +198,39 @@
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, {once:true});
   else boot();
+})();
+
+/* Add one clear doorway to the community expansion without overcrowding every nav. */
+(() => {
+  const addCommunityLink = () => {
+    if (location.pathname.includes("/admin/")) return;
+    const nav = document.querySelector(".navlinks, .nav-links");
+    if (!nav || [...nav.querySelectorAll("a")].some(a => /\/community\/$/.test(new URL(a.href, location.href).pathname))) return;
+    const a = document.createElement("a");
+    a.href = "https://crowrulesentertainment-oss.github.io/tacoma/community/";
+    a.textContent = "Community tools";
+    a.dataset.crCommunityTools = "true";
+    a.addEventListener("click", () => {
+      nav.classList.remove("crh-open");
+      const toggle = nav.parentElement?.querySelector(".crh-menu-toggle");
+      if (toggle) toggle.setAttribute("aria-expanded", "false");
+    });
+    nav.append(a);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addCommunityLink, {once:true});
+  else addCommunityLink();
+})();
+
+/* Put privacy and contribution standards within easy reach on community modules. */
+(() => {
+  const addPolicyLinks = () => {
+    const footer = document.querySelector(".addon-foot");
+    if (!footer || footer.querySelector("[data-cr-policy-links]")) return;
+    const nav = document.createElement("p");
+    nav.dataset.crPolicyLinks = "true";
+    nav.innerHTML = '<a href="https://crowrulesentertainment-oss.github.io/tacoma/privacy/">Privacy notice</a> · <a href="https://crowrulesentertainment-oss.github.io/tacoma/community-guidelines/">Community guidelines</a> · <a href="https://crowrulesentertainment-oss.github.io/tacoma/trust/">Trust & verification</a>';
+    footer.append(nav);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addPolicyLinks, {once:true});
+  else addPolicyLinks();
 })();
