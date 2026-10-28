@@ -123,7 +123,15 @@
 
   function buildHero() {
     if (location.pathname.includes("/admin/")) return [];
-    let heroes = [...document.querySelectorAll(".hero, .addon-hero, [data-crh-hero]")].filter(h=>!h.closest(".admin-shell"));
+    // Use one shared, page-level hero on every public page. Nested/card hero elements
+    // are not treated as separate sitewide heroes, which prevents duplicate weather panels.
+    let heroes = [...document.querySelectorAll("main .hero, main .addon-hero, main [data-crh-hero], body > .hero, body > .addon-hero, body > [data-crh-hero]")]
+      .filter(h=>!h.closest(".admin-shell") && !h.closest(".crh-site-header"));
+    if (heroes.length) heroes = [heroes.sort((a,b) => {
+      const aTop = a.getBoundingClientRect().top + window.scrollY;
+      const bTop = b.getBoundingClientRect().top + window.scrollY;
+      return aTop - bTop;
+    })[0]];
     if (!heroes.length) {
       const main = document.querySelector("main, [role='main'], .main-content, #main-content") || document.body;
       const h1 = main.querySelector("h1");
@@ -137,7 +145,8 @@
         hero.append(content); main.insertBefore(hero,main.firstChild); heroes = [hero];
       }
     }
-    return heroes.map(hero=>{
+    // Normalize the one selected hero to the same sitewide structure and visual treatment.
+    return heroes.slice(0,1).map(hero=>{
       hero.classList.add("cr-global-cinematic-hero");
       // Remove only known visual overlays; preserve page content and interactive components.
       hero.querySelectorAll(".cr-global-weather-scene,.cr-global-weather-readout,.scene,.hero-scene,.weather-panel,.weather-widget,.cr-weather-atmosphere").forEach(n=>n.remove());
