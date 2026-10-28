@@ -131,7 +131,7 @@
 (() => {
   "use strict";
   const boot = () => {
-    const heroes = [...document.querySelectorAll(".hero")].filter(hero => !hero.closest(".admin-shell"));
+    const heroes = [...document.querySelectorAll(".hero, .addon-hero")].filter(hero => !hero.closest(".admin-shell"));
     if (!heroes.length) return;
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const markup = '<div class="cr-gw-sun"></div><div class="cr-gw-cloud c1"></div><div class="cr-gw-cloud c2"></div><div class="cr-gw-haze"></div><div class="cr-gw-rain"></div><div class="cr-gw-snow"></div><div class="cr-gw-lightning"></div><div class="cr-gw-stars"></div><div class="cr-gw-skyline"></div><div class="cr-gw-reflection"></div>';
