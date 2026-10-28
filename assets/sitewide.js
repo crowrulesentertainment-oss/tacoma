@@ -143,12 +143,14 @@
 (() => {
   "use strict";
   const boot = () => {
-    const heroes = [...document.querySelectorAll(".hero, .addon-hero")].filter(hero => !hero.closest(".admin-shell") && !hero.querySelector(":scope > .scene, :scope > .hero-scene, .weather-panel"));
+    const heroes = [...document.querySelectorAll(".hero, .addon-hero")].filter(hero => !hero.closest(".admin-shell"));
     if (!heroes.length) return;
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const markup = '<div class="cr-gw-sun"></div><div class="cr-gw-cloud c1"></div><div class="cr-gw-cloud c2"></div><div class="cr-gw-haze"></div><div class="cr-gw-rain"></div><div class="cr-gw-snow"></div><div class="cr-gw-lightning"></div><div class="cr-gw-stars"></div><div class="cr-gw-skyline"></div><div class="cr-gw-reflection"></div>';
     const views = heroes.map(hero => {
       hero.classList.add("hero", "cr-global-cinematic-hero");
+      // Remove page-specific weather panels and decorative scenes so every page gets exactly one shared visual.
+      hero.querySelectorAll(".scene, .hero-scene, .cr-weather-atmosphere, .weather-panel, .weather-widget, .cr-global-weather-readout").forEach(node => node.remove());
       let scene = hero.querySelector(":scope > .cr-global-weather-scene");
       if (!scene) {
         scene = document.createElement("div");
@@ -272,8 +274,25 @@
   ];
   const init = () => {
     if (location.pathname.includes("/admin/")) return;
-    const nav = document.querySelector(".navlinks, .nav-links");
-    if (!nav || nav.querySelector("[data-crh-explore-root]")) return;
+    let nav = document.querySelector(".navlinks, .nav-links");
+    if (nav?.closest(".crh-site-header")) return;
+    // Create the same site header on every public page, including older pages without a nav.
+    const legacyHeader = nav?.closest(".topbar, header, .site-header, .navbar");
+    const header = document.createElement("header");
+    header.className = "crh-site-header";
+    header.innerHTML = '<div class="crh-site-header-inner"><a class="crh-site-brand" href="'+root+'" aria-label="CrowRules Tacoma Community Hub home"><span class="crh-site-brand-mark" aria-hidden="true">C</span><span><strong>CrowRules</strong><small>TACOMA COMMUNITY HUB</small></span></a><a class="crh-home-link" href="'+root+'">Community Home</a></div>';
+    const inner = header.querySelector(".crh-site-header-inner");
+    if (!nav) {
+      nav = document.createElement("nav");
+      nav.className = "navlinks crh-global-nav";
+      nav.setAttribute("aria-label", "Primary navigation");
+    } else {
+      nav.classList.add("crh-global-nav");
+    }
+    inner.append(nav);
+    const mainTarget = document.querySelector("main, [role='main'], .main-content, #main-content");
+    document.body.insertBefore(header, mainTarget || document.body.firstChild);
+    if (legacyHeader && !legacyHeader.contains(header)) legacyHeader.remove();
     // The global Explore menu is the sole public navigation; discard page-specific link lists.
     nav.classList.add("crh-global-nav");
     nav.replaceChildren();
