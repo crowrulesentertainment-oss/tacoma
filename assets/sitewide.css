@@ -188,3 +188,29 @@ html { scroll-padding-top: 100px; }
 @media(max-width:900px){.crh-explore-panel{grid-template-columns:repeat(2,minmax(0,1fr));left:auto;right:0;width:min(620px,calc(100vw - 28px));}}
 @media(max-width:640px){.crh-explore{width:100%;}.crh-explore-toggle{width:100%;justify-content:space-between}.crh-explore-panel{position:static;width:100%;max-height:62vh;grid-template-columns:1fr;padding:14px;box-sizing:border-box;margin-top:8px}.crh-explore.is-open{display:block}.crh-explore-panel{position:absolute;top:100%;left:0;right:auto;z-index:1005}.navlinks.crh-open .crh-explore-panel,.nav-links.crh-open .crh-explore-panel{max-height:62vh;overflow:auto}}
 @media(prefers-reduced-motion:reduce){.crh-explore-toggle,.crh-explore-toggle svg{transition:none}}
+
+
+/* Single global navigation: hide page-specific links and keep Explore visible at every width. */
+.navlinks.crh-global-nav,.nav-links.crh-global-nav{
+  display:flex!important;position:relative!important;inset:auto!important;width:auto!important;
+  max-height:none!important;overflow:visible!important;flex-direction:row!important;
+  align-items:center!important;gap:0!important;padding:0!important;border:0!important;
+  border-radius:0!important;background:transparent!important;box-shadow:none!important;
+  backdrop-filter:none!important;flex:0 0 auto!important;
+}
+.crh-nav-host:has(.crh-global-nav)>.crh-menu-toggle{display:none!important}
+.crh-global-nav .crh-explore{position:relative;z-index:10000}
+.crh-global-nav .crh-explore-panel{max-width:min(920px,calc(100vw - 28px))}
+@media(max-width:960px){
+  .navlinks.crh-global-nav,.nav-links.crh-global-nav{
+    display:flex!important;position:relative!important;top:auto!important;left:auto!important;right:auto!important;
+    width:auto!important;max-height:none!important;overflow:visible!important;flex-direction:row!important;
+    align-items:center!important;padding:0!important;border:0!important;background:transparent!important;
+    box-shadow:none!important;backdrop-filter:none!important;
+  }
+}
+
+@media(max-width:640px){
+  .navlinks.crh-global-nav .crh-explore,.nav-links.crh-global-nav .crh-explore{width:auto!important}
+  .navlinks.crh-global-nav .crh-explore-toggle,.nav-links.crh-global-nav .crh-explore-toggle{width:auto!important;justify-content:center}
+}

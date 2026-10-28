@@ -262,6 +262,9 @@
     if (location.pathname.includes("/admin/")) return;
     const nav = document.querySelector(".navlinks, .nav-links");
     if (!nav || nav.querySelector("[data-crh-explore-root]")) return;
+    // The global Explore menu is the sole public navigation; discard page-specific link lists.
+    nav.classList.add("crh-global-nav");
+    nav.replaceChildren();
     const wrap = document.createElement("div");
     wrap.className = "crh-explore";
     wrap.dataset.crhExploreRoot = "true";
