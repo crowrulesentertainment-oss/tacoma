@@ -6,7 +6,7 @@
   const html = value => String(value ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const dateText = value => value ? new Date(value).toLocaleString(undefined,{dateStyle:"medium",timeStyle:"short"}) : "—";
   const fmtStatus = value => String(value||"unknown").replaceAll("_"," ");
-  const statusClass = value => ["published","approved","live","connected"].includes(value) ? "good" : ["pending_review","changes_requested","scheduled","warning"].includes(value) ? "warn" : ["rejected","archived","error","failed"].includes(value) ? "bad" : "neutral";
+  const statusClass = value => ["published","approved","live","connected","checked","verified_by_source","resolved"].includes(value) ? "good" : ["pending_review","changes_requested","scheduled","warning","needs_attention","new","reviewing"].includes(value) ? "warn" : ["rejected","archived","error","failed","dismissed"].includes(value) ? "bad" : "neutral";
   const badge = value => '<span class="status '+statusClass(value)+'"><span class="dot"></span>'+html(fmtStatus(value))+'</span>';
   const toast = (message, type="") => { const el=$("#notice"); if(el){el.textContent=message;el.className="notice "+type;el.hidden=false;} };
   const clearToast = () => {const el=$("#notice");if(el){el.hidden=true;el.textContent="";}};
