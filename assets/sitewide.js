@@ -136,7 +136,7 @@
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const markup = '<div class="cr-gw-sun"></div><div class="cr-gw-cloud c1"></div><div class="cr-gw-cloud c2"></div><div class="cr-gw-haze"></div><div class="cr-gw-rain"></div><div class="cr-gw-snow"></div><div class="cr-gw-lightning"></div><div class="cr-gw-stars"></div><div class="cr-gw-skyline"></div><div class="cr-gw-reflection"></div>';
     const views = heroes.map(hero => {
-      hero.classList.add("cr-global-cinematic-hero");
+      hero.classList.add("hero", "cr-global-cinematic-hero");
       let scene = hero.querySelector(":scope > .cr-global-weather-scene");
       if (!scene) {
         scene = document.createElement("div");
