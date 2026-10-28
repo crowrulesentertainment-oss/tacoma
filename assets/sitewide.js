@@ -234,3 +234,67 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addPolicyLinks, {once:true});
   else addPolicyLinks();
 })();
+
+/* Global navigation directory: one accessible, grouped index across the public Hub. */
+(() => {
+  "use strict";
+  const root = "https://crowrulesentertainment-oss.github.io/tacoma/";
+  const groups = [
+    { title: "Discover", links: [
+      ["Community home", ""], ["Community tools", "community/"], ["Discover listings", "discover/"],
+      ["Local businesses", "businesses/"], ["Events calendar", "events/"], ["Explore Tacoma map", "map/"]
+    ]},
+    { title: "Help & resources", links: [
+      ["Community resources", "resources/"], ["Services", "services/"], ["Education & learning", "education/"],
+      ["Family resources", "family/"], ["Parks & recreation", "parks/"], ["Jobs & careers", "jobs/"]
+    ]},
+    { title: "Connect & participate", links: [
+      ["Community bulletin", "bulletin/"], ["Community Q&A", "questions/"], ["Neighborhood guides", "neighborhoods/"],
+      ["Community partners", "partners/"], ["Community voices", "voices/"], ["Get involved", "get-involved/"]
+    ]},
+    { title: "Civic & trust", links: [
+      ["Public meetings", "meetings/"], ["Public data", "civic-data/"], ["Local offers", "deals/"],
+      ["Community notices", "alerts/"], ["Trust & verification", "trust/"], ["Privacy notice", "privacy/"],
+      ["Community guidelines", "community-guidelines/"]
+    ]}
+  ];
+  const init = () => {
+    if (location.pathname.includes("/admin/")) return;
+    const nav = document.querySelector(".navlinks, .nav-links");
+    if (!nav || nav.querySelector("[data-crh-explore-root]")) return;
+    const wrap = document.createElement("div");
+    wrap.className = "crh-explore";
+    wrap.dataset.crhExploreRoot = "true";
+    const toggle = document.createElement("button");
+    toggle.className = "crh-explore-toggle";
+    toggle.type = "button";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-haspopup", "true");
+    toggle.innerHTML = '<span>Explore</span><svg aria-hidden="true" viewBox="0 0 20 20" width="15" height="15"><path d="m5 7 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const panel = document.createElement("div");
+    panel.className = "crh-explore-panel";
+    panel.hidden = true;
+    panel.setAttribute("aria-label", "Explore all community sections");
+    panel.innerHTML = groups.map((g,i) => '<section class="crh-explore-group" aria-labelledby="crh-explore-title-'+i+'"><h2 id="crh-explore-title-'+i+'">'+g.title+'</h2><ul>'+g.links.map(([label,path]) => {
+      const href = root + path;
+      const active = path && location.pathname.replace(/index\.html$/,"").replace(/\/$/,"") === ("/tacoma/"+path).replace(/\/$/,"");
+      return '<li><a href="'+href+'"'+(active?' aria-current="page"':'')+'>'+label+'</a></li>';
+    }).join("")+'</ul></section>').join("");
+    const close = () => { panel.hidden = true; toggle.setAttribute("aria-expanded","false"); wrap.classList.remove("is-open"); };
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") !== "true";
+      toggle.setAttribute("aria-expanded", String(open));
+      panel.hidden = !open;
+      wrap.classList.toggle("is-open",open);
+    });
+    panel.addEventListener("click",e=>{if(e.target.closest("a"))close()});
+    document.addEventListener("pointerdown",e=>{if(!wrap.contains(e.target))close()});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden){close();toggle.focus()}});
+    wrap.append(toggle,panel);
+    nav.prepend(wrap);
+    nav.querySelectorAll("a").forEach(a=>{
+      try { if(new URL(a.href,location.href).pathname===location.pathname)a.setAttribute("aria-current","page"); } catch {}
+    });
+  };
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+})();
