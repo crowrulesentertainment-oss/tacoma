@@ -210,6 +210,11 @@
     a.href = "https://crowrulesentertainment-oss.github.io/tacoma/community/";
     a.textContent = "Community tools";
     a.dataset.crCommunityTools = "true";
+    a.addEventListener("click", () => {
+      nav.classList.remove("crh-open");
+      const toggle = nav.parentElement?.querySelector(".crh-menu-toggle");
+      if (toggle) toggle.setAttribute("aria-expanded", "false");
+    });
     nav.append(a);
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addCommunityLink, {once:true});
