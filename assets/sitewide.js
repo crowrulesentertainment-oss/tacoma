@@ -52,7 +52,7 @@
     const home = el("a", "crh-home-link", "Community Home"); home.href = ROOT;
     const nav = oldNav || el("nav", "navlinks crh-global-nav");
     nav.classList.add("crh-global-nav"); nav.setAttribute("aria-label", "Primary navigation");
-    inner.append(brand, home, nav); header.append(inner);
+    inner.append(brand, nav, home); header.append(inner);
     const main = document.querySelector("main, [role='main'], .main-content, #main-content");
     document.body.insertBefore(header, main || document.body.firstChild);
     if (oldHeader && !oldHeader.contains(header)) oldHeader.remove();
