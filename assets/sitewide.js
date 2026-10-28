@@ -199,3 +199,19 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, {once:true});
   else boot();
 })();
+
+/* Add one clear doorway to the community expansion without overcrowding every nav. */
+(() => {
+  const addCommunityLink = () => {
+    if (location.pathname.includes("/admin/")) return;
+    const nav = document.querySelector(".navlinks, .nav-links");
+    if (!nav || [...nav.querySelectorAll("a")].some(a => /\/community\/$/.test(new URL(a.href, location.href).pathname))) return;
+    const a = document.createElement("a");
+    a.href = "https://crowrulesentertainment-oss.github.io/tacoma/community/";
+    a.textContent = "Community tools";
+    a.dataset.crCommunityTools = "true";
+    nav.append(a);
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addCommunityLink, {once:true});
+  else addCommunityLink();
+})();
