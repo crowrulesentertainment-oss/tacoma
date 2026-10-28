@@ -134,8 +134,9 @@ html { scroll-padding-top: 100px; }
 .cr-global-weather-readout .cr-gw-place { display:block; color:#a8bed6; font-size:9px; letter-spacing:.13em; text-transform:uppercase; }
 .cr-global-weather-readout .cr-gw-condition { display:block; font-size:12px; }
 .cr-global-weather-readout .cr-gw-temperature { padding-left:10px; border-left:1px solid #ffffff2b; font-size:24px; letter-spacing:-.05em; }
-.hero > :not(.cr-global-weather-scene):not(.cr-global-weather-readout) { position:relative; z-index:2; }
-.hero > .hero-scene, .hero > .scene { z-index:1; }
+.hero > :not(.cr-global-weather-scene):not(.cr-global-weather-readout):not(.hero-scene):not(.scene) { position:relative; z-index:2; }
+.hero > .hero-scene, .hero > .scene { z-index:0 !important; }
+.cr-global-weather-scene { z-index:1; }
 .hero.cr-gw-clear .cr-gw-sun { opacity:1; }
 .hero.cr-gw-cloudy .cr-gw-cloud,.hero.cr-gw-rain .cr-gw-cloud,.hero.cr-gw-storm .cr-gw-cloud,.hero.cr-gw-fog .cr-gw-cloud { opacity:.86; }
 .hero.cr-gw-rain .cr-gw-rain,.hero.cr-gw-drizzle .cr-gw-rain { opacity:.7; }
