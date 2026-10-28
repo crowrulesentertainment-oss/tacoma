@@ -3,6 +3,18 @@
   "use strict";
   if (window.__CROW_RULES_SITEWIDE__) return;
   window.__CROW_RULES_SITEWIDE__ = true;
+  // Legacy pages load this script without the shared stylesheet; load it once sitewide.
+  const currentScript = document.currentScript;
+  const sharedCssExists = [...document.querySelectorAll('link[rel="stylesheet"]')].some(link => {
+    try { return new URL(link.href, location.href).pathname.endsWith("/assets/sitewide.css"); }
+    catch { return false; }
+  });
+  if (!sharedCssExists && currentScript?.src && document.head) {
+    const sharedCss = document.createElement("link");
+    sharedCss.rel = "stylesheet";
+    sharedCss.href = new URL("sitewide.css", currentScript.src).href;
+    document.head.append(sharedCss);
+  }
   const ready = fn => document.readyState === "loading"
     ? document.addEventListener("DOMContentLoaded", fn, { once: true }) : fn();
 
@@ -131,7 +143,7 @@
 (() => {
   "use strict";
   const boot = () => {
-    const heroes = [...document.querySelectorAll(".hero, .addon-hero")].filter(hero => !hero.closest(".admin-shell"));
+    const heroes = [...document.querySelectorAll(".hero, .addon-hero")].filter(hero => !hero.closest(".admin-shell") && !hero.querySelector(":scope > .scene, :scope > .hero-scene, .weather-panel"));
     if (!heroes.length) return;
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     const markup = '<div class="cr-gw-sun"></div><div class="cr-gw-cloud c1"></div><div class="cr-gw-cloud c2"></div><div class="cr-gw-haze"></div><div class="cr-gw-rain"></div><div class="cr-gw-snow"></div><div class="cr-gw-lightning"></div><div class="cr-gw-stars"></div><div class="cr-gw-skyline"></div><div class="cr-gw-reflection"></div>';
