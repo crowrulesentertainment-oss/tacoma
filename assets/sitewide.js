@@ -253,7 +253,7 @@
   const root = "https://crowrulesentertainment-oss.github.io/tacoma/";
   const groups = [
     { title: "Discover", links: [
-      ["Community home", ""], ["Community tools", "community/"], ["Discover listings", "discover/"],
+      ["Community home", ""], ["Community tools", "community/"], ["Discover listings", "discover/"], ["Community directory", "directory/"],
       ["Local businesses", "businesses/"], ["Events calendar", "events/"], ["Explore Tacoma map", "map/"]
     ]},
     { title: "Help & resources", links: [
@@ -288,11 +288,15 @@
     toggle.innerHTML = '<span>Explore</span><svg aria-hidden="true" viewBox="0 0 20 20" width="15" height="15"><path d="m5 7 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     const panel = document.createElement("div");
     panel.className = "crh-explore-panel";
+    panel.id = "crh-explore-panel";
+    toggle.setAttribute("aria-controls", panel.id);
     panel.hidden = true;
     panel.setAttribute("aria-label", "Explore all community sections");
     panel.innerHTML = groups.map((g,i) => '<section class="crh-explore-group" aria-labelledby="crh-explore-title-'+i+'"><h2 id="crh-explore-title-'+i+'">'+g.title+'</h2><ul>'+g.links.map(([label,path]) => {
       const href = root + path;
-      const active = path && location.pathname.replace(/index\.html$/,"").replace(/\/$/,"") === ("/tacoma/"+path).replace(/\/$/,"");
+      const currentPath = location.pathname.replace(/index\.html$/,"").replace(/\/$/,"");
+      const targetPath = ("/tacoma/"+path).replace(/\/$/,"");
+      const active = path ? currentPath === targetPath : currentPath === "/tacoma";
       return '<li><a href="'+href+'"'+(active?' aria-current="page"':'')+'>'+label+'</a></li>';
     }).join("")+'</ul></section>').join("");
     const close = () => { panel.hidden = true; toggle.setAttribute("aria-expanded","false"); wrap.classList.remove("is-open"); };
