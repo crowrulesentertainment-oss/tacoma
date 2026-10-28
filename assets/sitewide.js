@@ -125,3 +125,77 @@
     });
   });
 })();
+
+
+/* One weather-reactive cinematic atmosphere shared across all public hero sections. */
+(() => {
+  "use strict";
+  const boot = () => {
+    const heroes = [...document.querySelectorAll(".hero")].filter(hero => !hero.closest(".admin-shell"));
+    if (!heroes.length) return;
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const markup = '<div class="cr-gw-sun"></div><div class="cr-gw-cloud c1"></div><div class="cr-gw-cloud c2"></div><div class="cr-gw-haze"></div><div class="cr-gw-rain"></div><div class="cr-gw-snow"></div><div class="cr-gw-lightning"></div><div class="cr-gw-stars"></div><div class="cr-gw-skyline"></div><div class="cr-gw-reflection"></div>';
+    const views = heroes.map(hero => {
+      hero.classList.add("cr-global-cinematic-hero");
+      let scene = hero.querySelector(":scope > .cr-global-weather-scene");
+      if (!scene) {
+        scene = document.createElement("div");
+        scene.className = "cr-global-weather-scene";
+        scene.setAttribute("aria-hidden", "true");
+        scene.innerHTML = markup;
+        hero.prepend(scene);
+      }
+      let readout = hero.querySelector(":scope > .cr-global-weather-readout");
+      if (!readout) {
+        readout = document.createElement("div");
+        readout.className = "cr-global-weather-readout";
+        readout.setAttribute("role", "status");
+        readout.setAttribute("aria-live", "polite");
+        readout.innerHTML = '<span class="cr-gw-icon" aria-hidden="true">🌦️</span><span><span class="cr-gw-place">Tacoma · Pierce County</span><span class="cr-gw-condition">Loading local weather…</span></span><span class="cr-gw-temperature">—°F</span>';
+        hero.append(readout);
+      }
+      return {hero, icon:readout.querySelector(".cr-gw-icon"), condition:readout.querySelector(".cr-gw-condition"), temperature:readout.querySelector(".cr-gw-temperature")};
+    });
+    const classify = (code, day) => {
+      let type = code === 0 ? "clear" : [45,48].includes(code) ? "fog" :
+        [71,73,75,77,85,86].includes(code) ? "snow" :
+        [95,96,99].includes(code) ? "storm" :
+        [51,53,55,56,57].includes(code) ? "drizzle" :
+        [61,63,65,66,67,80,81,82].includes(code) ? "rain" : "cloudy";
+      const labels = {clear:"Clear skies",cloudy:"Cloudy skies",fog:"Fog and low visibility",drizzle:"Light drizzle",rain:"Rain in Tacoma",snow:"Snow in Tacoma",storm:"Thunderstorm conditions"};
+      const icons = {clear:day?"☀️":"🌙",cloudy:day?"☁️":"☁️",fog:"🌫️",drizzle:"🌦️",rain:"🌧️",snow:"❄️",storm:"⛈️"};
+      return {type, night:!day, icon:icons[type], label:day?labels[type]:"Night · "+labels[type]};
+    };
+    async function update() {
+      try {
+        const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=47.2529&longitude=-122.4443&current=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles", {cache:"no-store",headers:{Accept:"application/json"}});
+        if (!response.ok) throw new Error("Weather unavailable");
+        const data = await response.json(), current = data?.current;
+        if (!current || typeof current.weather_code !== "number" || typeof current.temperature_2m !== "number") throw new Error("Invalid weather response");
+        const state = classify(current.weather_code, Number(current.is_day) === 1);
+        for (const view of views) {
+          view.hero.classList.remove("cr-gw-clear","cr-gw-cloudy","cr-gw-fog","cr-gw-drizzle","cr-gw-rain","cr-gw-snow","cr-gw-storm","cr-gw-night");
+          view.hero.classList.add("cr-gw-" + state.type);
+          if (state.night) view.hero.classList.add("cr-gw-night");
+          view.hero.dataset.weatherCondition = state.type;
+          view.icon.textContent = state.icon;
+          view.condition.textContent = state.label;
+          view.temperature.textContent = Math.round(current.temperature_2m) + "°F";
+        }
+      } catch (_) {
+        for (const view of views) {
+          view.icon.textContent = "🌐";
+          view.condition.textContent = "Local weather unavailable";
+          view.temperature.textContent = "—°F";
+          view.hero.classList.add("cr-gw-cloudy");
+        }
+      }
+    }
+    if (reduceMotion) document.documentElement.classList.add("cr-reduced-motion");
+    update();
+    window.setInterval(update, 15 * 60 * 1000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) update(); });
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, {once:true});
+  else boot();
+})();
