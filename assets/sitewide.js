@@ -164,7 +164,7 @@
         [61,63,65,66,67,80,81,82].includes(code) ? "rain" : "cloudy";
       const labels = {clear:"Clear skies",cloudy:"Cloudy skies",fog:"Fog and low visibility",drizzle:"Light drizzle",rain:"Rain in Tacoma",snow:"Snow in Tacoma",storm:"Thunderstorm conditions"};
       const icons = {clear:day?"☀️":"🌙",cloudy:day?"☁️":"☁️",fog:"🌫️",drizzle:"🌦️",rain:"🌧️",snow:"❄️",storm:"⛈️"};
-      return {type:day?type:"night", icon:icons[type], label:day?labels[type]:"Night · "+labels[type]};
+      return {type, night:!day, icon:icons[type], label:day?labels[type]:"Night · "+labels[type]};
     };
     async function update() {
       try {
@@ -176,6 +176,7 @@
         for (const view of views) {
           view.hero.classList.remove("cr-gw-clear","cr-gw-cloudy","cr-gw-fog","cr-gw-drizzle","cr-gw-rain","cr-gw-snow","cr-gw-storm","cr-gw-night");
           view.hero.classList.add("cr-gw-" + state.type);
+          if (state.night) view.hero.classList.add("cr-gw-night");
           view.hero.dataset.weatherCondition = state.type;
           view.icon.textContent = state.icon;
           view.condition.textContent = state.label;
