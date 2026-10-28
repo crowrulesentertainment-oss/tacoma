@@ -18,6 +18,7 @@
     ["submissions.html","▤","Submission Review"],
     ["content.html","▦","Content Manager"],
     ["reports.html","⚑","Listing Reports"],
+    ["edit-suggestions.html","✎","Edit Suggestions & History"],
     ["events.html","◷","Events"],
     ["system.html","⌁","System Health"]
   ];
@@ -232,7 +233,47 @@
     }
     $("#reports-refresh")?.addEventListener("click",load);[state,reason].forEach(el=>el.addEventListener("change",load));let timer;search.addEventListener("input",()=>{clearTimeout(timer);timer=setTimeout(load,250);});await load();
   }
-  async function eventsPage(){
+  async function editSuggestionsManager(){
+    const suggestionsTable=$("#edit-suggestions-table"),historyTable=$("#history-admin-table"),contentSelect=$("#history-content-id");
+    if(!suggestionsTable||!historyTable||!contentSelect)return;
+    const filter=$("#edit-suggestion-status");
+    const fields=[["suggested_title","Suggested title"],["suggested_description","Suggested description"],["suggested_organization","Suggested organization"],["suggested_website_url","Suggested website"],["suggested_location","Suggested location"],["details","Submitter notes"]];
+    async function loadSuggestions(){
+      suggestionsTable.innerHTML='<tr><td colspan="4"><div class="skeleton"></div></td></tr>';
+      let q=sb.from("community_hub_edit_suggestions").select("*").order("created_at",{ascending:false}).limit(300);
+      if(filter.value!=="all")q=q.eq("status",filter.value);
+      const {data,error}=await q;
+      if(error){suggestionsTable.innerHTML='<tr><td colspan="4"><div class="empty">Could not load edit suggestions.</div></td></tr>';toast("Could not load edit suggestions: "+error.message,"error");return;}
+      suggestionsTable.innerHTML=(data||[]).map(row=>{
+        const proposed=fields.filter(([key])=>row[key]).map(([key,label])=>'<div class="item-meta"><strong>'+html(label)+':</strong> '+html(row[key])+'</div>').join("");
+        const statuses=["new","reviewing","accepted","declined"];
+        return '<tr><td><strong>'+html(row.listing_title)+'</strong><div class="item-meta">Suggestion ID: '+html(row.id)+'</div>'+proposed+'</td><td>'+html(dateText(row.created_at))+'</td><td>'+badge(row.status)+'</td><td><div class="filters"><select aria-label="New status for suggestion '+html(row.listing_title)+'" data-edit-status="'+row.id+'">'+statuses.map(v=>'<option value="'+v+'" '+(row.status===v?'selected':'')+'>'+html(fmtStatus(v))+'</option>').join("")+'</select><button class="btn small" data-edit-save="'+row.id+'">Save</button>'+(row.content_id?'<a class="btn small" href="content.html?edit='+encodeURIComponent(row.content_id)+'">Open listing</a>':'')+'</div></td></tr>';
+      }).join("")||'<tr><td colspan="4"><div class="empty">No edit suggestions match this filter.</div></td></tr>';
+      $("[data-edit-save]",suggestionsTable).forEach(btn=>btn.addEventListener("click",async()=>{
+        const select=$('[data-edit-status="'+btn.dataset.editSave+'"]',suggestionsTable);if(!select)return;btn.disabled=true;
+        try{const {data:{user}}=await sb.auth.getUser();const final=["accepted","declined"].includes(select.value);const {error}=await sb.from("community_hub_edit_suggestions").update({status:select.value,reviewed_at:final?new Date().toISOString():null,reviewed_by:final?user.id:null}).eq("id",btn.dataset.editSave);if(error)throw error;toast("Edit suggestion status updated. Accepted suggestions still need to be applied in Content Manager.","success");await loadSuggestions();}
+        catch(err){toast("Could not update suggestion: "+err.message,"error");btn.disabled=false;}
+      }));
+    }
+    async function loadListings(){
+      const {data,error}=await sb.from("community_hub_content").select("id,title,content_type").eq("status","published").order("title",{ascending:true}).limit(1000);
+      if(error){contentSelect.innerHTML='<option value="">Could not load listings</option>';toast("Could not load listings for correction history: "+error.message,"error");return;}
+      contentSelect.innerHTML='<option value="">Choose a published listing…</option>'+(data||[]).map(row=>'<option value="'+html(row.id)+'">'+html(row.title)+' ('+html(row.content_type)+')</option>').join("");
+    }
+    async function loadHistory(){
+      historyTable.innerHTML='<tr><td colspan="5"><div class="skeleton"></div></td></tr>';
+      const {data,error}=await sb.from("community_hub_listing_history").select("*").order("changed_at",{ascending:false}).limit(300);
+      if(error){historyTable.innerHTML='<tr><td colspan="5"><div class="empty">Could not load correction history.</div></td></tr>';toast("Could not load correction history: "+error.message,"error");return;}
+      historyTable.innerHTML=(data||[]).map(row=>'<tr><td><strong>'+html(row.listing_title)+'</strong><div class="item-meta">'+html(row.content_id||"Listing ID unavailable")+'</div></td><td>'+html(row.change_summary)+'</td><td>'+html(dateText(row.changed_at))+'</td><td>'+badge(row.is_public?"published":"private")+'</td><td><button class="btn small" data-history-visibility="'+row.id+'" data-next-visible="'+(!row.is_public)+'">'+(row.is_public?"Make private":"Publish entry")+'</button></td></tr>').join("")||'<tr><td colspan="5"><div class="empty">No correction history entries yet.</div></td></tr>';
+      $("[data-history-visibility]",historyTable).forEach(btn=>btn.addEventListener("click",async()=>{btn.disabled=true;try{const {error}=await sb.from("community_hub_listing_history").update({is_public:btn.dataset.nextVisible==="true"}).eq("id",btn.dataset.historyVisibility);if(error)throw error;toast("Correction history visibility updated.","success");await loadHistory();}catch(err){toast("Could not update history visibility: "+err.message,"error");btn.disabled=false;}}));
+    }
+    $("#history-form").addEventListener("submit",async e=>{e.preventDefault();const contentId=contentSelect.value,option=contentSelect.selectedOptions[0],summary=$("#history-summary").value.trim(),date=$("#history-date").value;if(!contentId||!date||summary.length<5){toast("Choose a listing, correction date, and summary of at least five characters.","error");return;}const button=$('#history-form button[type="submit"]');button.disabled=true;try{const {data:{user}}=await sb.auth.getUser();const {error}=await sb.from("community_hub_listing_history").insert({content_id:contentId,listing_title:option.textContent.replace(/\s+\([^)]*\)$/,"").slice(0,160),change_summary:summary,changed_at:new Date(date+"T12:00:00Z").toISOString(),is_public:$("#history-public").checked,created_by:user.id});if(error)throw error;$("#history-summary").value="";$("#history-public").checked=false;toast("Correction history entry saved.","success");await loadHistory();}catch(err){toast("Could not save correction history: "+err.message,"error");}finally{button.disabled=false;}});
+    $("#edit-suggestions-refresh")?.addEventListener("click",async()=>{await Promise.all([loadSuggestions(),loadHistory()]);});
+    filter.addEventListener("change",loadSuggestions);
+    const today=new Date();$("#history-date").value=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+    await Promise.all([loadSuggestions(),loadListings(),loadHistory()]);
+  }
+    async function eventsPage(){
     const table=$("#events-table");if(!table)return;
     const search=$("#events-search"),state=$("#events-state");
     async function load(){
@@ -252,6 +293,8 @@
     await check("Submission table","Read access to community_hub_submissions",async()=>{const {error}=await sb.from("community_hub_submissions").select("id",{head:true,count:"exact"});if(error)throw error;});
     await check("Public content table","Read access to community_hub_content",async()=>{const {error}=await sb.from("community_hub_content").select("id",{head:true,count:"exact"});if(error)throw error;});
     await check("Listing reports","Admin read access to community_hub_listing_reports",async()=>{const {error}=await sb.from("community_hub_listing_reports").select("id",{head:true,count:"exact"});if(error)throw error;});
+    await check("Edit suggestions","Admin read access to community_hub_edit_suggestions",async()=>{const {error}=await sb.from("community_hub_edit_suggestions").select("id",{head:true,count:"exact"});if(error)throw error;});
+    await check("Correction history","Admin access to community_hub_listing_history",async()=>{const {error}=await sb.from("community_hub_listing_history").select("id",{head:true,count:"exact"});if(error)throw error;});
     await check("Verification metadata","Listing verification columns are available",async()=>{const {error}=await sb.from("community_hub_content").select("verification_status,last_reviewed_at",{head:true}).limit(1);if(error)throw error;});
     await check("Approval workflow","Atomic approve_community_hub_submission RPC is available",async()=>{const {error}=await sb.rpc("approve_community_hub_submission",{p_submission_id:"00000000-0000-0000-0000-000000000000",p_review_notes:"health-check"});if(!error)return;if(/Submission not found|not accessible/i.test(error.message))return;if(/PGRST202|Could not find the function|function .* does not exist/i.test(error.message))throw new Error("Approval RPC is not installed or not exposed yet.");if(error.code==="42501")throw new Error("RPC exists, but admin role or RLS permission was denied.");throw error;});
     list.innerHTML=checks.map(c=>'<div class="health-row"><div><div class="health-title">'+html(c.label)+'</div><div class="health-detail">'+html(c.detail)+'</div></div>'+badge(c.state)+'</div>').join("");
@@ -260,7 +303,7 @@
   }
   document.addEventListener("DOMContentLoaded",async()=>{
     if(isLogin){const recovering=new URLSearchParams(location.hash.slice(1)).get("type")==="recovery";await sb.auth.getSession().then(({data})=>{if(data.session&&!recovering)location.replace(cfg.dashboardPath);});signIn();return;}
-    try{const user=await requireAdmin();if(!user)return;await dashboard();await submissions();await contentManager();await reportsManager();await eventsPage();await systemHealth();}catch(err){toast("Admin initialization failed: "+err.message,"error");}
+    try{const user=await requireAdmin();if(!user)return;await dashboard();await submissions();await contentManager();await reportsManager();await editSuggestionsManager();await eventsPage();await systemHealth();}catch(err){toast("Admin initialization failed: "+err.message,"error");}
   });
   window.CrowHubAdmin={supabase:sb};
 })();
