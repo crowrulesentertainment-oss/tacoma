@@ -29,8 +29,10 @@ create index if not exists community_hub_listing_reports_content_id_idx
   on public.community_hub_listing_reports (content_id);
 
 alter table public.community_hub_listing_reports enable row level security;
-grant insert on public.community_hub_listing_reports to anon, authenticated;
-grant select, update on public.community_hub_listing_reports to authenticated;
+revoke all privileges on table public.community_hub_listing_reports from public;
+revoke all privileges on table public.community_hub_listing_reports from anon;
+grant insert on public.community_hub_listing_reports to anon;
+grant insert, select, update on public.community_hub_listing_reports to authenticated;
 
 drop policy if exists "Public can submit bounded listing reports" on public.community_hub_listing_reports;
 create policy "Public can submit bounded listing reports"
