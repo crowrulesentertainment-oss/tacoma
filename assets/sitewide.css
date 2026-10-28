@@ -209,3 +209,8 @@ html { scroll-padding-top: 100px; }
     box-shadow:none!important;backdrop-filter:none!important;
   }
 }
+
+@media(max-width:640px){
+  .navlinks.crh-global-nav .crh-explore,.nav-links.crh-global-nav .crh-explore{width:auto!important}
+  .navlinks.crh-global-nav .crh-explore-toggle,.nav-links.crh-global-nav .crh-explore-toggle{width:auto!important;justify-content:center}
+}
