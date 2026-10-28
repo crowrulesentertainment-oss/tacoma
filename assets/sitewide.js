@@ -1,338 +1,227 @@
-/* CrowRules Tacoma Community Hub — accessible sitewide interactions. */
+/* CrowRules Tacoma Community Hub — unified public-site experience.
+   Shared navigation, cinematic hero, live Tacoma weather, accessibility and page utilities. */
 (() => {
   "use strict";
-  if (window.__CROW_RULES_SITEWIDE__) return;
-  window.__CROW_RULES_SITEWIDE__ = true;
-  // Legacy pages load this script without the shared stylesheet; load it once sitewide.
-  const currentScript = document.currentScript;
-  const sharedCssExists = [...document.querySelectorAll('link[rel="stylesheet"]')].some(link => {
-    try { return new URL(link.href, location.href).pathname.endsWith("/assets/sitewide.css"); }
-    catch { return false; }
-  });
-  if (!sharedCssExists && currentScript?.src && document.head) {
-    const sharedCss = document.createElement("link");
-    sharedCss.rel = "stylesheet";
-    sharedCss.href = new URL("sitewide.css", currentScript.src).href;
-    document.head.append(sharedCss);
-  }
-  const ready = fn => document.readyState === "loading"
+  if (window.__CRH_SITEWIDE_V2__) return;
+  window.__CRH_SITEWIDE_V2__ = true;
+
+  const ROOT = "https://crowrulesentertainment-oss.github.io/tacoma/";
+  const WEATHER_URL = "https://api.open-meteo.com/v1/forecast?latitude=47.2529&longitude=-122.4443&current=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles";
+  const REDUCED = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const onReady = fn => document.readyState === "loading"
     ? document.addEventListener("DOMContentLoaded", fn, { once: true }) : fn();
-
-  ready(() => {
-    const body = document.body;
-    const main = document.querySelector("main, [role='main'], .main-content, #main-content");
-    if (main && !main.id) main.id = "main-content";
-
-    // Keyboard users can bypass repeated navigation and jump directly to content.
-    if (!document.querySelector(".crh-skip-link")) {
-      const skip = document.createElement("a");
-      skip.className = "crh-skip-link";
-      skip.href = "#" + (main?.id || "main-content");
-      skip.textContent = "Skip to main content";
-      document.body.prepend(skip);
-      skip.addEventListener("click", () => {
-        const target = document.getElementById(skip.hash.slice(1));
-        if (target) {
-          if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-          target.focus({ preventScroll: true });
-        }
-      });
-    }
-
-    // Reading progress indicator, updated without an external dependency.
-    const progress = document.createElement("div");
-    progress.className = "crh-reading-progress";
-    progress.setAttribute("role", "progressbar");
-    progress.setAttribute("aria-label", "Page reading progress");
-    progress.setAttribute("aria-valuemin", "0");
-    progress.setAttribute("aria-valuemax", "100");
-    progress.setAttribute("aria-valuenow", "0");
-    document.body.append(progress);
-    let scrollQueued = false;
-    const updateProgress = () => {
-      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const value = Math.max(0, Math.min(100, Math.round((window.scrollY / max) * 100)));
-      progress.style.width = value + "%";
-      progress.setAttribute("aria-valuenow", String(value));
-      backTop.classList.toggle("is-visible", window.scrollY > 520);
-      scrollQueued = false;
-    };
-    const onScroll = () => {
-      if (!scrollQueued) {
-        scrollQueued = true;
-        window.requestAnimationFrame(updateProgress);
-      }
-    };
-
-    // Responsive menu enhancement for both navigation class variants used across pages.
-    const nav = document.querySelector(".navlinks, .nav-links");
-    if (nav && !nav.querySelector(".crh-menu-toggle")) {
-      const host = nav.parentElement;
-      if (host) {
-        host.classList.add("crh-nav-host");
-        if (!nav.id) nav.id = "crh-primary-navigation";
-        const toggle = document.createElement("button");
-        toggle.type = "button";
-        toggle.className = "crh-menu-toggle";
-        toggle.setAttribute("aria-controls", nav.id);
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.innerHTML = '<span class="crh-menu-icon" aria-hidden="true"><i></i><i></i><i></i></span><span class="crh-menu-label">Menu</span>';
-        toggle.addEventListener("click", () => {
-          const open = toggle.getAttribute("aria-expanded") === "true";
-          toggle.setAttribute("aria-expanded", String(!open));
-          nav.classList.toggle("crh-open", !open);
-          toggle.setAttribute("aria-label", open ? "Open navigation menu" : "Close navigation menu");
-        });
-        nav.parentElement.insertBefore(toggle, nav);
-        nav.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
-          nav.classList.remove("crh-open");
-          toggle.setAttribute("aria-expanded", "false");
-          toggle.setAttribute("aria-label", "Open navigation menu");
-        }));
-        document.addEventListener("keydown", event => {
-          if (event.key === "Escape" && nav.classList.contains("crh-open")) {
-            nav.classList.remove("crh-open");
-            toggle.setAttribute("aria-expanded", "false");
-            toggle.focus();
-          }
-        });
-        document.addEventListener("click", event => {
-          if (!nav.contains(event.target) && !toggle.contains(event.target) && nav.classList.contains("crh-open")) {
-            nav.classList.remove("crh-open");
-            toggle.setAttribute("aria-expanded", "false");
-          }
-        });
-        const mobileQuery = window.matchMedia("(max-width: 960px)");
-        const resetOnDesktop = event => {
-          if (!event.matches) {
-            nav.classList.remove("crh-open");
-            toggle.setAttribute("aria-expanded", "false");
-          }
-        };
-        if (mobileQuery.addEventListener) mobileQuery.addEventListener("change", resetOnDesktop);
-        else mobileQuery.addListener(resetOnDesktop);
-      }
-    }
-
-    // A low-distraction return-to-top control is available after meaningful scrolling.
-    const backTop = document.createElement("button");
-    backTop.type = "button";
-    backTop.className = "crh-back-top";
-    backTop.setAttribute("aria-label", "Back to top");
-    backTop.innerHTML = '<span aria-hidden="true">↑</span><span class="crh-back-label">Back to top</span>';
-    backTop.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
-    });
-    body.append(backTop);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    updateProgress();
-
-    // Safer defaults for any external links that open a new tab.
-    document.querySelectorAll('a[target="_blank"]').forEach(link => {
-      const rel = new Set((link.getAttribute("rel") || "").split(/\s+/).filter(Boolean));
-      rel.add("noopener");
-      rel.add("noreferrer");
-      link.setAttribute("rel", [...rel].join(" "));
-    });
-  });
-})();
-
-
-/* One weather-reactive cinematic atmosphere shared across all public hero sections. */
-(() => {
-  "use strict";
-  const boot = () => {
-    const heroes = [...document.querySelectorAll(".hero, .addon-hero")].filter(hero => !hero.closest(".admin-shell"));
-    if (!heroes.length) return;
-    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const markup = '<div class="cr-gw-sun"></div><div class="cr-gw-cloud c1"></div><div class="cr-gw-cloud c2"></div><div class="cr-gw-haze"></div><div class="cr-gw-rain"></div><div class="cr-gw-snow"></div><div class="cr-gw-lightning"></div><div class="cr-gw-stars"></div><div class="cr-gw-skyline"></div><div class="cr-gw-reflection"></div>';
-    const views = heroes.map(hero => {
-      hero.classList.add("hero", "cr-global-cinematic-hero");
-      // Remove page-specific weather panels and decorative scenes so every page gets exactly one shared visual.
-      hero.querySelectorAll(".scene, .hero-scene, .cr-weather-atmosphere, .weather-panel, .weather-widget, .cr-global-weather-readout").forEach(node => node.remove());
-      let scene = hero.querySelector(":scope > .cr-global-weather-scene");
-      if (!scene) {
-        scene = document.createElement("div");
-        scene.className = "cr-global-weather-scene";
-        scene.setAttribute("aria-hidden", "true");
-        scene.innerHTML = markup;
-        hero.prepend(scene);
-      }
-      let readout = hero.querySelector(":scope > .cr-global-weather-readout");
-      if (!readout) {
-        readout = document.createElement("div");
-        readout.className = "cr-global-weather-readout";
-        readout.setAttribute("role", "status");
-        readout.setAttribute("aria-live", "polite");
-        readout.innerHTML = '<span class="cr-gw-icon" aria-hidden="true">🌦️</span><span><span class="cr-gw-place">Tacoma · Pierce County</span><span class="cr-gw-condition">Loading local weather…</span></span><span class="cr-gw-temperature">—°F</span>';
-        hero.append(readout);
-      }
-      return {hero, icon:readout.querySelector(".cr-gw-icon"), condition:readout.querySelector(".cr-gw-condition"), temperature:readout.querySelector(".cr-gw-temperature")};
-    });
-    const classify = (code, day) => {
-      let type = code === 0 ? "clear" : [45,48].includes(code) ? "fog" :
-        [71,73,75,77,85,86].includes(code) ? "snow" :
-        [95,96,99].includes(code) ? "storm" :
-        [51,53,55,56,57].includes(code) ? "drizzle" :
-        [61,63,65,66,67,80,81,82].includes(code) ? "rain" : "cloudy";
-      const labels = {clear:"Clear skies",cloudy:"Cloudy skies",fog:"Fog and low visibility",drizzle:"Light drizzle",rain:"Rain in Tacoma",snow:"Snow in Tacoma",storm:"Thunderstorm conditions"};
-      const icons = {clear:day?"☀️":"🌙",cloudy:day?"☁️":"☁️",fog:"🌫️",drizzle:"🌦️",rain:"🌧️",snow:"❄️",storm:"⛈️"};
-      return {type, night:!day, icon:icons[type], label:day?labels[type]:"Night · "+labels[type]};
-    };
-    async function update() {
-      try {
-        const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=47.2529&longitude=-122.4443&current=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit&timezone=America%2FLos_Angeles", {cache:"no-store",headers:{Accept:"application/json"}});
-        if (!response.ok) throw new Error("Weather unavailable");
-        const data = await response.json(), current = data?.current;
-        if (!current || typeof current.weather_code !== "number" || typeof current.temperature_2m !== "number") throw new Error("Invalid weather response");
-        const state = classify(current.weather_code, Number(current.is_day) === 1);
-        for (const view of views) {
-          view.hero.classList.remove("cr-gw-clear","cr-gw-cloudy","cr-gw-fog","cr-gw-drizzle","cr-gw-rain","cr-gw-snow","cr-gw-storm","cr-gw-night");
-          view.hero.classList.add("cr-gw-" + state.type);
-          if (state.night) view.hero.classList.add("cr-gw-night");
-          view.hero.dataset.weatherCondition = state.type;
-          view.icon.textContent = state.icon;
-          view.condition.textContent = state.label;
-          view.temperature.textContent = Math.round(current.temperature_2m) + "°F";
-        }
-      } catch (_) {
-        for (const view of views) {
-          view.icon.textContent = "🌐";
-          view.condition.textContent = "Local weather unavailable";
-          view.temperature.textContent = "—°F";
-          view.hero.classList.add("cr-gw-cloudy");
-        }
-      }
-    }
-    if (reduceMotion) document.documentElement.classList.add("cr-reduced-motion");
-    update();
-    window.setInterval(update, 15 * 60 * 1000);
-    document.addEventListener("visibilitychange", () => { if (!document.hidden) update(); });
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
   };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, {once:true});
-  else boot();
-})();
-
-/* Add one clear doorway to the community expansion without overcrowding every nav. */
-(() => {
-  const addCommunityLink = () => {
-    if (location.pathname.includes("/admin/")) return;
-    const nav = document.querySelector(".navlinks, .nav-links");
-    if (!nav || [...nav.querySelectorAll("a")].some(a => /\/community\/$/.test(new URL(a.href, location.href).pathname))) return;
-    const a = document.createElement("a");
-    a.href = "https://crowrulesentertainment-oss.github.io/tacoma/community/";
-    a.textContent = "Community tools";
-    a.dataset.crCommunityTools = "true";
-    a.addEventListener("click", () => {
-      nav.classList.remove("crh-open");
-      const toggle = nav.parentElement?.querySelector(".crh-menu-toggle");
-      if (toggle) toggle.setAttribute("aria-expanded", "false");
-    });
-    nav.append(a);
-  };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addCommunityLink, {once:true});
-  else addCommunityLink();
-})();
-
-/* Put privacy and contribution standards within easy reach on community modules. */
-(() => {
-  const addPolicyLinks = () => {
-    const footer = document.querySelector(".addon-foot");
-    if (!footer || footer.querySelector("[data-cr-policy-links]")) return;
-    const nav = document.createElement("p");
-    nav.dataset.crPolicyLinks = "true";
-    nav.innerHTML = '<a href="https://crowrulesentertainment-oss.github.io/tacoma/privacy/">Privacy notice</a> · <a href="https://crowrulesentertainment-oss.github.io/tacoma/community-guidelines/">Community guidelines</a> · <a href="https://crowrulesentertainment-oss.github.io/tacoma/trust/">Trust & verification</a>';
-    footer.append(nav);
-  };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addPolicyLinks, {once:true});
-  else addPolicyLinks();
-})();
-
-/* Global navigation directory: one accessible, grouped index across the public Hub. */
-(() => {
-  "use strict";
-  const root = "https://crowrulesentertainment-oss.github.io/tacoma/";
   const groups = [
-    { title: "Discover", links: [
-      ["Community home", ""], ["Community tools", "community/"], ["Discover listings", "discover/"], ["Community directory", "directory/"],
-      ["Local businesses", "businesses/"], ["Events calendar", "events/"], ["Explore Tacoma map", "map/"]
-    ]},
-    { title: "Help & resources", links: [
-      ["Community resources", "resources/"], ["Services", "services/"], ["Education & learning", "education/"],
-      ["Family resources", "family/"], ["Parks & recreation", "parks/"], ["Jobs & careers", "jobs/"]
-    ]},
-    { title: "Connect & participate", links: [
-      ["Community bulletin", "bulletin/"], ["Community Q&A", "questions/"], ["Neighborhood guides", "neighborhoods/"],
-      ["Community partners", "partners/"], ["Community voices", "voices/"], ["Get involved", "get-involved/"]
-    ]},
-    { title: "Civic & trust", links: [
-      ["Public meetings", "meetings/"], ["Public data", "civic-data/"], ["Local offers", "deals/"],
-      ["Community notices", "alerts/"], ["Trust & verification", "trust/"], ["Privacy notice", "privacy/"],
-      ["Community guidelines", "community-guidelines/"]
-    ]}
+    { title: "Discover", links: [["Community home",""],["Community tools","community/"],["Discover listings","discover/"],["Community directory","directory/"],["Local businesses","businesses/"],["Events calendar","events/"],["Explore Tacoma map","map/"]] },
+    { title: "Help & resources", links: [["Community resources","resources/"],["Services","services/"],["Education & learning","education/"],["Family resources","family/"],["Parks & recreation","parks/"],["Jobs & careers","jobs/"]] },
+    { title: "Connect & participate", links: [["Community bulletin","bulletin/"],["Community Q&A","questions/"],["Neighborhood guides","neighborhoods/"],["Community partners","partners/"],["Community voices","voices/"],["Get involved","get-involved/"]] },
+    { title: "Civic & trust", links: [["Public meetings","meetings/"],["Public data","civic-data/"],["Local offers","deals/"],["Community notices","alerts/"],["Trust & verification","trust/"],["Privacy notice","privacy/"],["Community guidelines","community-guidelines/"]] }
   ];
-  const init = () => {
+
+  function addSharedStylesheet() {
+    const found = [...document.querySelectorAll('link[rel="stylesheet"]')].some(link => {
+      try { return new URL(link.href, location.href).pathname.endsWith("/assets/sitewide.css"); } catch { return false; }
+    });
+    if (found || !document.head) return;
+    const script = document.currentScript || [...document.scripts].find(s => /\/assets\/sitewide\.js(?:\?|$)/.test(s.src));
+    if (!script?.src) return;
+    const link = el("link"); link.rel = "stylesheet"; link.href = new URL("sitewide.css", script.src).href;
+    document.head.append(link);
+  }
+
+  function buildHeader() {
     if (location.pathname.includes("/admin/")) return;
-    let nav = document.querySelector(".navlinks, .nav-links");
-    if (nav?.closest(".crh-site-header")) return;
-    // Create the same site header on every public page, including older pages without a nav.
-    const legacyHeader = nav?.closest(".topbar, header, .site-header, .navbar");
-    const header = document.createElement("header");
-    header.className = "crh-site-header";
-    header.innerHTML = '<div class="crh-site-header-inner"><a class="crh-site-brand" href="'+root+'" aria-label="CrowRules Tacoma Community Hub home"><span class="crh-site-brand-mark" aria-hidden="true">C</span><span><strong>CrowRules</strong><small>TACOMA COMMUNITY HUB</small></span></a><a class="crh-home-link" href="'+root+'">Community Home</a></div>';
-    const inner = header.querySelector(".crh-site-header-inner");
-    if (!nav) {
-      nav = document.createElement("nav");
-      nav.className = "navlinks crh-global-nav";
-      nav.setAttribute("aria-label", "Primary navigation");
-    } else {
-      nav.classList.add("crh-global-nav");
-    }
-    inner.append(nav);
-    const mainTarget = document.querySelector("main, [role='main'], .main-content, #main-content");
-    document.body.insertBefore(header, mainTarget || document.body.firstChild);
-    if (legacyHeader && !legacyHeader.contains(header)) legacyHeader.remove();
-    // The global Explore menu is the sole public navigation; discard page-specific link lists.
+    const existing = document.querySelector(".crh-site-header");
+    if (existing) { buildExplore(existing.querySelector(".crh-global-nav")); return; }
+    let oldNav = document.querySelector(".navlinks, .nav-links");
+    const oldHeader = oldNav?.closest(".topbar, .site-header, .navbar");
+    const header = el("header", "crh-site-header");
+    header.setAttribute("data-crh-shared-header", "true");
+    const inner = el("div", "crh-site-header-inner");
+    const brand = el("a", "crh-site-brand");
+    brand.href = ROOT; brand.setAttribute("aria-label", "CrowRules Tacoma Community Hub home");
+    const mark = el("span", "crh-site-brand-mark", "C"); mark.setAttribute("aria-hidden", "true");
+    const wordmark = el("span", "crh-site-wordmark");
+    wordmark.append(el("strong", "", "CrowRules"), el("small", "", "TACOMA COMMUNITY HUB"));
+    brand.append(mark, wordmark);
+    const home = el("a", "crh-home-link", "Community Home"); home.href = ROOT;
+    const nav = oldNav || el("nav", "navlinks crh-global-nav");
+    nav.classList.add("crh-global-nav"); nav.setAttribute("aria-label", "Primary navigation");
+    inner.append(brand, home, nav); header.append(inner);
+    const main = document.querySelector("main, [role='main'], .main-content, #main-content");
+    document.body.insertBefore(header, main || document.body.firstChild);
+    if (oldHeader && !oldHeader.contains(header)) oldHeader.remove();
+    if (oldNav && oldNav.parentElement !== inner) nav.remove();
+    buildExplore(nav);
+  }
+
+  function buildExplore(nav) {
+    if (!nav) return;
     nav.classList.add("crh-global-nav");
     nav.replaceChildren();
-    const wrap = document.createElement("div");
-    wrap.className = "crh-explore";
-    wrap.dataset.crhExploreRoot = "true";
-    const toggle = document.createElement("button");
-    toggle.className = "crh-explore-toggle";
-    toggle.type = "button";
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.setAttribute("aria-haspopup", "true");
-    toggle.innerHTML = '<span>Explore</span><svg aria-hidden="true" viewBox="0 0 20 20" width="15" height="15"><path d="m5 7 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    const panel = document.createElement("div");
-    panel.className = "crh-explore-panel";
-    panel.id = "crh-explore-panel";
-    toggle.setAttribute("aria-controls", panel.id);
-    panel.hidden = true;
-    panel.setAttribute("aria-label", "Explore all community sections");
-    panel.innerHTML = groups.map((g,i) => '<section class="crh-explore-group" aria-labelledby="crh-explore-title-'+i+'"><h2 id="crh-explore-title-'+i+'">'+g.title+'</h2><ul>'+g.links.map(([label,path]) => {
-      const href = root + path;
-      const currentPath = location.pathname.replace(/index\.html$/,"").replace(/\/$/,"");
-      const targetPath = ("/tacoma/"+path).replace(/\/$/,"");
-      const active = path ? currentPath === targetPath : currentPath === "/tacoma";
-      return '<li><a href="'+href+'"'+(active?' aria-current="page"':'')+'>'+label+'</a></li>';
-    }).join("")+'</ul></section>').join("");
-    const close = () => { panel.hidden = true; toggle.setAttribute("aria-expanded","false"); wrap.classList.remove("is-open"); };
+    const wrap = el("div", "crh-explore");
+    const toggle = el("button", "crh-explore-toggle");
+    toggle.type = "button"; toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-haspopup", "true"); toggle.setAttribute("aria-controls", "crh-explore-panel");
+    const label = el("span", "", "Explore");
+    const chevron = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    chevron.setAttribute("viewBox","0 0 20 20"); chevron.setAttribute("width","16"); chevron.setAttribute("height","16"); chevron.setAttribute("aria-hidden","true");
+    const path = document.createElementNS("http://www.w3.org/2000/svg","path");
+    path.setAttribute("d","m5 7 5 5 5-5"); path.setAttribute("fill","none"); path.setAttribute("stroke","currentColor"); path.setAttribute("stroke-width","1.8"); path.setAttribute("stroke-linecap","round"); path.setAttribute("stroke-linejoin","round");
+    chevron.append(path); toggle.append(label,chevron);
+    const panel = el("div","crh-explore-panel"); panel.id = "crh-explore-panel"; panel.hidden = true;
+    panel.setAttribute("aria-label","Explore all community sections");
+    const currentPath = path => path.replace(/index\.html$/,"").replace(/\/$/,"") || "/tacoma";
+    const current = currentPath(location.pathname);
+    groups.forEach((group,index) => {
+      const section = el("section","crh-explore-group");
+      const heading = el("h2","",group.title); heading.id = "crh-explore-title-"+index; section.setAttribute("aria-labelledby",heading.id);
+      const list = el("ul");
+      group.links.forEach(([text,path]) => {
+        const li = el("li"); const a = el("a","",text); a.href = ROOT + path;
+        const target = currentPath("/tacoma/" + path);
+        if (target === current || (path && current.endsWith("/"+path.replace(/\/$/,"")))) a.setAttribute("aria-current","page");
+        li.append(a); list.append(li);
+      });
+      section.append(heading,list); panel.append(section);
+    });
+    const close = ({focus=false}={}) => { panel.hidden = true; toggle.setAttribute("aria-expanded","false"); wrap.classList.remove("is-open"); if(focus)toggle.focus(); };
     toggle.addEventListener("click", () => {
       const open = toggle.getAttribute("aria-expanded") !== "true";
-      toggle.setAttribute("aria-expanded", String(open));
-      panel.hidden = !open;
-      wrap.classList.toggle("is-open",open);
+      toggle.setAttribute("aria-expanded",String(open)); panel.hidden = !open; wrap.classList.toggle("is-open",open);
+      if (open) {
+        const first = panel.querySelector('a[aria-current="page"]') || panel.querySelector("a");
+        if (window.matchMedia("(max-width: 760px)").matches) first?.focus({preventScroll:true});
+      }
     });
-    panel.addEventListener("click",e=>{if(e.target.closest("a"))close()});
-    document.addEventListener("pointerdown",e=>{if(!wrap.contains(e.target))close()});
-    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!panel.hidden){close();toggle.focus()}});
-    wrap.append(toggle,panel);
-    nav.prepend(wrap);
-    nav.querySelectorAll("a").forEach(a=>{
-      try { if(new URL(a.href,location.href).pathname===location.pathname)a.setAttribute("aria-current","page"); } catch {}
+    panel.addEventListener("click",event=>{if(event.target.closest("a"))close()});
+    document.addEventListener("pointerdown",event=>{if(!wrap.contains(event.target))close()});
+    document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!panel.hidden)close({focus:true})});
+    wrap.append(toggle,panel); nav.append(wrap);
+
+    // A real mobile menu button is paired with the Explore panel, rather than hiding navigation without a control.
+    const inner = nav.closest(".crh-site-header-inner");
+    if (inner && !inner.querySelector(".crh-mobile-menu-toggle")) {
+      const mobile = el("button","crh-mobile-menu-toggle");
+      mobile.type = "button"; mobile.setAttribute("aria-expanded","false"); mobile.setAttribute("aria-controls","crh-explore-panel");
+      mobile.innerHTML = '<span class="crh-mobile-menu-icon" aria-hidden="true"><i></i><i></i><i></i></span><span>Explore sections</span>';
+      mobile.addEventListener("click",()=>{
+        const open = mobile.getAttribute("aria-expanded") !== "true";
+        mobile.setAttribute("aria-expanded",String(open));
+        nav.classList.toggle("crh-mobile-open",open);
+        if (!open) close();
+        else { panel.hidden = false; toggle.setAttribute("aria-expanded","true"); wrap.classList.add("is-open"); }
+      });
+      inner.append(mobile);
+    }
+  }
+
+  function buildHero() {
+    if (location.pathname.includes("/admin/")) return [];
+    let heroes = [...document.querySelectorAll(".hero, .addon-hero, [data-crh-hero]")].filter(h=>!h.closest(".admin-shell"));
+    if (!heroes.length) {
+      const main = document.querySelector("main, [role='main'], .main-content, #main-content") || document.body;
+      const h1 = main.querySelector("h1");
+      if (h1) {
+        const hero = el("section","crh-universal-hero hero"); hero.setAttribute("data-crh-hero","true");
+        const content = el("div","crh-universal-hero-content");
+        content.append(el("span","crh-hero-eyebrow","TACOMA & PIERCE COUNTY"));
+        content.append(h1);
+        const intro = [...main.querySelectorAll("p")].find(p=>p.textContent.trim().length>25);
+        if (intro) { intro.classList.add("crh-hero-intro"); content.append(intro); }
+        hero.append(content); main.insertBefore(hero,main.firstChild); heroes = [hero];
+      }
+    }
+    return heroes.map(hero=>{
+      hero.classList.add("cr-global-cinematic-hero");
+      // Remove only known visual overlays; preserve page content and interactive components.
+      hero.querySelectorAll(".cr-global-weather-scene,.cr-global-weather-readout,.scene,.hero-scene,.weather-panel,.weather-widget,.cr-weather-atmosphere").forEach(n=>n.remove());
+      const scene = el("div","cr-global-weather-scene"); scene.setAttribute("aria-hidden","true");
+      [["cr-gw-distant-clouds",""],["cr-gw-sun",""],["cr-gw-cloud c1",""],["cr-gw-cloud c2",""],["cr-gw-haze",""],["cr-gw-rain",""],["cr-gw-snow",""],["cr-gw-lightning",""],["cr-gw-stars",""],["cr-gw-skyline",""],["cr-gw-reflection",""]].forEach(([cls])=>scene.append(el("div",cls)));
+      const readout = el("div","cr-global-weather-readout"); readout.setAttribute("role","status"); readout.setAttribute("aria-live","polite");
+      const icon=el("span","cr-gw-icon","🌦️"); icon.setAttribute("aria-hidden","true");
+      const details=el("span","cr-gw-details"); details.append(el("span","cr-gw-place","TACOMA · PIERCE COUNTY"),el("span","cr-gw-condition","Checking local weather…"));
+      readout.append(icon,details,el("span","cr-gw-temperature","—°F"));
+      hero.prepend(scene); hero.append(readout);
+      return {hero,icon,condition:readout.querySelector(".cr-gw-condition"),temperature:readout.querySelector(".cr-gw-temperature")};
     });
-  };
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+  }
+
+  function applyWeather(views) {
+    if (!views.length) return;
+    const classes = ["clear","cloudy","fog","drizzle","rain","snow","storm","night"];
+    const classify = (code,day) => {
+      let type = code===0?"clear":[45,48].includes(code)?"fog":[71,73,75,77,85,86].includes(code)?"snow":[95,96,99].includes(code)?"storm":[51,53,55,56,57].includes(code)?"drizzle":[61,63,65,66,67,80,81,82].includes(code)?"rain":"cloudy";
+      const labels={clear:"Clear skies",cloudy:"Cloudy skies",fog:"Fog and low visibility",drizzle:"Light drizzle",rain:"Rain in Tacoma",snow:"Snow in Tacoma",storm:"Thunderstorm conditions"};
+      const icons={clear:day?"☀️":"🌙",cloudy:"☁️",fog:"🌫️",drizzle:"🌦️",rain:"🌧️",snow:"❄️",storm:"⛈️"};
+      return {type,day,icon:icons[type],label:day?labels[type]:"Night · "+labels[type]};
+    };
+    const render = (state,temp) => views.forEach(v=>{
+      v.hero.classList.remove(...classes.map(c=>"cr-gw-"+c));
+      v.hero.classList.add("cr-gw-"+state.type); if(!state.day)v.hero.classList.add("cr-gw-night");
+      v.hero.dataset.weatherCondition=state.type; v.icon.textContent=state.icon;
+      v.condition.textContent=state.label; v.temperature.textContent=temp;
+    });
+    const fallback = () => {
+      const state={type:"cloudy",day:true,icon:"🌐",label:"Tacoma weather unavailable"};
+      render(state,"—°F");
+    };
+    const update = async () => {
+      try {
+        const response=await fetch(WEATHER_URL,{cache:"no-store",headers:{Accept:"application/json"}});
+        if(!response.ok)throw Error("Weather request failed");
+        const data=await response.json(),cur=data?.current;
+        if(!cur||typeof cur.weather_code!=="number"||typeof cur.temperature_2m!=="number")throw Error("Invalid weather response");
+        const state=classify(cur.weather_code,Number(cur.is_day)===1);
+        render(state,Math.round(cur.temperature_2m)+"°F");
+      } catch { fallback(); }
+    };
+    if(REDUCED())document.documentElement.classList.add("cr-reduced-motion");
+    update();
+    window.setInterval(()=>{if(!document.hidden)update()},15*60*1000);
+    document.addEventListener("visibilitychange",()=>{if(!document.hidden)update()});
+  }
+
+  function addUtilities() {
+    const main=document.querySelector("main,[role='main'],.main-content,#main-content");
+    if(main&&!main.id)main.id="main-content";
+    if(!document.querySelector(".crh-skip-link")){
+      const skip=el("a","crh-skip-link","Skip to main content"); skip.href="#"+(main?.id||"main-content");
+      skip.addEventListener("click",()=>{const target=document.getElementById(skip.hash.slice(1));if(target){if(!target.hasAttribute("tabindex"))target.tabIndex=-1;target.focus({preventScroll:true})}});
+      document.body.prepend(skip);
+    }
+    if(!document.querySelector(".crh-reading-progress")){
+      const progress=el("div","crh-reading-progress");progress.setAttribute("role","progressbar");progress.setAttribute("aria-label","Page reading progress");progress.setAttribute("aria-valuemin","0");progress.setAttribute("aria-valuemax","100");progress.setAttribute("aria-valuenow","0");document.body.append(progress);
+      let queued=false;
+      const update=()=>{const max=Math.max(1,document.documentElement.scrollHeight-innerHeight);const value=Math.max(0,Math.min(100,Math.round(scrollY/max*100)));progress.style.width=value+"%";progress.setAttribute("aria-valuenow",String(value));document.querySelector(".crh-back-top")?.classList.toggle("is-visible",scrollY>520);queued=false};
+      const queue=()=>{if(!queued){queued=true;requestAnimationFrame(update)}};
+      addEventListener("scroll",queue,{passive:true});addEventListener("resize",queue,{passive:true});update();
+    }
+    if(!document.querySelector(".crh-back-top")){
+      const top=el("button","crh-back-top");top.type="button";top.setAttribute("aria-label","Back to top");top.innerHTML='<span aria-hidden="true">↑</span><span class="crh-back-label">Back to top</span>';
+      top.addEventListener("click",()=>scrollTo({top:0,behavior:REDUCED()?"auto":"smooth"}));document.body.append(top);
+    }
+    document.querySelectorAll('a[target="_blank"]').forEach(a=>{const rel=new Set((a.rel||"").split(/\s+/).filter(Boolean));rel.add("noopener");rel.add("noreferrer");a.rel=[...rel].join(" ")});
+    const footer=document.querySelector(".addon-foot");
+    if(footer&&!footer.querySelector("[data-cr-policy-links]")){
+      const p=el("p");p.dataset.crPolicyLinks="true";
+      const links=[["Privacy notice","privacy/"],["Community guidelines","community-guidelines/"],["Trust & verification","trust/"]];
+      links.forEach(([label,path],i)=>{if(i)p.append(document.createTextNode(" · "));const a=el("a","",label);a.href=ROOT+path;p.append(a)});footer.append(p);
+    }
+  }
+
+  function init() {
+    if (location.pathname.includes("/admin/")) return;
+    buildHeader();
+    const weatherViews=buildHero();
+    applyWeather(weatherViews);
+    addUtilities();
+  }
+  addSharedStylesheet();
+  onReady(init);
 })();
