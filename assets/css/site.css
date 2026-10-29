@@ -434,3 +434,10 @@ main:has(.chat-experience-full)>.page-heading p{max-width:1000px;font-size:clamp
 @media(max-width:900px){.home-intent-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.home-intent-section{padding:32px 18px 42px}.home-intent-head{align-items:flex-start;flex-direction:column;gap:10px}.home-how-grid{grid-template-columns:1fr}.home-how-section .section{padding-top:36px;padding-bottom:34px}}
 @media(max-width:440px){.home-intent-grid{grid-template-columns:1fr}.home-intent-grid>a{min-height:120px}}
+
+
+/* Sitewide navigation and keyboard accessibility refresh */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.primary-nav a.is-current,.primary-nav a[aria-current="page"]{color:#fff;background:#123247;border:1px solid #326178;border-radius:10px;text-decoration:none}
+.nav-drop-button[aria-expanded="true"]{color:#b1f2ff}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
