@@ -128,8 +128,6 @@ st.textContent="Loading recent chat messages…";
 const {data,error}=await db.from("hub_chat_messages").select("id,room,nickname,body,created_at").order("created_at",{ascending:false}).limit(250);
 if(error){st.textContent="Chat moderation could not load. Verify the moderation migration and admin access.";box.innerHTML="";return}
 const rows=data||[];window.__hubAdminChatRows=rows;
-const rooms=[...new Set(rows.map(m=>m.room))].sort();const current=filter.value;
-filter.innerHTML='<option value="">All channels</option>'+rooms.map(r=>'<option value="'+esc(r)+'">'+esc(roomMetaLabel(r))+'</option>').join("");if(rooms.includes(current))filter.value=current;
 const term=(search.value||"").trim().toLowerCase(),roomFilter=filter.value;
 const filtered=rows.filter(m=>(!roomFilter||m.room===roomFilter)&&(!term||[m.nickname,m.body,m.room].some(v=>String(v||"").toLowerCase().includes(term))));
 st.textContent=filtered.length+" messages shown · "+rows.length+" recent messages loaded";
