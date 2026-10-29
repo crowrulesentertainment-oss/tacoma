@@ -113,7 +113,7 @@ if(nickname.length<2){status(statusEl,"Choose a nickname with at least 2 charact
 if(!body){status(statusEl,"Write a message before sending.","error");return}
 if(body.length>700){status(statusEl,"Messages must be 700 characters or fewer.","error");return}
 const button=$('button[type="submit"]',e.currentTarget);button.disabled=true;button.textContent="Sending…";
-const token=getClientToken("hub_chat_reactor_id");let lastSent=0;try{lastSent=Number(localStorage.getItem("hub_chat_last_sent")||0)}catch(e){}if(Date.now()-lastSent<15000){status(statusEl,"Please wait a few seconds before sending another message.","error");return}const {error}=await db.from("hub_chat_messages").insert({room,nickname,body,client_token:token});
+const token=getClientToken("hub_chat_reactor_id");let lastSent=0;try{lastSent=Number(localStorage.getItem("hub_chat_last_sent")||0)}catch(e){}if(Date.now()-lastSent<15000){button.disabled=false;button.innerHTML='Send message <span aria-hidden="true">↗</span>';status(statusEl,"Please wait a few seconds before sending another message.","error");return}const {error}=await db.from("hub_chat_messages").insert({room,nickname,body,client_token:token});
 button.disabled=false;button.innerHTML='Send message <span aria-hidden="true">↗</span>';
 if(error){status(statusEl,"Message could not be sent. Please wait a moment and try again.","error");return}
 try{localStorage.setItem("hub_chat_nickname",nickname);localStorage.setItem("hub_chat_last_sent",String(Date.now()))}catch(e){}
