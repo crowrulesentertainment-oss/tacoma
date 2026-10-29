@@ -1,0 +1,44 @@
+name: Member email notification worker
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: member-email-notification-worker
+  cancel-in-progress: false
+
+jobs:
+  send-notifications:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Validate required secrets
+        env:
+          HUB_EMAIL_CRON_SECRET: ${{ secrets.HUB_EMAIL_CRON_SECRET }}
+        run: |
+          if [ -z "$HUB_EMAIL_CRON_SECRET" ]; then
+            echo "::error::Add the HUB_EMAIL_CRON_SECRET repository Actions secret before running this workflow."
+            exit 1
+          fi
+      - name: Invoke Supabase notification worker
+        env:
+          HUB_EMAIL_CRON_SECRET: ${{ secrets.HUB_EMAIL_CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          code="$(curl --silent --show-error --output response.json --write-out '%{http_code}' \
+            --request POST \
+            --header "x-hub-cron-secret: ${HUB_EMAIL_CRON_SECRET}" \
+            --header "content-type: application/json" \
+            --data '{}' \
+            "https://cevylpnoexugwgygvtgu.supabase.co/functions/v1/member-email-notifications")"
+          cat response.json
+          echo
+          if [ "$code" -lt 200 ] || [ "$code" -ge 300 ]; then
+            echo "::error::Notification worker returned HTTP $code"
+            exit 1
+          fi
