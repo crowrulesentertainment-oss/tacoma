@@ -31,8 +31,8 @@ for (const file of jsFiles) {
   }
 }
 
-const attrPattern = /\\b(?:href|src|action|poster)\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))/gi;
-const idPattern = /\\b(?:id|name)\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))/gi;
+const attrPattern = /\b(?:href|src|action|poster)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi;
+const idPattern = /\b(?:id|name)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi;
 
 for (const file of htmlFiles) {
   const source = fs.readFileSync(file, "utf8");
@@ -45,7 +45,7 @@ for (const file of htmlFiles) {
   attrPattern.lastIndex = 0;
   while ((match = attrPattern.exec(source))) {
     let raw = (match[1] ?? match[2] ?? match[3] ?? "").trim().replaceAll("&amp;", "&");
-    if (!raw || /^(?:#|\\/\\/|[a-z][a-z0-9+.-]*:)/i.test(raw)) continue;
+    if (!raw || /^(?:#|\/\/|[a-z][a-z0-9+.-]*:)/i.test(raw)) continue;
     let decoded;
     try { decoded = decodeURIComponent(raw); } catch { decoded = raw; }
     const hashAt = decoded.indexOf("#");
@@ -66,7 +66,7 @@ for (const file of htmlFiles) {
       console.error("[BROKEN LINK] " + path.relative(root, file) + " -> " + raw);
       continue;
     }
-    if (fragment && /\\.html?$/i.test(resolved)) {
+    if (fragment && /\.html?$/i.test(resolved)) {
       const targetSource = fs.readFileSync(resolved, "utf8");
       const targetIds = new Set();
       let idMatch;
