@@ -217,3 +217,6 @@ const q=document.querySelector("#admin-queue");if(q)new MutationObserver(()=>{up
   }
 })();
 })();
+
+/* Member entry point is visible across the public Hub; registration remains optional. */
+(()=>{"use strict";document.addEventListener("DOMContentLoaded",()=>{const nav=document.querySelector("#primary-nav");if(nav&&!nav.querySelector('a[href="member.html"]')){const a=document.createElement("a");a.href="member.html";a.textContent="Member";nav.insertBefore(a,nav.querySelector(".nav-submit")||null)}const footer=document.querySelector(".site-footer");if(footer&&!footer.querySelector('a[href="member.html"]')){const a=document.createElement("a");a.href="member.html";a.textContent="Member Dashboard";footer.appendChild(a)}})})();
