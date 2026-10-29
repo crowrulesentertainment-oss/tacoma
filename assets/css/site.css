@@ -226,10 +226,22 @@ main:has(.chat-experience-full)>.page-heading p{max-width:1000px;font-size:clamp
 @media(max-width:430px){.chat-experience-full .chat-live-stats>span{padding:9px}.chat-experience-full .chat-live-stats b{font-size:.95rem}.chat-experience-full .chat-channel-dropdown>summary{gap:8px;padding:10px}.chat-experience-full .chat-channel-menu{left:-1px;right:-1px;padding:8px}.chat-experience-full .chat-channel-menu .room-button{gap:6px;padding:7px;min-height:49px}.chat-experience-full .chat-channel-menu .room-icon{flex-basis:26px;height:26px}.chat-experience-full .chat-channel-menu .room-button-copy strong{font-size:.67rem}.chat-experience-full .chat-messages{min-height:300px;height:56vh}.chat-experience-full .chat-message-head{align-items:flex-start;flex-direction:column;gap:3px}}
 
 
-/* Live per-channel chatter counts */
-.chat-channel-menu .room-button{position:relative;padding-right:58px}
-.room-live-count{display:inline-flex;align-items:center;justify-content:center;gap:3px;position:absolute;right:8px;top:9px;min-width:43px;padding:5px 6px;border:1px solid #285b62;border-radius:999px;background:#0b2b32;color:#a6f1df;font-size:.7rem;font-weight:850;font-variant-numeric:tabular-nums;white-space:nowrap}
-.room-live-count small{font-size:.58rem;color:#91cfc8;font-weight:700}
-.room-live-count:empty{display:none}
-@media(max-width:900px){.chat-channel-menu .room-button{padding-right:8px;padding-top:31px}.chat-channel-menu .room-live-count{top:6px;left:7px;right:auto;padding:3px 6px;font-size:.66rem}}
-@media(max-width:430px){.chat-channel-menu .room-button{padding-top:29px}.chat-channel-menu .room-live-count{top:5px;left:6px}}
+/* Always-visible live chatter totals on every channel in the dropdown */
+.chat-channel-menu .room-button{position:relative;display:flex;align-items:center;padding:10px 62px 10px 10px;min-height:70px}
+.chat-channel-menu .room-button-copy{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.chat-channel-menu .room-button-copy strong,.chat-channel-menu .room-button-copy small{overflow-wrap:anywhere}
+.chat-channel-menu .room-live-count{display:inline-flex!important;align-items:center;justify-content:center;gap:3px;position:absolute;right:7px;top:8px;min-width:48px;padding:5px 7px;border:1px solid #285b62;border-radius:999px;background:#0b2b32;color:#a6f1df;font-size:.72rem;font-weight:850;font-variant-numeric:tabular-nums;white-space:nowrap;z-index:1}
+.chat-channel-menu .room-live-count small{font-size:.58rem;color:#91cfc8;font-weight:800}
+.chat-channel-menu .room-live-count:empty{display:inline-flex!important}
+@media(max-width:900px){
+.chat-channel-menu .room-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+.chat-channel-menu .room-button{padding:34px 8px 10px;min-height:84px;align-items:flex-start}
+.chat-channel-menu .room-button-copy{width:100%}
+.chat-channel-menu .room-live-count{top:6px;left:7px;right:auto;padding:4px 7px;font-size:.68rem}
+}
+@media(max-width:520px){
+.chat-channel-menu{padding:9px}
+.chat-channel-menu .room-list{grid-template-columns:minmax(0,1fr)}
+.chat-channel-menu .room-button{min-height:68px;padding:10px 62px 10px 10px;align-items:center}
+.chat-channel-menu .room-live-count{top:50%;left:auto;right:7px;transform:translateY(-50%);font-size:.7rem}
+}
