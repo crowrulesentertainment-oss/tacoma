@@ -147,6 +147,8 @@ $("[data-channel-toggle]",box).forEach(b=>b.onclick=async()=>{const c=data.find(
 }
 function bindChatChannelAdmin(){
 const form=$("#chat-channel-form");if(!form)return;
+if(!window.__hubAdminChatRealtime){window.__hubAdminChatRealtime=db.channel("hub-admin-chat-moderation").on("postgres_changes",{event:"INSERT",schema:"public",table:"hub_chat_messages"},()=>loadChatModeration()).on("postgres_changes",{event:"DELETE",schema:"public",table:"hub_chat_messages"},()=>loadChatModeration()).subscribe();}
+if(!window.__hubAdminChannelRealtime){window.__hubAdminChannelRealtime=db.channel("hub-admin-chat-channels").on("postgres_changes",{event:"*",schema:"public",table:"hub_chat_channels"},()=>loadAdminChannels()).subscribe();}
 const clear=()=>{form.reset();$("#channel-edit-id").value="";$("#channel-slug").disabled=false;$("#channel-icon").value="◉";$("#channel-order").value="20";$("#channel-enabled").checked=true;$("#channel-save-button").textContent="Save channel"};
 $("#channel-cancel-edit").onclick=clear;
 form.onsubmit=async e=>{e.preventDefault();const st=$("#admin-channel-status"),id=$("#channel-edit-id").value,slug=$("#channel-slug").value.trim().toLowerCase(),title=$("#channel-title").value.trim(),description=$("#channel-description").value.trim(),icon=$("#channel-icon").value.trim()||"◉",sort_order=Number($("#channel-order").value)||0,is_enabled=$("#channel-enabled").checked;
