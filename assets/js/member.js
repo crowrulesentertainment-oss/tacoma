@@ -20,7 +20,13 @@ async function showDashboard(){
  if(dashboard)dashboard.hidden=false;
  $("#member-email-label").textContent=user.email||"";
  $("#member-greeting").textContent="Loading your community dashboard…";
- const profileResult=await client.from("hub_member_profiles").select("display_name,bio,interests").eq("user_id",user.id).maybeSingle();
+ let profileResult=await client.from("hub_member_profiles").select("display_name,bio,interests").eq("user_id",user.id).maybeSingle();
+ if(!profileResult.error&&!profileResult.data){
+   const created=await client.from("hub_member_profiles").insert({user_id:user.id,display_name:"Community Member",bio:"",interests:[]}).select("display_name,bio,interests").single();
+   if(!created.error) profileResult={data:created.data,error:null};
+   else if(created.error.code==="23505") profileResult=await client.from("hub_member_profiles").select("display_name,bio,interests").eq("user_id",user.id).maybeSingle();
+   else profileResult={data:null,error:created.error};
+ }
  if(profileResult.error){
    msg("#member-profile-status","Your dashboard is open, but your profile could not be loaded: "+profileResult.error.message,"error");
    profile=null;
