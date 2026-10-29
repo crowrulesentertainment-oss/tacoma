@@ -14,40 +14,46 @@ async function resetPassword(){const email=$("#member-email").value.trim();if(!e
 async function resendConfirmation(){const email=$("#member-email").value.trim();if(!email){msg("#member-auth-status","Enter the email address you used to register first.","error");$("#member-email").focus();return}if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg("#member-auth-status","Enter a valid email address first.","error");$("#member-email").focus();return}const b=$("#member-resend-confirmation");b.disabled=true;const original=b.textContent;b.textContent="Sending…";msg("#member-auth-status","Requesting a new confirmation email…");try{const {error}=await client.auth.resend({type:"signup",email,options:{emailRedirectTo:location.origin+location.pathname}});if(error)throw error;msg("#member-auth-status","If this address has a pending signup, a new confirmation email has been requested. Check your inbox and spam folder.","success");b.textContent="Please wait before requesting again";setTimeout(()=>{b.disabled=false;b.textContent=original},30000)}catch(x){msg("#member-auth-status",x.message||"We couldn't request a confirmation email. Please try again shortly.","error");b.disabled=false;b.textContent=original}}
 async function signOut(){await client.auth.signOut();user=null;showAuth()}
 async function showDashboard(){
- if(!user)return;
+ const activeUser=user;
+ if(!activeUser||!client)return;
  const auth=$("#member-auth"),dashboard=$("#member-dashboard");
- if(auth)auth.hidden=true;
  if(dashboard)dashboard.hidden=false;
- $("#member-email-label").textContent=user.email||"";
- $("#member-greeting").textContent="Loading your community dashboard…";
- let profileResult=await client.from("hub_member_profiles").select("display_name,bio,interests").eq("user_id",user.id).maybeSingle();
- if(!profileResult.error&&!profileResult.data){
-   const created=await client.from("hub_member_profiles").insert({user_id:user.id,display_name:"Community Member",bio:"",interests:[]}).select("display_name,bio,interests").single();
-   if(!created.error) profileResult={data:created.data,error:null};
-   else if(created.error.code==="23505") profileResult=await client.from("hub_member_profiles").select("display_name,bio,interests").eq("user_id",user.id).maybeSingle();
-   else profileResult={data:null,error:created.error};
- }
- if(profileResult.error){
-   msg("#member-profile-status","Your dashboard is open, but your profile could not be loaded: "+profileResult.error.message,"error");
-   profile=null;
- }else{
-   profile=profileResult.data;
+ if(auth)auth.hidden=true;
+ const greeting=$("#member-greeting"),emailLabel=$("#member-email-label");
+ if(emailLabel)emailLabel.textContent=activeUser.email||"";
+ if(greeting)greeting.textContent="Loading your community dashboard…";
+ try{
+   const {data,error}=await client.from("hub_member_profiles").select("display_name,bio,interests").eq("user_id",activeUser.id).maybeSingle();
+   if(error)throw error;
+   let loaded=data;
+   if(!loaded){
+     const created=await client.from("hub_member_profiles").insert({user_id:activeUser.id,display_name:"Community Member",bio:"",interests:[]}).select("display_name,bio,interests").single();
+     if(created.error&&created.error.code==="23505"){
+       const retry=await client.from("hub_member_profiles").select("display_name,bio,interests").eq("user_id",activeUser.id).maybeSingle();
+       if(retry.error)throw retry.error;
+       loaded=retry.data;
+     }else if(created.error)throw created.error;
+     else loaded=created.data;
+   }
+   if(user?.id!==activeUser.id)return;
+   profile=loaded||null;
+   const name=$("#member-display-name"),bio=$("#member-bio");
    if(profile){
-     $("#member-display-name").value=profile.display_name||"";
-     $("#member-bio").value=profile.bio||"";
+     if(name)name.value=profile.display_name||"";
+     if(bio)bio.value=profile.bio||"";
      document.querySelectorAll(".interest-grid input").forEach(c=>c.checked=(profile.interests||[]).includes(c.value));
    }
-   $("#member-greeting").textContent=profile?.display_name?"Welcome, "+profile.display_name:"Welcome to your community space";
+   if(greeting)greeting.textContent=profile?.display_name?"Welcome, "+profile.display_name:"Welcome to your community space";
+   msg("#member-profile-status","Your profile is loaded. You can update it below.","success");
+ }catch(error){
+   console.error("Tacoma Hub dashboard profile load failed:",error);
+   if(greeting)greeting.textContent="Your community dashboard";
+   msg("#member-profile-status","Your dashboard is open, but the profile could not be loaded: "+(error?.message||"Unexpected error"),"error");
  }
- const tasks=[
-   ["email preferences",loadEmailPreferences],
-   ["saved favorites",loadFavorites],
-   ["recommendations",loadPersonalized],
-   ["activity",loadActivity]
- ];
- const results=await Promise.allSettled(tasks.map(([,fn])=>fn()));
+ const tasks=[["email preferences",loadEmailPreferences],["saved favorites",loadFavorites],["recommendations",loadPersonalized],["activity",loadActivity]];
+ const results=await Promise.allSettled(tasks.map(([,fn])=>Promise.resolve().then(fn)));
  const failed=results.map((r,i)=>r.status==="rejected"?tasks[i][0]:null).filter(Boolean);
- if(failed.length)msg("#member-profile-status","Your dashboard loaded, but some sections could not load: "+failed.join(", ")+". Refresh the page to try again.","error");
+ if(failed.length)msg("#member-profile-status","Your dashboard is open. Some sections could not load: "+failed.join(", ")+". Your profile remains available above.","error");
 }
 async function loadPersonalized(){if(!user)return;const interestList=profile?.interests||[];$("#stat-interests").textContent=interestList.length;$("#member-recommendations").innerHTML='<p class="small-muted">Finding community listings for your interests…</p>';$("#member-upcoming").innerHTML='<p class="small-muted">Loading upcoming events…</p>';const {data:listingData,error}=await client.from("hub_listings").select("id,kind,title,summary,category,neighborhood,address_or_area,start_at,cost,website,created_at").eq("status","approved").order("created_at",{ascending:false}).limit(150);if(error){$("#member-recommendations").textContent="Recommendations are temporarily unavailable." ;$("#member-upcoming").textContent="Events are temporarily unavailable.";return}const all=listingData||[];const {data:favs}=await client.from("hub_member_favorites").select("id,listing_id,created_at,hub_listings(id,kind,title,summary,category,neighborhood,address_or_area,start_at,cost,website,created_at)").eq("user_id",user.id).order("created_at",{ascending:false}).limit(100);const favoriteRows=(favs||[]).filter(x=>x.hub_listings).map(x=>({...x.hub_listings,favorite_id:x.id,saved_at:x.created_at}));$("#stat-favorites").textContent=favoriteRows.length;const upcoming=all.filter(r=>r.kind==="event"&&r.start_at&&new Date(r.start_at).getTime()>=Date.now()).sort((a,b)=>new Date(a.start_at)-new Date(b.start_at));$("#stat-upcoming").textContent=upcoming.length;const favIds=new Set(favoriteRows.map(r=>r.id));const score=r=>{let n=0;const text=[r.kind,r.category,r.title,r.summary,r.neighborhood].join(" ").toLowerCase();for(const interest of interestList){const words=interest.toLowerCase().replace(/&/g," ").split(/\s+/).filter(w=>w.length>2);if(words.some(w=>text.includes(w)))n+=2}if(r.kind==="event")n+=1;if(!favIds.has(r.id))n+=1;return n};const recommended=all.filter(r=>!favIds.has(r.id)).map(r=>({...r,_score:score(r)})).sort((a,b)=>b._score-a._score||new Date(b.created_at)-new Date(a.created_at)).slice(0,6);const renderList=(rows,target,empty)=>{const box=$(target);box.innerHTML=rows.length?rows.map(r=>rowCard(r,false)).join(""):'<p class="small-muted">'+empty+'</p>';box.querySelectorAll("[data-save]").forEach(b=>b.addEventListener("click",async()=>{await saveFavorite(b.dataset.save,b);await loadPersonalized()}))};renderList(recommended,"#member-recommendations",interestList.length?"No recommendations yet. Try adding interests or check back later.":"Choose interests in your profile to personalize recommendations.");renderList(upcoming.slice(0,6),"#member-upcoming","No upcoming events are listed right now.");renderList(favoriteRows.slice(0,5),"#member-recent","Your recently saved items will appear here after you save a listing.")}
 async function saveProfile(e){e.preventDefault();const display_name=$("#member-display-name").value.trim(),bio=$("#member-bio").value.trim(),interests=[...document.querySelectorAll(".interest-grid input:checked")].map(c=>c.value);if(display_name.length<2){msg("#member-profile-status","Display name must be at least 2 characters.","error");return}const {error}=await client.from("hub_member_profiles").upsert({user_id:user.id,display_name,bio,interests,updated_at:new Date().toISOString()},{onConflict:"user_id"});msg("#member-profile-status",error?error.message:"Profile saved.",""+(error?"error":"success"));if(!error)$("#member-greeting").textContent="Welcome, "+display_name}
