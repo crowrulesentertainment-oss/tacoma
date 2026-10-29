@@ -26,3 +26,8 @@ Basic listings are free. Hub is an independent project, not an official City of 
 
 ## Image attribution
 Hero: Joe Mabel, “Commencement Bay, Tacoma, WA - 2017-04-09 - 11.jpg”, Wikimedia Commons, CC BY-SA 4.0. Source/license link appears in footer.
+
+
+## Chat reactions migration (added 2026-10-29)
+
+The chat UI uses `public.hub_chat_reactions` for emoji reactions. GitHub Pages does not execute database migrations automatically. If chat reactions currently show a database error, open Supabase Dashboard → SQL Editor for project `cevylpnoexugwgygvtgu`, then run the contents of `supabase/migrations/20261029000000_create_chat_reactions.sql`. This migration creates the table, indexes, row-level security policies, and public read/insert grants. Never place a service-role key in browser configuration.
