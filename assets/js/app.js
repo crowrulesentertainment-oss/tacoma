@@ -44,19 +44,45 @@ if(data&&!reactionRows.some(r=>r.id===data.id))reactionRows.push(data);draw()
 }
 function updateRoomCounts(){
 if(!globalPresenceChannel)return;
-const states=globalPresenceChannel.presenceState(),counts={};
-Object.values(states).flat().forEach(p=>{if(p&&p.room)counts[p.room]=(counts[p.room]||0)+1});
-$(".room-live-count").forEach(el=>{const n=counts[el.dataset.roomCount]||0;el.innerHTML=n+' <small>live</small>';el.setAttribute("aria-label",n+" "+(n===1?"person":"people")+" chatting")});
-onlineEl.textContent=String(counts[room]||0)
+const states=globalPresenceChannel.presenceState(),counts=Object.create(null);
+// Count each Realtime presence key once per room. A key can briefly contain
+// multiple metadata records while a visitor changes rooms or reconnects.
+Object.entries(states).forEach(([key,entries])=>{
+const list=Array.isArray(entries)?entries:[];
+const latest=[...list].reverse().find(p=>p&&typeof p.room==="string");
+if(!latest)return;
+counts[latest.room]=(counts[latest.room]||0)+1;
+});
+$(".room-live-count").forEach(el=>{
+const n=counts[el.dataset.roomCount]||0;
+el.textContent=String(n)+" ";
+const small=document.createElement("small");small.textContent="live";el.appendChild(small);
+el.setAttribute("aria-label",n+" "+(n===1?"person":"people")+" chatting");
+});
+onlineEl.textContent=String(counts[room]||0);
 }
 function ensureGlobalPresence(){
 if(globalPresenceChannel)return;
-let presenceKey;try{presenceKey=sessionStorage.getItem("hub_chat_presence_id");if(!presenceKey){presenceKey=crypto.randomUUID();sessionStorage.setItem("hub_chat_presence_id",presenceKey)}}catch(e){presenceKey=crypto.randomUUID?.()||String(Date.now())}
+let presenceKey;
+try{
+presenceKey=sessionStorage.getItem("hub_chat_presence_id");
+if(!presenceKey){presenceKey=(crypto.randomUUID?crypto.randomUUID():"hub-"+Date.now()+"-"+Math.random().toString(36).slice(2));sessionStorage.setItem("hub_chat_presence_id",presenceKey)}
+}catch(e){presenceKey=(crypto.randomUUID?crypto.randomUUID():"hub-"+Date.now()+"-"+Math.random().toString(36).slice(2))}
 globalPresenceChannel=db.channel("hub-chat-all-room-presence",{config:{presence:{key:presenceKey}}})
 .on("presence",{event:"sync"},updateRoomCounts)
 .on("presence",{event:"join"},updateRoomCounts)
 .on("presence",{event:"leave"},updateRoomCounts)
-.subscribe(state=>{if(state==="SUBSCRIBED"){connectionEl.textContent="Live";globalPresenceChannel.track({room,nickname:(nicknameEl.value.trim().slice(0,32)||"Neighbor"),joined_at:new Date().toISOString()}).catch(()=>{})}else if(state==="CHANNEL_ERROR"||state==="TIMED_OUT"){connectionEl.textContent="Reconnecting"}else if(state==="CLOSED"){connectionEl.textContent="Offline"}});
+.subscribe(async state=>{
+if(state==="SUBSCRIBED"){
+connectionEl.textContent="Live";
+try{
+await globalPresenceChannel.track({room,nickname:(nicknameEl.value.trim().slice(0,32)||"Neighbor"),joined_at:new Date().toISOString()});
+updateRoomCounts();
+}catch(e){connectionEl.textContent="Presence unavailable";onlineEl.textContent="—"}
+}else if(state==="CHANNEL_ERROR"||state==="TIMED_OUT"){
+connectionEl.textContent="Presence unavailable";onlineEl.textContent="—";
+}else if(state==="CLOSED"){connectionEl.textContent="Offline";onlineEl.textContent="—"}
+});
 }
 async function switchRoom(next){
 room=next;roomEpoch++;rows=[];reactionRows=[];onlineEl.textContent="—";connectionEl.textContent="Connecting";
