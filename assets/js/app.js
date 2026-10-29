@@ -95,7 +95,7 @@ if(globalPresenceChannel)try{await globalPresenceChannel.track({room,nickname:(n
 const epoch=roomEpoch;
 roomChannel=db.channel("hub-chat-"+room)
 .on("postgres_changes",{event:"INSERT",schema:"public",table:"hub_chat_messages",filter:"room=eq."+room},payload=>{if(epoch!==roomEpoch)return;const m=payload.new;if(m&&m.id&&!rows.some(x=>x.id===m.id)){rows=[...rows,m].slice(-100);draw()}})
-.on("postgres_changes",{event:"DELETE",schema:"public",table:"hub_chat_messages",filter:"room=eq."+room},payload=>{if(epoch!==roomEpoch)return;const id=payload.old&&payload.old.id;if(id){rows=rows.filter(x=>x.id!==id);reactionRows=reactionRows.filter(x=>x.message_id!==id);draw()}})
+.on("postgres_changes",{event:"DELETE",schema:"public",table:"hub_chat_messages"},payload=>{if(epoch!==roomEpoch)return;const id=payload.old&&payload.old.id;if(id){rows=rows.filter(x=>x.id!==id);reactionRows=reactionRows.filter(x=>x.message_id!==id);draw()}})
 .on("postgres_changes",{event:"INSERT",schema:"public",table:"hub_chat_reactions",filter:"room=eq."+room},payload=>{if(epoch!==roomEpoch)return;const r=payload.new;if(r&&r.id&&!reactionRows.some(x=>x.id===r.id)){reactionRows=[...reactionRows,r];draw()}})
 .subscribe(async state=>{if(epoch!==roomEpoch)return;if(state==="SUBSCRIBED"){connectionEl.textContent="Live";updateRoomCounts()}else if(state==="CHANNEL_ERROR"||state==="TIMED_OUT"){connectionEl.textContent="Reconnecting"}else if(state==="CLOSED"){connectionEl.textContent="Offline"}});
 loadChat(epoch)
