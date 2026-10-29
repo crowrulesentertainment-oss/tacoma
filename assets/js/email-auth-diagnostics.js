@@ -53,13 +53,30 @@ async function runRoleTest(){
  }catch(e){record.note="Request failed or browser could not read response";set("INCONCLUSIVE · Could not complete the role check. Check the browser network/CORS console.");}
  finally{save(record);btn.disabled=false;}
 }
+async function runInvalidTokenTest(){
+ const btn=$("#ops-invalid-token-test");if(!btn||btn.disabled)return;
+ const base=String(cfg.url||"").replace(/\/$/,"");
+ const out=$("#ops-invalid-token-status");
+ const set=(t,ok=false)=>{if(out){out.textContent=t;out.className=ok?"ops-alert ops-success":"ops-alert";}};
+ if(!base||!cfg.key){set("Cannot test: Supabase configuration is unavailable.");return;}
+ btn.disabled=true;set("Sending a read-only request with a deliberately invalid token…");
+ const record={time:new Date().toISOString(),test:"Invalid session token",status:null,outcome:"INCONCLUSIVE",note:""};
+ try{
+  const response=await fetch(base+"/functions/v1/member-email-operations",{method:"GET",cache:"no-store",headers:{"Authorization":"Bearer invalid.test.token","apikey":cfg.key}});
+  record.status=response.status;
+  if(response.status===401){record.outcome="PASS";record.note="Invalid bearer token rejected";set("PASS · HTTP 401 Unauthorized · Invalid session token rejected.",true);}
+  else if(response.status===403){record.outcome="FAIL";record.note="Invalid token reached role authorization";set("NOT PASSED · HTTP 403. The endpoint should reject an invalid token with 401.");}
+  else{record.outcome="FAIL";record.note="Unexpected HTTP response";set("NOT PASSED · HTTP "+response.status+" · Expected 401 for an invalid token.");}
+ }catch(e){record.outcome="INCONCLUSIVE";record.note="Browser could not read endpoint response (network/CORS)";set("INCONCLUSIVE · Browser could not read the response. Check network/CORS.");}
+ finally{save(record);btn.disabled=false;}
+}
 function csvCell(v){return '"'+String(v??"").replace(/"/g,'""')+'"';}
 function exportHistory(){const list=read();if(!list.length){const s=$("#ops-security-history-status");if(s)s.textContent="Nothing to export yet.";return;}
  const csv=[["time","test","http_status","outcome","note"],...list.map(x=>[x.time,x.test,x.status??"",x.outcome,x.note||""])].map(row=>row.map(csvCell).join(",")).join("\r\n");
  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="tacoma-security-test-history.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 function init(){
- const b=$("#ops-auth-test");if(b)b.addEventListener("click",run);\n const rb=$("#ops-role-test");if(rb)rb.addEventListener("click",runRoleTest);
+ const b=$("#ops-auth-test");if(b)b.addEventListener("click",run);\n const rb=$("#ops-role-test");if(rb)rb.addEventListener("click",runRoleTest);\n const ib=$("#ops-invalid-token-test");if(ib)ib.addEventListener("click",runInvalidTokenTest);
  const exp=$("#ops-security-export");if(exp)exp.addEventListener("click",exportHistory);
  const clear=$("#ops-security-clear");if(clear)clear.addEventListener("click",()=>{if(!window.confirm("Clear only this browser's saved security-test history? This will not affect server records."))return;try{localStorage.removeItem(KEY);render();}catch{const s=$("#ops-security-history-status");if(s)s.textContent="Browser blocked local storage; history could not be cleared."; }});
  render();
