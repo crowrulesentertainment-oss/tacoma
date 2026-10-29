@@ -1,0 +1,19 @@
+{
+  "name": "Tacoma Community Hub",
+  "short_name": "Tacoma Hub",
+  "description": "A free community-first guide to Tacoma and Pierce County.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#07131f",
+  "theme_color": "#07131f",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/img/tacoma-hub-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
