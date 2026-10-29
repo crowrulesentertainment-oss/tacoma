@@ -36,3 +36,14 @@ The chat UI uses `public.hub_chat_reactions` for emoji reactions. GitHub Pages d
 ## Moderator chat removal migration (added 2026-10-29)
 
 The moderator Control Room can remove chat messages. The live Supabase project has the matching moderator-only row-level security policy applied. For a fresh environment, run `supabase/migrations/20261029010000_moderator_chat_delete.sql` after the base Hub schema. The policy permits deletes only when the signed-in user has a row in `public.hub_admins`; anonymous visitors do not receive a delete policy.
+
+
+## Public submission and chat spam controls (added 2026-10-29)
+
+The migration `supabase/migrations/20261029020000_public_spam_protection.sql` is applied to the live Supabase project. It adds server-side insert triggers for listing submissions, chat messages and reports; normalizes user-entered text; forces public listing inserts to `pending`; forces reports to `open`; validates URL/date/chat-room fields; and applies per-browser-token cooldowns (60 seconds for listings, 15 seconds for chat, 30 seconds for reports). The private throttle table is not readable or writable by anonymous/authenticated clients and stale rows are cleaned up after seven days.
+
+The public forms also use a honeypot and a short minimum interaction time, and the browser disables duplicate submissions while requests are in flight. These controls reduce casual spam but a browser UUID can be changed by a determined bot. For stronger abuse resistance, the next security step is an Edge Function with IP-based throttling and a CAPTCHA/Turnstile verification secret; do not put CAPTCHA secrets or service-role keys in GitHub Pages JavaScript.
+
+### Workflow checks performed
+
+A transaction-based Supabase test confirmed anonymous-role inserts for listings, chat messages and reports pass the intended policies; public listing inserts are forced to `pending`; public visitors cannot read pending listings; an approved listing is visible to the public; and repeated writes with the same token are throttled. Test records were rolled back or removed, so the checks did not publish test content.
