@@ -13,6 +13,7 @@ create table if not exists public.hub_public_rate_limits (
 );
 alter table public.hub_public_rate_limits enable row level security;
 revoke all on public.hub_public_rate_limits from public, anon, authenticated;
+create index if not exists hub_public_rate_limits_last_at_idx on public.hub_public_rate_limits(last_at);
 
 create or replace function public.hub_guard_public_write()
 returns trigger
@@ -106,6 +107,7 @@ begin
   insert into public.hub_public_rate_limits(client_token, action, last_at)
   values (v_token, v_action, now())
   on conflict (client_token, action) do update set last_at = excluded.last_at;
+  delete from public.hub_public_rate_limits where last_at < now() - interval '7 days';
 
   return new;
 end;
