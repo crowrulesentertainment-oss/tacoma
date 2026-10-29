@@ -44,7 +44,7 @@ if(data&&!reactionRows.some(r=>r.id===data.id))reactionRows.push(data);draw()
 }
 async function switchRoom(next){
 room=next;roomEpoch++;rows=[];reactionRows=[];onlineEl.textContent="—";connectionEl.textContent="Connecting";
-const meta=roomMeta[room]||[room,"Community conversation"];roomTitle.textContent=meta[0];roomDesc.textContent=meta[1];
+const meta=roomMeta[room]||[room,"Community conversation"];roomTitle.textContent=meta[0];roomDesc.textContent=meta[1];const selectedChannel=$("#chat-selected-channel");if(selectedChannel)selectedChannel.textContent=meta[0];const channelDropdown=$(".chat-channel-dropdown");if(channelDropdown)channelDropdown.open=false;
 $$(".room-button").forEach(b=>{const active=b.dataset.room===room;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active))});
 messageBox.innerHTML='<div class="empty-state">Opening '+esc(meta[0])+'…</div>';countEl.textContent="Connecting to room…";
 if(roomChannel){try{await db.removeChannel(roomChannel)}catch(e){}roomChannel=null}
