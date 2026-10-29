@@ -197,4 +197,23 @@ const content=section.querySelector("#admin-content");if(content){content.classL
 const update=()=>{const pc=document.querySelector("#admin-pending-count"),rc=document.querySelector("#admin-report-count"),ac=document.querySelector("#admin-auth-state");const q=document.querySelector("#admin-queue"),r=document.querySelector("#admin-reports"),countRows=el=>el?el.querySelectorAll("tbody tr").length:0;if(pc&&q)pc.textContent=String(countRows(q));if(rc&&r)rc.textContent=String(countRows(r));const authorized=!!content&&!content.classList.contains("hidden");if(ac)ac.textContent=authorized?"Authorized":"Sign-in required";const ws=document.querySelector("#admin-workspace-status"),rt=document.querySelector("#admin-refresh-time");if(ws)ws.textContent=authorized?"Authorized session · "+countRows(q)+" pending · "+countRows(r)+" open reports":"Waiting for authorized session";if(rt)rt.textContent="Updated "+new Date().toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"})};
 const filter=()=>{const input=document.querySelector("#admin-queue-search");if(!input)return;const rows=[...document.querySelectorAll("#admin-queue tbody tr")],term=input.value.trim().toLowerCase();let shown=0;rows.forEach(row=>{row.hidden=!!term&&!row.textContent.toLowerCase().includes(term);if(!row.hidden)shown++});const c=document.querySelector("#admin-filter-count");if(c)c.textContent=term?shown+" of "+rows.length+" submissions shown":rows.length+" submissions in queue"};
 const q=document.querySelector("#admin-queue");if(q)new MutationObserver(()=>{update();filter()}).observe(q,{childList:true,subtree:true,characterData:true});document.querySelector("#admin-queue-search")?.addEventListener("input",filter);document.querySelector("#admin-refresh")?.addEventListener("click",()=>{const ws=document.querySelector("#admin-workspace-status");if(ws)ws.textContent="Refreshing…";if(typeof loadQueue==="function"){loadQueue().then(()=>{update();filter()}).catch(()=>{if(ws)ws.textContent="Refresh failed. Check connection and permissions."})}else location.reload()});const csvDownload=(selector,filename,headers,visibleOnly)=>{const rows=[...document.querySelectorAll(selector+" tbody tr")].filter(x=>!visibleOnly||!x.hidden);if(!rows.length){alert("There are no rows available to export.");return}const csv=[headers,...rows.map(x=>[x.cells[0]?.innerText||"",x.cells[1]?.innerText||""])].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""').replace(/\r?\n/g," ")+'"').join(",")).join("\r\n");const url=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"})),a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)};document.querySelector("#admin-export")?.addEventListener("click",()=>csvDownload("#admin-queue","tacoma-hub-review-queue.csv",["Submission","Type"],true));document.querySelector("#admin-export-reports")?.addEventListener("click",()=>csvDownload("#admin-reports","tacoma-hub-open-reports.csv",["Report","Type"],false));if(content)new MutationObserver(update).observe(content,{attributes:true,attributeFilter:["class"]});setTimeout(()=>{update();filter()},500);
-});})();
+});
+// Progressive Web App: install support and offline shell for the GitHub Pages subpath.
+(function enableTacomaPWA(){
+  const head=document.head;
+  if(head&&!head.querySelector('link[rel="manifest"]')){
+    const manifest=document.createElement("link");manifest.rel="manifest";manifest.href=new URL("./manifest.webmanifest",location.href).href;head.appendChild(manifest);
+  }
+  if(head&&!head.querySelector('meta[name="apple-mobile-web-app-capable"]')){
+    const apple=document.createElement("meta");apple.name="apple-mobile-web-app-capable";apple.content="yes";head.appendChild(apple);
+    const title=document.createElement("meta");title.name="apple-mobile-web-app-title";title.content="Tacoma Hub";head.appendChild(title);
+  }
+  if("serviceWorker" in navigator && location.protocol==="https:"){
+    window.addEventListener("load",()=>{
+      navigator.serviceWorker.register(new URL("./sw.js",location.href),{scope:"./"})
+        .then(reg=>{reg.update().catch(()=>{});})
+        .catch(error=>console.warn("Tacoma Hub offline support could not start:",error));
+    },{once:true});
+  }
+})();
+})();
