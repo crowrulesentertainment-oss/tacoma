@@ -32,13 +32,34 @@ async function run(){
  }catch(e){record.outcome="INCONCLUSIVE";record.note="Browser could not read endpoint response (network/CORS)";show("TEST INCONCLUSIVE · Browser could not read the endpoint response. Check network/CORS and try again.");}
  finally{save(record);running=false;btn.disabled=false;}
 }
+async function runRoleTest(){
+ const btn=$("#ops-role-test");if(!btn||btn.disabled)return;
+ const base=String(cfg.url||"").replace(/\/$/,"");
+ const out=$("#ops-role-test-status");
+ const set=(t,ok=false)=>{if(out){out.textContent=t;out.className=ok?"ops-alert ops-success":"ops-alert";}};
+ if(!base||!cfg.key||!window.supabase){set("Cannot test: Supabase client configuration is unavailable.");return;}
+ btn.disabled=true;set("Checking the current signed-in session…");
+ let record={time:new Date().toISOString(),test:"Signed-in member role",status:null,outcome:"INCONCLUSIVE",note:""};
+ try{
+  const client=window.supabase.createClient(cfg.url,cfg.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  const {data,error}=await client.auth.getSession();if(error)throw error;
+  const token=data?.session?.access_token;if(!token){set("No signed-in session found. Sign in with an ordinary member account, then try again.");record.note="No active session";return;}
+  const response=await fetch(base+"/functions/v1/member-email-operations",{method:"GET",cache:"no-store",headers:{"Authorization":"Bearer "+token,"apikey":cfg.key}});
+  record.status=response.status;
+  if(response.status===403){record.outcome="PASS";record.note="Signed-in account denied administrator-only access";set("PASS · HTTP 403 Forbidden · Signed-in account is not authorized as an administrator.",true);}
+  else if(response.status===200){record.outcome="FAIL";record.note="This account was authorized; likely an administrator session";set("NOT PASSED · HTTP 200. This account has administrator access. Sign out and use a normal member account.");}
+  else if(response.status===401){record.outcome="INCONCLUSIVE";record.note="Session was rejected or expired";set("INCONCLUSIVE · HTTP 401. Refresh/sign in again, then repeat with an ordinary member account.");}
+  else{record.outcome="INCONCLUSIVE";record.note="Unexpected HTTP response";set("INCONCLUSIVE · HTTP "+response.status+" · Unexpected response.");}
+ }catch(e){record.note="Request failed or browser could not read response";set("INCONCLUSIVE · Could not complete the role check. Check the browser network/CORS console.");}
+ finally{save(record);btn.disabled=false;}
+}
 function csvCell(v){return '"'+String(v??"").replace(/"/g,'""')+'"';}
 function exportHistory(){const list=read();if(!list.length){const s=$("#ops-security-history-status");if(s)s.textContent="Nothing to export yet.";return;}
  const csv=[["time","test","http_status","outcome","note"],...list.map(x=>[x.time,x.test,x.status??"",x.outcome,x.note||""])].map(row=>row.map(csvCell).join(",")).join("\r\n");
  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="tacoma-security-test-history.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 function init(){
- const b=$("#ops-auth-test");if(b)b.addEventListener("click",run);
+ const b=$("#ops-auth-test");if(b)b.addEventListener("click",run);\n const rb=$("#ops-role-test");if(rb)rb.addEventListener("click",runRoleTest);
  const exp=$("#ops-security-export");if(exp)exp.addEventListener("click",exportHistory);
  const clear=$("#ops-security-clear");if(clear)clear.addEventListener("click",()=>{if(!window.confirm("Clear only this browser's saved security-test history? This will not affect server records."))return;try{localStorage.removeItem(KEY);render();}catch{const s=$("#ops-security-history-status");if(s)s.textContent="Browser blocked local storage; history could not be cleared."; }});
  render();
