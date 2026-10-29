@@ -24,6 +24,17 @@ create policy "Admins can manage chat channels" on public.hub_chat_channels
   using (exists (select 1 from public.hub_admins a where a.user_id = (select auth.uid())))
   with check (exists (select 1 from public.hub_admins a where a.user_id = (select auth.uid())));
 grant select, delete on public.hub_chat_messages to authenticated;
+drop policy if exists "hub visitors can post chat" on public.hub_chat_messages;
+create policy "hub visitors can post chat" on public.hub_chat_messages
+  for insert to anon, authenticated
+  with check (
+    char_length(nickname) between 2 and 32
+    and char_length(body) between 1 and 700
+    and exists (
+      select 1 from public.hub_chat_channels c
+      where c.slug = hub_chat_messages.room and c.is_enabled = true
+    )
+  );
 drop policy if exists "Admins can read all chat messages" on public.hub_chat_messages;
 create policy "Admins can read all chat messages" on public.hub_chat_messages
   for select to authenticated
