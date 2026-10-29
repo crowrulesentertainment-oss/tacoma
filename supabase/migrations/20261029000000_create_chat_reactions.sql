@@ -17,13 +17,16 @@ create index if not exists hub_chat_reactions_room_idx
   on public.hub_chat_reactions(room, created_at desc);
 create index if not exists hub_chat_reactions_message_idx
   on public.hub_chat_reactions(message_id);
+create unique index if not exists hub_chat_reactions_once_per_visitor
+  on public.hub_chat_reactions(message_id, visitor_id, reaction);
 alter table public.hub_chat_reactions enable row level security;
 grant select, insert on public.hub_chat_reactions to anon, authenticated;
 drop policy if exists "Public can read chat reactions" on public.hub_chat_reactions;
 create policy "Public can read chat reactions" on public.hub_chat_reactions
   for select to anon, authenticated using (true);
+drop policy if exists "Visitors can add chat reactions" on public.hub_chat_reactions;
 drop policy if exists "Visitors can add one reaction per type" on public.hub_chat_reactions;
-create policy "Visitors can add one reaction per type" on public.hub_chat_reactions
+create policy "Visitors can add chat reactions" on public.hub_chat_reactions
   for insert to anon, authenticated
   with check (
     exists (
