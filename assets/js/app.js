@@ -46,7 +46,7 @@ function updateRoomCounts(){
 if(!globalPresenceChannel)return;
 const states=globalPresenceChannel.presenceState(),counts={};
 Object.values(states).flat().forEach(p=>{if(p&&p.room)counts[p.room]=(counts[p.room]||0)+1});
-$("#chat .room-live-count, .chat-channel-menu .room-live-count, .room-live-count").forEach(el=>{const n=counts[el.dataset.roomCount]||0;el.innerHTML=n+' <small>'+(n===1?'here':'here')+'</small>';el.setAttribute("aria-label",n+" "+(n===1?"person":"people")+" chatting")});
+$(".room-live-count").forEach(el=>{const n=counts[el.dataset.roomCount]||0;el.innerHTML=n+' <small>live</small>';el.setAttribute("aria-label",n+" "+(n===1?"person":"people")+" chatting")});
 onlineEl.textContent=String(counts[room]||0)
 }
 function ensureGlobalPresence(){
