@@ -655,3 +655,20 @@ button:disabled,.button:disabled{opacity:.58;cursor:not-allowed}
 .chat-member-tag{color:#8be7c0;background:rgba(52,170,120,.14);border:1px solid rgba(88,210,157,.25)}
 .chat-guest-tag{color:#b7c4cc;background:rgba(160,180,195,.09);border:1px solid rgba(160,180,195,.18)}
 .chat-compose-identity[hidden]{display:none!important}
+
+/* Community contribution pathway — homepage */
+.home-contribute-section{max-width:1160px;margin:0 auto;padding:54px 22px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:28px;align-items:center}
+.home-contribute-copy{padding:clamp(22px,4vw,38px);border:1px solid #367087;border-radius:20px;background:linear-gradient(145deg,#102d40,#0a1b29);box-shadow:0 18px 48px #0003}
+.home-contribute-copy h2{font:800 clamp(1.8rem,3.4vw,2.65rem)/1.12 Manrope,sans-serif;letter-spacing:-.045em;margin:10px 0 14px;color:#f0f8fc}
+.home-contribute-copy>p{color:#c0d1dc;line-height:1.75;margin:10px 0}.home-contribute-copy>p strong{color:#fff}
+.home-contribute-points{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 24px}
+.home-contribute-points span{padding:8px 11px;border:1px solid #31596c;border-radius:999px;background:#071a27;color:#c9eff6;font-size:.78rem;font-weight:700}
+.home-contribute-copy .button-primary{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.home-review-steps{display:grid;gap:13px}
+.home-review-steps article{display:grid;grid-template-columns:42px minmax(0,1fr);gap:13px;align-items:start;padding:17px;border:1px solid #29475a;border-radius:14px;background:linear-gradient(145deg,#102536,#091925)}
+.home-review-steps article>span{display:grid;place-items:center;width:38px;height:38px;border:1px solid #4cbad1;border-radius:11px;color:#8ceaff;font:800 .75rem Manrope,sans-serif}
+.home-review-steps article strong{display:block;color:#f1f8fb;font:700 1rem Manrope,sans-serif;margin:1px 0 5px}
+.home-review-steps article p{margin:0;color:#aebfca;font-size:.87rem;line-height:1.6}
+.home-review-note{margin:2px 2px 0;color:#94a9b7;font-size:.78rem;line-height:1.6}
+@media(max-width:800px){.home-contribute-section{grid-template-columns:1fr;padding:38px 18px;gap:16px}}
+@media(max-width:440px){.home-contribute-section{padding:30px 14px}.home-contribute-copy{padding:21px}.home-contribute-points{gap:6px}.home-contribute-points span{font-size:.72rem}}
