@@ -643,3 +643,15 @@ button:disabled,.button:disabled{opacity:.58;cursor:not-allowed}
   .hero-video-layer{width:48vw;min-width:165px;right:12px;bottom:12px}
   .hero-content{padding-bottom:185px}
 }
+
+
+/* Chat identity states: members use their profile name; guests choose a nickname. */
+.chat-member-identity{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;padding:12px 15px;margin:0 0 12px;border:1px solid rgba(83,196,220,.28);border-radius:12px;background:rgba(24,91,111,.12);color:var(--text,#eaf4f7)}
+.chat-member-identity[hidden]{display:none!important}
+.chat-member-identity strong{font-weight:800}
+.chat-member-identity span{color:var(--muted,#9fb2bd);font-size:.88rem}
+.chat-member-identity a{font-size:.88rem;font-weight:700;color:var(--accent,#67d7ef)}
+.chat-member-tag,.chat-guest-tag{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;font-size:.62rem;font-weight:800;letter-spacing:.08em;line-height:1.5}
+.chat-member-tag{color:#8be7c0;background:rgba(52,170,120,.14);border:1px solid rgba(88,210,157,.25)}
+.chat-guest-tag{color:#b7c4cc;background:rgba(160,180,195,.09);border:1px solid rgba(160,180,195,.18)}
+.chat-compose-identity[hidden]{display:none!important}
