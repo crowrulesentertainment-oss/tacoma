@@ -104,7 +104,9 @@ rosterBox.innerHTML=roster.length?roster.map(p=>'<div class="chat-roster-person"
 }
 $(".room-live-roster").forEach(el=>{
 const list=byRoom[el.dataset.rosterRoom]||[];
-el.textContent=list.length?list.slice(0,3).map(p=>p.nickname).join(" · ")+(list.length>3?" +"+(list.length-3):""):"Be the first to chat";
+el.classList.toggle("has-online-users",list.length>0);
+el.setAttribute("aria-label",list.length?list.length+" people online in this channel":"No one online in this channel");
+el.innerHTML=list.length?'<span class="room-roster-label">ONLINE NOW</span>'+list.map(p=>'<span class="room-roster-user"><i class="room-roster-dot" aria-hidden="true"></i><span>'+esc(p.nickname)+'</span><small class="'+(p.member?"is-member":"is-guest")+'">'+(p.member?"MEMBER":"GUEST")+'</small></span>').join(""):'<span class="room-roster-empty">No one online yet</span>';
 el.title=list.length?list.map(p=>p.nickname+(p.member?" (member)":" (guest)")).join(", "):"No one is chatting here yet";
 });
 const channelRosterCount=$("#chat-roster-count");if(channelRosterCount)channelRosterCount.textContent=String(roster.length);
@@ -124,7 +126,7 @@ globalPresenceChannel=db.channel("hub-chat-all-room-presence",{config:{presence:
 if(state==="SUBSCRIBED"){
 connectionEl.textContent="Live";
 try{
-await globalPresenceChannel.track({room,nickname:activeChatName(),joined_at:new Date().toISOString()});
+await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,joined_at:new Date().toISOString()});
 updateRoomCounts();
 }catch(e){connectionEl.textContent="Presence unavailable";onlineEl.textContent="—"}
 }else if(state==="CHANNEL_ERROR"||state==="TIMED_OUT"){
