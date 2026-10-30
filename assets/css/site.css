@@ -805,3 +805,22 @@ textarea{resize:vertical}
 @media(prefers-reduced-data:reduce){.hero-photo,.city-scene::before,.city-scene::after{animation:none!important}.hero-photo{filter:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.category-card,.button,.button-primary{transition:none!important}}
 @supports(padding:max(0px)){.site-footer{padding-bottom:max(0px,env(safe-area-inset-bottom))}}
+
+
+/* Control Room page shell and loading state */
+.admin-page{background:#06111b}
+.admin-site-header{border-bottom:1px solid rgba(95,171,197,.22)}
+.admin-statusbar{background:#081824}
+.admin-loading-state{min-height:58vh;display:grid;align-content:center;justify-items:center;gap:10px;padding:70px 20px;text-align:center;color:#c1d3de;background:radial-gradient(ellipse at 50% 40%,rgba(39,126,157,.18),transparent 58%),#071521}
+.admin-loading-mark{display:grid;place-items:center;width:68px;height:68px;border:1px solid #4c9bb3;border-radius:19px;background:linear-gradient(145deg,#12394c,#091925);color:#a7edff;font:800 2.6rem Manrope,sans-serif;box-shadow:0 0 38px #45c4e522}
+.admin-loading-state p{margin:8px 0 0;color:#eef8fc;font:800 1.2rem Manrope,sans-serif}
+.admin-loading-state>span:last-child{color:#8faab9;font-size:.83rem}
+.admin-page .admin-hero{min-height:300px}
+.admin-page .admin-workspace{padding-top:25px}
+.admin-page .admin-workspace-nav{scrollbar-width:thin;scrollbar-color:#35657a #071722}
+.admin-page .admin-workspace-nav a:focus-visible{outline:2px solid #a4edff;outline-offset:2px}
+.admin-page .admin-workspace-section{scroll-margin-top:90px}
+.admin-page .admin-workspace-section:target{border-color:#4a9bb2;box-shadow:0 0 0 2px #4a9bb222,0 15px 38px #0002}
+.admin-page .admin-login-wrap{margin-top:30px;margin-bottom:38px}
+.admin-page .admin-site-footer{margin-top:20px}
+@media(max-width:620px){.admin-page .admin-hero{min-height:0}.admin-page .admin-workspace-section{scroll-margin-top:16px}}
