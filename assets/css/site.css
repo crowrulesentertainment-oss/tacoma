@@ -1144,3 +1144,9 @@ body.chat-fullscreen-page{height:100%;min-height:100dvh;overflow:hidden;backgrou
  .chat-fullscreen-page .chat-panel{height:76vh!important;min-height:570px!important;padding:10px!important}
  .chat-fullscreen-page .chat-presence-inline .chat-roster-list{grid-template-columns:1fr 1fr}
 }
+
+
+/* People Online is a separate sidebar section beneath (not inside) the channel dropdown. */
+.chat-fullscreen-page .chat-sidebar>.chat-presence-inline{display:block;position:relative;flex:0 0 auto;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid rgba(104,211,230,.22)}
+.chat-fullscreen-page .chat-sidebar>.chat-channel-dropdown{flex:0 0 auto;min-height:0}
+.chat-fullscreen-page .chat-sidebar>.chat-presence-inline .chat-presence-card{width:100%}
