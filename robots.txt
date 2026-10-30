@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /member.html
+Disallow: /email-operations.html
+
+Sitemap: https://crowrulesentertainment-oss.github.io/tacoma/sitemap.xml
