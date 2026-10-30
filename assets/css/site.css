@@ -983,7 +983,7 @@ body.chat-fullscreen-page{height:100%;min-height:100dvh;overflow:hidden;backgrou
 .chat-fullscreen-page .chat-live-stats>span{min-width:78px;padding:6px 9px!important}
 .chat-fullscreen-page .chat-live-stats>span b{font-size:1.05rem!important}
 .chat-fullscreen-page .chat-live-stats>span small{font-size:.55rem}
-.chat-fullscreen-page .chat-network-toggle{flex:0 0 auto;white-space:nowrap;border-color:rgba(101,210,235,.4);color:#b9f3ff;background:rgba(8,48,67,.65)}
+.chat-fullscreen-page .chat-home-link{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border:1px solid rgba(104,211,235,.38);border-radius:10px;background:rgba(5,37,53,.72);color:#bcefff;font-size:.76rem;font-weight:800;text-decoration:none;white-space:nowrap;transition:background .18s ease,border-color .18s ease,transform .18s ease}.chat-fullscreen-page .chat-home-link:hover{background:#15556b;border-color:#8eeaff;transform:translateY(-1px)}.chat-fullscreen-page .chat-network-toggle{flex:0 0 auto;white-space:nowrap;border-color:rgba(101,210,235,.4);color:#b9f3ff;background:rgba(8,48,67,.65)}
 .chat-fullscreen-page .chat-network-toggle.is-active{background:#15556b;color:#fff}
 .chat-fullscreen-page .chat-experience-full>.notice{flex:0 0 auto;margin:0!important;padding:7px 11px;font-size:.68rem;line-height:1.4}
 .chat-fullscreen-page .chat-workspace{flex:1 1 auto;min-height:0;grid-template-columns:minmax(220px,260px) minmax(0,1fr) minmax(210px,245px)!important;gap:11px!important;align-items:stretch!important}
