@@ -1,0 +1,29 @@
+/* Tacoma Community Hub · Control Room enhancements */
+.admin-commandbar{position:sticky;top:8px;z-index:30;display:grid;grid-template-columns:minmax(220px,1fr) auto;gap:12px;align-items:center;margin:0 auto 18px;padding:12px;border:1px solid #31556a;border-radius:15px;background:rgba(7,20,31,.94);backdrop-filter:blur(16px);box-shadow:0 14px 36px #0005}
+.admin-command-search{display:flex;align-items:center;gap:10px;min-width:0}
+.admin-command-search kbd{flex:0 0 auto;padding:5px 8px;border:1px solid #35566a;border-radius:7px;color:#a8c2d1;font-size:.68rem;background:#102536}
+.admin-command-search input{width:100%;min-width:0;background:#081824;border:1px solid #2a4a5d;color:#eef8fc;border-radius:10px;padding:11px 13px}
+.admin-command-actions{display:flex;gap:8px;flex-wrap:wrap}
+.admin-command-actions button,.admin-command-actions a{white-space:nowrap}
+.admin-command-results{grid-column:1/-1;display:flex;gap:7px;flex-wrap:wrap;color:#9bb3c2;font-size:.76rem}
+.admin-command-results:empty{display:none}
+.admin-command-results button{border:1px solid #31566b;background:#10283a;color:#dcecf4;border-radius:999px;padding:6px 10px;cursor:pointer}
+.admin-command-results button:hover{border-color:#8be7f7;color:#fff}
+.admin-section-tools{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.admin-section-tools button{border:1px solid #315267;border-radius:9px;padding:7px 10px;background:#0b1e2c;color:#b9d1df;font-size:.75rem;cursor:pointer}
+.admin-section-tools button:hover{border-color:#70d9ec;color:#fff}
+.admin-workspace-section.admin-collapsed>[data-admin-collapsible]{display:none!important}
+.admin-workspace-section.admin-collapsed{padding-bottom:18px}
+.admin-workspace-section .admin-enhancement-count{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:4px 8px;border:1px solid #315267;border-radius:999px;color:#a9c7d6;font-size:.67rem;font-weight:700;white-space:nowrap}
+.admin-live-indicator{display:inline-flex;align-items:center;gap:7px;color:#91d9bd;font-size:.72rem;font-weight:700}
+.admin-live-indicator:before{content:"";width:7px;height:7px;border-radius:50%;background:#80e2bd;box-shadow:0 0 10px #80e2bd}
+.admin-workspace-nav{position:sticky;top:82px;z-index:20;display:flex;gap:7px;overflow-x:auto;padding:10px;margin:0 0 18px;border:1px solid #29485b;border-radius:13px;background:rgba(7,20,31,.95);scrollbar-width:thin}
+.admin-workspace-nav a{flex:0 0 auto;padding:8px 11px;border:1px solid transparent;border-radius:8px;color:#b9cbd6;font-size:.76rem;white-space:nowrap}
+.admin-workspace-nav a:hover,.admin-workspace-nav a[aria-current=location]{background:#123247;border-color:#3a687f;color:#fff;text-decoration:none}
+.admin-workspace-section{scroll-margin-top:150px}
+.admin-workspace-section.admin-search-empty{opacity:.48}
+.admin-workspace-section mark{background:#735b24;color:#fff2c9;border-radius:3px;padding:0 2px}
+.admin-enhancement-note{margin:0 0 14px;padding:10px 13px;border:1px solid #29495d;border-radius:10px;background:#0a1d2a;color:#9fb8c8;font-size:.76rem}
+.admin-enhancement-note strong{color:#cdeaf5}
+@media(max-width:760px){.admin-commandbar{position:relative;top:auto;grid-template-columns:1fr}.admin-command-actions{display:grid;grid-template-columns:1fr 1fr}.admin-command-actions>*{width:100%;text-align:center}.admin-workspace-nav{top:0}.admin-workspace-section{scroll-margin-top:70px}}
+@media(prefers-reduced-motion:reduce){.admin-commandbar{backdrop-filter:none}}
