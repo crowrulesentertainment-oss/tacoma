@@ -694,3 +694,66 @@ button:disabled,.button:disabled{opacity:.58;cursor:not-allowed}
 .review-ready .review-checklist{border-color:#39866e;box-shadow:0 0 0 1px #39866e33}
 .review-ready .review-checklist summary{color:#9be9c8}
 @media(max-width:720px){.review-meta-grid{grid-template-columns:1fr}.review-queue-intro{align-items:flex-start;flex-direction:column}.review-table{min-width:620px}}
+
+/* Full Control Room rebuild — operations-first admin workspace */
+.admin-hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 78% 12%,rgba(43,160,194,.25),transparent 38%),linear-gradient(120deg,#06121d,#102d40 58%,#071722);border-bottom:1px solid #2a5369}
+.admin-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 0 62%,rgba(104,221,242,.07) 62.2%,transparent 62.5%),linear-gradient(25deg,transparent 0 75%,rgba(104,221,242,.06) 75.2%,transparent 75.5%);pointer-events:none}
+.admin-hero-inner{position:relative;z-index:1;max-width:var(--max);margin:auto;padding:58px 22px 50px;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.admin-hero h1{font:800 clamp(2.7rem,6vw,5rem)/1 Manrope,sans-serif;letter-spacing:-.065em;margin:10px 0;color:#f4fbff}
+.admin-hero p{max-width:690px;color:#b9ccd8;font-size:1.04rem;line-height:1.7;margin:13px 0}
+.admin-hero-mark{width:150px;height:150px;flex:0 0 150px;display:grid;place-content:center;text-align:center;border:1px solid #3a809a;border-radius:32px;background:linear-gradient(145deg,#123b50,#071723);box-shadow:0 0 55px #35c5e533;color:#9ceeff;font:800 5rem/.85 Manrope,sans-serif;transform:rotate(3deg)}
+.admin-hero-mark span{font:800 .7rem Manrope,sans-serif;letter-spacing:.35em;margin-top:13px}
+.admin-trust-ribbon{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
+.admin-trust-ribbon span{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid #31576b;border-radius:999px;background:#071925a8;color:#a9c2d1;font-size:.66rem;font-weight:800;letter-spacing:.1em}
+.admin-trust-ribbon i,.admin-session-pill i{width:7px;height:7px;display:inline-block;border-radius:50%;background:#7ce0b7;box-shadow:0 0 10px #7ce0b7}
+.admin-login-wrap{max-width:var(--max);margin:24px auto;padding:0 22px}
+.admin-login-card{max-width:760px;padding:25px;border:1px solid #31556a;border-radius:18px;background:linear-gradient(145deg,#102b3d,#091a27);box-shadow:0 18px 48px #0003}
+.admin-login-card h2{font:800 1.65rem Manrope,sans-serif;margin:6px 0}
+.admin-login-card p{color:var(--muted);margin:4px 0 15px}
+.admin-login-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.admin-login-card .form-actions{margin-top:17px}
+.admin-workspace{max-width:var(--max);margin:0 auto;padding:18px 22px 76px}
+.admin-workspace-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:17px 0 20px;border-bottom:1px solid var(--line)}
+.admin-workspace-top h2{font:800 1.45rem Manrope,sans-serif;margin:5px 0}
+.admin-workspace-top p{color:var(--muted);font-size:.8rem;overflow-wrap:anywhere;margin:4px 0}
+.admin-top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.admin-session-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid #2c6d59;border-radius:999px;background:#0d2b25;color:#a6ebd0;font-size:.72rem;font-weight:800}
+.admin-workspace-status{min-height:22px;margin:10px 0;color:#9fc3d3;font-size:.8rem}
+.admin-stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 20px}
+.admin-stat-card{display:grid;grid-template-columns:42px minmax(0,1fr);grid-template-rows:auto auto;align-items:center;column-gap:12px;padding:16px;border:1px solid #2a485a;border-radius:15px;background:linear-gradient(145deg,#102638,#091925);min-width:0}
+.admin-stat-icon{grid-row:1/3;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#173a4c;color:#9deeff;font-size:1.25rem}
+.admin-stat-card>div{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.admin-stat-card strong{font:800 1.55rem Manrope,sans-serif;color:#f4fbff;font-variant-numeric:tabular-nums}
+.admin-stat-card>div span{font-size:.76rem;color:#c4d6e0}
+.admin-stat-card>small{font-size:.68rem;color:#7894a6;margin-top:3px}
+.admin-stat-card.stat-pending .admin-stat-icon{background:#45351c;color:#f5d28a}
+.admin-stat-card.stat-attention .admin-stat-icon{background:#44242a;color:#ffb6bd}
+.admin-workspace-nav{position:sticky;top:0;z-index:10;display:flex;gap:7px;overflow-x:auto;padding:10px;margin:14px 0 22px;border:1px solid #29485b;border-radius:13px;background:rgba(5,17,27,.94);backdrop-filter:blur(12px)}
+.admin-workspace-nav a{white-space:nowrap;padding:9px 12px;border-radius:9px;color:#b9d0dd;font-size:.78rem;font-weight:800}
+.admin-workspace-nav a:hover{background:#143449;color:#9ceeff;text-decoration:none}
+.admin-workspace-section{scroll-margin-top:76px;margin:18px 0 22px;padding:22px;border:1px solid #29485a;border-radius:18px;background:linear-gradient(145deg,#0d2231,#081722 72%);box-shadow:0 15px 38px #0002;min-width:0}
+.admin-section-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:18px}
+.admin-section-heading h2{font:800 clamp(1.35rem,2.7vw,1.8rem) Manrope,sans-serif;margin:5px 0}
+.admin-section-heading p{max-width:780px;color:var(--muted);font-size:.87rem;line-height:1.6;margin:5px 0 12px}
+.admin-section-icon{width:45px;height:45px;flex:0 0 45px;display:grid;place-items:center;border:1px solid #315b70;border-radius:13px;background:#102d40;color:#9ceeff;font-size:1.35rem}
+.admin-workflow-strip{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 15px}
+.admin-workflow-strip span{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid #2c4c60;border-radius:999px;background:#091a26;color:#a9c0cd;font-size:.75rem}
+.admin-workflow-strip b{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#16445a;color:#a4edff;font-size:.7rem}
+.admin-workspace-section .review-queue-intro{margin-top:0}
+.admin-workspace-section .admin-table{min-width:620px}
+.admin-workspace-section .review-table{min-width:700px}
+.admin-workspace-section #admin-reports{overflow-x:auto}
+.admin-workspace-section .admin-section-heading .button{margin-top:5px}
+.admin-workspace-section .admin-chat-filters{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.45fr);gap:10px;margin:12px 0}
+.admin-workspace-section .admin-chat-filters input,.admin-workspace-section .admin-chat-filters select{width:100%;min-width:0}
+.admin-workspace-section .chat-channel-admin-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:17px;border:1px solid var(--line);border-radius:13px;background:#071722}
+.admin-workspace-section .chat-channel-admin-form .field.full{grid-column:1/-1}
+.admin-workspace-section .hero-video-admin-form{display:grid;gap:14px;padding:18px;border:1px solid var(--line);border-radius:13px;background:#071722}
+.admin-workspace-section .hero-video-admin-form .form-grid{margin-top:0}
+.admin-workspace-footer{margin:24px 0 0;padding:18px;border:1px solid #31536a;border-radius:14px;background:#091a26}
+.admin-workspace-footer strong{color:#dff4fb}
+.admin-workspace-footer p{color:#9fb4c1;font-size:.8rem;line-height:1.65}
+.admin-workspace-footer code{color:#9deeff}
+.admin-workspace-footer a{font-weight:800}
+@media(max-width:850px){.admin-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-hero-mark{width:110px;height:110px;flex-basis:110px;font-size:3.7rem}.admin-workspace-top{flex-direction:column}.admin-top-actions{width:100%}}
+@media(max-width:620px){.admin-hero-inner{padding:42px 18px 36px}.admin-hero-mark{display:none}.admin-login-wrap{padding:0 14px}.admin-login-card{padding:18px}.admin-login-fields{grid-template-columns:1fr}.admin-workspace{padding:12px 14px 55px}.admin-stats-grid{gap:8px}.admin-stat-card{padding:11px;grid-template-columns:32px minmax(0,1fr);column-gap:8px}.admin-stat-icon{width:31px;height:31px;font-size:1rem}.admin-stat-card strong{font-size:1.25rem}.admin-stat-card>div span{font-size:.68rem}.admin-workspace-section{padding:15px;margin:13px 0}.admin-workspace-nav{margin:10px 0 15px}.admin-workspace-section .admin-chat-filters,.admin-workspace-section .chat-channel-admin-form{grid-template-columns:1fr}.admin-workspace-section .chat-channel-admin-form .field.full{grid-column:auto}.admin-section-heading{gap:8px}.admin-section-icon{width:36px;height:36px;flex-basis:36px}}
