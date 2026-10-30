@@ -198,7 +198,7 @@ const roomFilter=$("#room-filter");roomFilter?.addEventListener("input",()=>{con
  const list=$(".chat-sidebar .room-list");
  if(list){
   list.innerHTML=data.map(c=>'<button type="button" class="room-button '+(c.slug===room?"active":"")+'" data-room="'+esc(c.slug)+'" aria-pressed="'+String(c.slug===room)+'"><span class="room-icon">'+esc(c.icon||"◉")+'</span><span class="room-button-copy"><strong>'+esc(c.title)+'</strong><small>'+esc(c.description||"Community conversation")+'</small><span class="room-live-roster" data-roster-room="'+esc(c.slug)+'">Be the first to chat</span></span><span class="room-button-indicators"><span class="room-unread-count" data-unread-room="'+esc(c.slug)+'" hidden>0 new</span><span class="room-live-count" data-room-count="'+esc(c.slug)+'" aria-label="0 active sessions">0 <small>live</small></span></span></button>').join("");
-  bindRoomButtons();updateUnreadBadges();
+  bindRoomButtons();updateUnreadBadges();updateRoomCounts();
   const total=$(".channel-total");if(total)total.textContent=data.length+" rooms";
   const activeCount=$("#chat-active-channel-count");if(activeCount)activeCount.textContent=String(data.length);
   if(!roomMeta[room])switchRoom(data[0].slug);
