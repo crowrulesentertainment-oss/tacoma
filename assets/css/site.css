@@ -1150,3 +1150,9 @@ body.chat-fullscreen-page{height:100%;min-height:100dvh;overflow:hidden;backgrou
 .chat-fullscreen-page .chat-sidebar>.chat-presence-inline{display:block;position:relative;flex:0 0 auto;width:100%;margin-top:10px;padding-top:10px;border-top:1px solid rgba(104,211,230,.22)}
 .chat-fullscreen-page .chat-sidebar>.chat-channel-dropdown{flex:0 0 auto;min-height:0}
 .chat-fullscreen-page .chat-sidebar>.chat-presence-inline .chat-presence-card{width:100%}
+
+
+/* Chat layout refinement: the expanded channel list stays in document flow, so People Online remains directly below it rather than underneath/inside the floating menu. */
+.chat-fullscreen-page .chat-channel-dropdown .chat-channel-menu{position:static;inset:auto;margin-top:8px;max-height:55vh;overflow-y:auto;box-shadow:none}
+.chat-fullscreen-page .chat-channel-dropdown .chat-channel-menu .room-list{max-height:48vh;overflow-y:auto}
+.chat-fullscreen-page .chat-sidebar .chat-presence-inline{position:relative;display:block;clear:both;margin-top:12px;padding-top:12px;border-top:1px solid #29485b}
