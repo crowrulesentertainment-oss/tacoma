@@ -49,7 +49,7 @@ async function resolveChatIdentity(){
  chatIdentityError=false;
  const {data,error}=await db.auth.getUser();
  const user=data?.user||null;
- if(!user){chatAuthUser=null;chatMember=null;nicknameEl.readOnly=false;if(identityField)identityField.hidden=false;identityEl.hidden=true;loadSocialHub();return}
+ if(!user){chatAuthUser=null;chatMember=null;isChatModerator=false;nicknameEl.readOnly=false;if(identityField)identityField.hidden=false;identityEl.hidden=true;loadSocialHub();return}
  chatAuthUser=user;
  const {data:profile,error:profileError}=await db.from("hub_member_profiles").select("display_name,bio,avatar_url,location,is_public").eq("user_id",user.id).maybeSingle();
  if(profileError||!profile||!String(profile.display_name||"").trim()){chatMember=null;chatIdentityError=true;if(identityField)identityField.hidden=true;identityEl.hidden=false;identityEl.textContent="Your member profile name could not be loaded. Please visit Member Dashboard to finish your profile before chatting.";loadSocialHub();return}
