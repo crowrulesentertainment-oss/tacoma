@@ -953,3 +953,14 @@ textarea{resize:vertical}
 .chat-presence-sidebar .chat-roster-person{transition:border-color .15s ease,background .15s ease}
 .chat-presence-sidebar .chat-roster-person:hover{border-color:rgba(86,196,224,.34);background:rgba(13,48,65,.7)}
 @media(max-width:760px){.chat-live-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.room-button-indicators{grid-template-columns:1fr;align-content:start}}
+
+
+/* Live Chat 2.1 — personal tools and saved messages */
+.chat-tools{grid-template-columns:minmax(0,1fr) repeat(4,auto)!important;flex-wrap:wrap}
+.chat-tools .button[aria-pressed="true"]{border-color:rgba(107,225,191,.55);background:rgba(22,106,82,.24);color:#a8f3d5}
+.chat-message-actions{display:flex;flex-wrap:wrap;gap:6px}
+.chat-message-actions .button{font-size:.66rem;padding:6px 8px}
+.save-chat-inline.is-saved{border-color:rgba(238,201,110,.5);color:#f4d98d;background:rgba(116,84,22,.2)}
+.mute-chat-inline{color:#c1a6a6}
+@media(max-width:760px){.chat-tools{grid-template-columns:1fr 1fr!important}.chat-tools .chat-search-wrap{grid-column:1/-1}.chat-tools .button{min-height:40px}}
+@media(max-width:440px){.chat-tools{grid-template-columns:1fr 1fr!important}}
