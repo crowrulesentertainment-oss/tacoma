@@ -1,58 +1,37 @@
-/* Tacoma Community Hub Admin Control Room 3.0 */
+/* Tacoma Community Hub · Admin Control Room 3.0 */
 .admin3-wrap{display:grid;gap:18px;margin-top:24px}
-.admin3-section{scroll-margin-top:145px;padding:clamp(16px,2.5vw,26px);border:1px solid #29495d;border-radius:18px;background:linear-gradient(145deg,rgba(11,30,44,.98),rgba(7,18,28,.98));box-shadow:0 15px 35px #0003}
-.admin3-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
-.admin3-heading h2{margin:.35rem 0;font-size:clamp(1.35rem,2.5vw,1.9rem);color:#effaff}
-.admin3-heading p{max-width:850px;margin:0;color:#9eb7c7;line-height:1.6;font-size:.9rem}
-.admin3-toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:13px}
-.admin3-toolbar input{flex:1 1 260px;min-width:180px}
-.admin3-toolbar input,.admin3-toolbar select,.admin3-form input,.admin3-form select,.admin3-form textarea{width:100%;padding:11px 12px;border:1px solid #35576b;border-radius:9px;background:#071a28;color:#e9f5fa}
-.admin3-toolbar select{width:auto;min-width:145px}
-.admin3-note{margin:10px 0;padding:10px 12px;border-radius:9px;border:1px solid #315368;background:#0a2030;color:#a9c4d3;font-size:.82rem}
-.admin3-note.is-error{border-color:#8c4d54;color:#ffd1d1;background:#321b24}
-.admin3-note.is-ok{border-color:#316b5a;color:#b6efd9}
-.admin3-table-wrap{width:100%;overflow:auto;border:1px solid #29495d;border-radius:12px}
-.admin3-table{width:100%;min-width:850px;border-collapse:collapse;font-size:.82rem}
+.admin3-section{scroll-margin-top:140px;padding:clamp(15px,2.4vw,25px);border:1px solid #29495d;border-radius:17px;background:linear-gradient(145deg,rgba(11,30,44,.98),rgba(7,18,28,.98));box-shadow:0 14px 32px #0003}
+.admin3-section h2{margin:7px 0;color:#effaff;font-size:clamp(1.35rem,2.5vw,1.85rem)}
+.admin3-section>p{max-width:850px;color:#9eb7c7;line-height:1.6;font-size:.88rem}
+.admin3-tools{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
+.admin3-tools input{flex:1 1 240px;min-width:160px}
+.admin3-tools input,.admin3-tools select,.admin3-form input,.admin3-form select,.admin3-form textarea{padding:11px 12px;border:1px solid #35576b;border-radius:9px;background:#071a28;color:#e9f5fa}
+.admin3-note{margin:10px 0;padding:10px 12px;border:1px solid #315368;border-radius:9px;background:#0a2030;color:#a9c4d3;font-size:.82rem}
+.admin3-note.bad{border-color:#8c4d54;color:#ffd1d1;background:#321b24}
+.admin3-note.ok{border-color:#316b5a;color:#b6efd9}
+.admin3-table-wrap{overflow:auto;border:1px solid #29495d;border-radius:12px}
+.admin3-table{width:100%;min-width:800px;border-collapse:collapse;font-size:.82rem}
 .admin3-table th,.admin3-table td{padding:12px;text-align:left;vertical-align:top;border-bottom:1px solid #294253}
-.admin3-table th{background:#102a3b;color:#bcd3df;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em}
+.admin3-table th{background:#102a3b;color:#bcd3df;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}
 .admin3-table td{color:#d7e7ef}
-.admin3-table td small{display:block;margin-top:4px;color:#8faaba;max-width:250px;overflow-wrap:anywhere}
-.admin3-status{display:inline-flex;padding:4px 8px;border:1px solid #426075;border-radius:999px;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:#c4d8e2;background:#122d3e}
-.admin3-status.suspended,.admin3-status.urgent{border-color:#9a555b;color:#ffd1d1;background:#3a2029}
-.admin3-status.active,.admin3-status.published{border-color:#3d806c;color:#b9f0d9;background:#12372f}
-.admin3-status.pending,.admin3-status.important{border-color:#92713d;color:#ffe2a5;background:#382d1a}
-.admin3-status.draft,.admin3-status.archived{color:#afc0ca}
+.admin3-table small{display:block;margin-top:4px;color:#8faaba;overflow-wrap:anywhere;max-width:240px}
 .admin3-empty{padding:22px;text-align:center;color:#91aab9;border:1px dashed #345267;border-radius:12px}
-.admin3-form{display:grid;gap:13px;padding:16px;border:1px solid #29495d;border-radius:13px;background:#091d2b}
-.admin3-form>label,.admin3-form-grid label{display:grid;gap:7px;color:#c3d8e3;font-size:.8rem;font-weight:650}
+.admin3-form{display:grid;gap:13px;padding:15px;border:1px solid #29495d;border-radius:13px;background:#091d2b}
+.admin3-form>label,.admin3-grid label{display:grid;gap:7px;color:#c3d8e3;font-size:.8rem;font-weight:650}
 .admin3-form textarea{resize:vertical;min-height:100px}
-.admin3-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.admin3-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .admin3-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.admin3-list-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:22px 0 12px}
-.admin3-list-heading h3{margin:0;color:#e4f3f9}
-.admin3-announcement-list{display:grid;gap:10px}
-.admin3-announcement{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:15px;border:1px solid #29495d;border-radius:12px;background:#0a1d2b}
-.admin3-announcement h4{margin:8px 0;color:#edf8fc}
-.admin3-announcement p{margin:0 0 8px;color:#a8bfcc;white-space:pre-wrap;overflow-wrap:anywhere}
-.admin3-announcement small{color:#819eae}
-.admin3-announcement>.admin3-actions{flex-direction:column;align-items:stretch;min-width:110px}
-.admin3-activity-list{display:grid;gap:0}
-.admin3-activity{display:flex;gap:12px;padding:13px 3px;border-bottom:1px solid #263f50}
-.admin3-activity-mark{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:50%;background:#12372f;color:#a9efd1}
-.admin3-activity strong,.admin3-activity small{display:block}
-.admin3-activity strong{color:#e5f2f7;font-size:.86rem}
-.admin3-activity small{margin-top:4px;color:#8fa9b8;font-size:.73rem}
-.admin3-activity p{color:#e4c79b;font-size:.8rem}
-.admin3-health-actions{display:flex;align-items:center;gap:12px;margin-bottom:14px;color:#91aaba;font-size:.78rem}
-.admin3-health-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.admin3-health-card{display:grid;gap:6px;padding:14px;border:1px solid #365165;border-radius:12px;background:#0a1e2c;color:#9fb7c5}
-.admin3-health-card strong{color:#e5f3f8}
-.admin3-health-card>span:nth-of-type(2){font-size:.78rem}
-.admin3-health-card small{color:#91a9b8;overflow-wrap:anywhere}
-.admin3-health-card.healthy{border-color:#326c5a}
-.admin3-health-card.unhealthy{border-color:#94545b}
-.admin3-health-dot{width:8px;height:8px;border-radius:50%;background:#e4ad61}
-.admin3-health-card.healthy .admin3-health-dot{background:#6bd4a9;box-shadow:0 0 9px #6bd4a9}
-.admin3-health-card.unhealthy .admin3-health-dot{background:#ef7c84;box-shadow:0 0 9px #ef7c84}
-@media(max-width:900px){.admin3-form-grid,.admin3-health-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.admin3-form-grid,.admin3-health-grid{grid-template-columns:1fr}.admin3-announcement{display:grid}.admin3-announcement>.admin3-actions{display:flex;flex-direction:row;flex-wrap:wrap}.admin3-section{padding:14px}.admin3-toolbar select{flex:1}.admin3-health-actions{align-items:flex-start;flex-direction:column}}
+.admin3-announcement{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:14px;border:1px solid #29495d;border-radius:12px;background:#0a1d2b;color:#d9eaf1;margin:10px 0}
+.admin3-announcement p{color:#a8bfcc;white-space:pre-wrap;overflow-wrap:anywhere}
+.admin3-announcement small,.admin3-activity small{display:block;color:#8fa9b8;font-size:.75rem}
+.admin3-activity{display:block;padding:13px;border-bottom:1px solid #294253;color:#d9eaf1}
+.admin3-activity b{display:block;margin-bottom:5px}
+.admin3-health{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.admin3-health article{display:grid;gap:6px;padding:14px;border:1px solid #326c5a;border-radius:12px;background:#0a1e2c;color:#9fb7c5}
+.admin3-health article.bad{border-color:#94545b}
+.admin3-health b{color:#e5f3f8}
+.admin3-health strong{font-size:.8rem;color:#a9efd1}
+.admin3-health article.bad strong{color:#ffd1d1}
+.admin3-health small{overflow-wrap:anywhere}
+@media(max-width:850px){.admin3-grid,.admin3-health{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.admin3-grid,.admin3-health{grid-template-columns:1fr}.admin3-announcement{display:grid}.admin3-section{padding:14px}}
