@@ -1,47 +1,65 @@
 "use strict";
-const CACHE_NAME = "tacoma-hub-shell-v1";
+const CACHE_NAME = "tacoma-hub-shell-v2-20261029";
 const CORE_URLS = [
-  "./",
-  "./index.html",
-  "./directory.html",
-  "./chat.html",
-  "./submit.html",
-  "./offline.html",
-  "./manifest.webmanifest",
-  "./assets/css/site.css",
-  "./assets/js/config.js",
-  "./assets/js/app.js",
-  "./assets/img/tacoma-hub-icon.svg"
+  "./", "./index.html", "./directory.html", "./businesses.html",
+  "./resources.html", "./events.html", "./opportunities.html",
+  "./lost-found.html", "./community-alerts.html", "./emergency-resources.html",
+  "./chat.html", "./submit.html", "./moderation.html", "./privacy.html",
+  "./member.html", "./offline.html", "./manifest.webmanifest",
+  "./assets/css/site.css", "./assets/js/config.js", "./assets/js/app.js",
+  "./assets/js/member.js", "./assets/img/tacoma-hub-icon.svg"
 ];
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_URLS)).then(() => self.skipWaiting()));
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await Promise.all(CORE_URLS.map(async path => {
+      try {
+        const response = await fetch(path, { cache: "reload" });
+        if (response.ok) await cache.put(path, response);
+      } catch (_) { /* A single optional shell file must not block installation. */ }
+    }));
+    await self.skipWaiting();
+  })());
 });
 self.addEventListener("activate", event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith("tacoma-hub-") && key !== CACHE_NAME).map(key => caches.delete(key)))).then(() => self.clients.claim()));
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(key => key.startsWith("tacoma-hub-") && key !== CACHE_NAME).map(key => caches.delete(key)));
+    await self.clients.claim();
+  })());
 });
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.includes("/rest/") || url.pathname.includes("/auth/") || url.pathname.includes("/realtime/")) return;
+  if (/\/rest\/|\/auth\/|\/realtime\//.test(url.pathname)) return;
   if (request.mode === "navigate") {
-    event.respondWith(fetch(request).then(response => {
-      if (response.ok) {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(request);
+        if (response.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put(request, response.clone());
+        }
+        return response;
+      } catch (_) {
+        return (await caches.match(request)) || (await caches.match("./offline.html")) || Response.error();
       }
-      return response;
-    }).catch(async () => (await caches.match(request)) || (await caches.match("./offline.html"))));
+    })());
     return;
   }
-  const isShellAsset = /\.(?:css|js|svg|png|webp|woff2?)$/i.test(url.pathname) || url.pathname.endsWith("manifest.webmanifest");
+  const isShellAsset = /\.(?:css|js|svg|png|jpe?g|webp|woff2?)$/i.test(url.pathname) || url.pathname.endsWith("manifest.webmanifest");
   if (!isShellAsset) return;
-  event.respondWith(caches.match(request).then(cached => {
-    const fresh = fetch(request).then(response => {
-      if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone()));
+  event.respondWith((async () => {
+    const cached = await caches.match(request);
+    const refresh = fetch(request).then(async response => {
+      if (response.ok) {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(request, response.clone());
+      }
       return response;
-    }).catch(() => cached);
-    return cached || fresh;
-  }));
+    }).catch(() => cached || Response.error());
+    return cached || refresh;
+  })());
 });
