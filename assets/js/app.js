@@ -56,7 +56,7 @@ async function resolveChatIdentity(){
 }
 let identityReady=resolveChatIdentity();db.auth.onAuthStateChange(()=>{setTimeout(()=>{identityReady=resolveChatIdentity()},0)});
 function draw(){
-const term=(searchEl?.value||"").trim().toLowerCase(),filtered=rows.filter(m=>(!term||String(m.body||"").toLowerCase().includes(term)||String(m.nickname||"").toLowerCase().includes(term)));
+const term=(searchEl?.value||"").trim().toLowerCase(),filtered=rows.filter(m=>(isChatModerator||!m.is_hidden)&&(!term||String(m.body||"").toLowerCase().includes(term)||String(m.nickname||"").toLowerCase().includes(term)));
 countEl.textContent=term?filtered.length+" matching messages · "+rows.length+" loaded":rows.length+" recent messages";
 if(!filtered.length){messageBox.innerHTML='<div class="empty-state">'+(term?"No messages match this search. Try another word or clear the search.":"No recent messages in this room yet. Say hello and start a respectful conversation.")+'</div>';return}
 messageBox.innerHTML=filtered.map(m=>{
@@ -179,14 +179,16 @@ connectionEl.textContent=state||"Connecting";
 }
 
 async function switchRoom(next){
-if(bodyEl&&bodyEl.value.trim())draftsByRoom[room]=bodyEl.value;try{sessionStorage.setItem("hub_chat_drafts",JSON.stringify(draftsByRoom))}catch(e){}room=next;roomEpoch++;rows=[];reactionRows=[];unreadByRoom[room]=0;updateUnreadBadges();if(bodyEl){bodyEl.value=draftsByRoom[room]||"";charEl.textContent=bodyEl.value.length+" / 700"}onlineEl.textContent="—";connectionEl.textContent="Connecting";
+const epoch=++roomEpoch;
+if(bodyEl&&bodyEl.value.trim())draftsByRoom[room]=bodyEl.value;try{sessionStorage.setItem("hub_chat_drafts",JSON.stringify(draftsByRoom))}catch(e){}room=next;rows=[];reactionRows=[];unreadByRoom[room]=0;updateUnreadBadges();if(bodyEl){bodyEl.value=draftsByRoom[room]||"";charEl.textContent=bodyEl.value.length+" / 700"}onlineEl.textContent="—";connectionEl.textContent="Connecting";
 const meta=roomMeta[room]||[room,"Community conversation"];roomTitle.textContent=meta[0];roomDesc.textContent=meta[1];const selectedChannel=$("#chat-selected-channel");if(selectedChannel)selectedChannel.textContent=meta[0];const presenceRoomLabel=$("#chat-presence-room-label");if(presenceRoomLabel)presenceRoomLabel.textContent="In "+meta[0];const channelDropdown=$(".chat-channel-dropdown");if(channelDropdown)channelDropdown.open=false;
 $$(".room-button").forEach(b=>{const active=b.dataset.room===room;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active))});
 messageBox.innerHTML='<div class="empty-state">Opening '+esc(meta[0])+'…</div>';countEl.textContent="Connecting to room…";
 if(roomChannel){try{await db.removeChannel(roomChannel)}catch(e){}roomChannel=null}
+if(epoch!==roomEpoch)return;
 ensureGlobalPresence();
 if(globalPresenceChannel)try{await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,joined_at:new Date().toISOString()})}catch(e){}
-const epoch=roomEpoch;
+if(epoch!==roomEpoch)return;
 roomChannel=db.channel("hub-chat-"+room)
 .on("postgres_changes",{event:"INSERT",schema:"public",table:"hub_chat_messages",filter:"room=eq."+room},payload=>{if(epoch!==roomEpoch)return;const m=payload.new;if(m&&m.id&&!rows.some(x=>x.id===m.id)){rows=[...rows,m].slice(-100);draw()}})
 .on("postgres_changes",{event:"DELETE",schema:"public",table:"hub_chat_messages"},payload=>{if(epoch!==roomEpoch)return;const id=payload.old&&payload.old.id;if(id){rows=rows.filter(x=>x.id!==id);reactionRows=reactionRows.filter(x=>x.message_id!==id);draw()}}).on("postgres_changes",{event:"UPDATE",schema:"public",table:"hub_chat_messages",filter:"room=eq."+room},payload=>{if(epoch!==roomEpoch)return;const m=payload.new;if(m?.id){rows=rows.map(x=>x.id===m.id?{...x,...m}:x);draw()}})
@@ -243,9 +245,10 @@ if(nickname.length<2||nickname.length>40){status(statusEl,"Your chat name must b
 if(!body){status(statusEl,"Write a message before sending.","error");return}
 if(body.length>700){status(statusEl,"Messages must be 700 characters or fewer.","error");return}
 const button=$('button[type="submit"]',e.currentTarget);button.disabled=true;button.textContent="Sending…";
-const token=getClientToken("hub_chat_reactor_id");let lastSent=0;try{lastSent=Number(localStorage.getItem("hub_chat_last_sent")||0)}catch(e){}if(Date.now()-lastSent<15000){button.disabled=false;button.innerHTML='Send message <span aria-hidden="true">↗</span>';status(statusEl,"Please wait a few seconds before sending another message.","error");return}const {error}=await db.from("hub_chat_messages").insert({room,nickname,body,client_token:token,sender_id:chatMember?.id||null});
+const token=getClientToken("hub_chat_reactor_id");let lastSent=0;try{lastSent=Number(localStorage.getItem("hub_chat_last_sent")||0)}catch(e){}if(Date.now()-lastSent<15000){button.disabled=false;button.innerHTML='Send message <span aria-hidden="true">↗</span>';status(statusEl,"Please wait a few seconds before sending another message.","error");return}let sendResult;try{sendResult=await db.from("hub_chat_messages").insert({room,nickname,body,client_token:token,sender_id:chatMember?.id||null})}catch(sendError){sendResult={error:sendError}}
+const error=sendResult?.error||null;
 button.disabled=false;button.innerHTML='Send message <span aria-hidden="true">↗</span>';
-if(error){status(statusEl,"Message could not be sent. Please wait a moment and try again.","error");return}
+if(error){console.warn("Tacoma public chat message insert failed",error);status(statusEl,"Message could not be sent: "+(error.message||"check your connection and chat permissions"),"error");return}
 try{localStorage.setItem("hub_chat_nickname",nickname);localStorage.setItem("hub_chat_last_sent",String(Date.now()))}catch(e){}
 bodyEl.value="";delete draftsByRoom[room];try{sessionStorage.setItem("hub_chat_drafts",JSON.stringify(draftsByRoom))}catch(e){}charEl.textContent="0 / 700";status(statusEl,"Message sent to "+(roomMeta[room]?.[0]||room)+".","success");
 if(globalPresenceChannel)try{await globalPresenceChannel.track({room,nickname,member:!!chatMember,user_id:chatAuthUser?.id||null,joined_at:new Date().toISOString()})}catch(e){}
