@@ -1186,3 +1186,20 @@ body.chat-fullscreen-page{height:100%;min-height:100dvh;overflow:hidden;backgrou
  .chat-fullscreen-page .chat-channel-dropdown[open]>.chat-channel-menu{max-height:300px}
  .chat-fullscreen-page .chat-channel-menu>.room-list{max-height:230px}
 }
+
+
+/* Tacoma Live Chat v19 — channel heading and message search controls. */
+.chat-fullscreen-page .chat-room-heading{display:flex;align-items:center;gap:12px;min-width:0}
+.chat-fullscreen-page .chat-room-heading>div{min-width:0}
+.chat-fullscreen-page .chat-room-heading h2{margin:0;color:#effaff;font-size:clamp(1rem,1.5vw,1.3rem);line-height:1.2}
+.chat-fullscreen-page .chat-room-heading p{margin:4px 0 0;color:#91b4c5;font-size:.72rem;line-height:1.4}
+.chat-fullscreen-page .chat-search-label{display:block;flex:0 0 auto;margin:3px 0 4px;color:#a9c5d3;font-size:.68rem;font-weight:700}
+.chat-fullscreen-page .chat-search{flex:0 0 auto;width:100%;min-height:38px;padding:8px 11px;border:1px solid #29485b;border-radius:9px;background:#071725;color:#eefaff;font:inherit;font-size:.78rem}
+.chat-fullscreen-page .chat-search::placeholder{color:#7895a6}
+.chat-fullscreen-page .chat-search:focus{outline:2px solid #72d9ed;outline-offset:2px;border-color:#72d9ed}
+.chat-fullscreen-page .chat-room-top{min-width:0}
+@media(max-width:560px){
+ .chat-fullscreen-page .chat-room-heading{align-items:flex-start;gap:8px}
+ .chat-fullscreen-page .chat-room-heading h2{font-size:1rem}
+ .chat-fullscreen-page .chat-room-heading p{font-size:.66rem}
+}
