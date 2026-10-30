@@ -587,3 +587,16 @@ button:disabled,.button:disabled{opacity:.58;cursor:not-allowed}
 
 /* Email verification and account recovery */
 .member-verification-help{margin-top:14px;padding:18px;border:1px solid #286080;border-radius:14px;background:linear-gradient(145deg,#0c2638,#0a1b2a)}.member-verification-help>strong{display:block;color:#eaf7ff;margin-bottom:7px}.member-verification-help p{font-size:.9rem;line-height:1.65;margin:0 0 14px}.member-verification-help .button-primary{width:100%;min-height:46px}.member-verification-help .text-button{display:block;margin-top:8px}.member-panel button:disabled{opacity:.6;cursor:not-allowed}
+
+/* Homepage hero video player */
+.hero-video-layer{position:absolute;inset:0;z-index:0;overflow:hidden;background:#06121e}
+.hero-video-layer video,.hero-video-layer iframe{display:block;width:100%;height:100%;border:0;object-fit:cover}
+.hero-photo-under-video{opacity:0}
+.hero:after{z-index:1;pointer-events:none}
+.hero-video-admin{margin:0 0 28px;padding:24px}
+.hero-video-admin .admin-section-head{margin-bottom:18px}
+.hero-video-admin h2{margin:6px 0}
+.hero-video-admin .form-grid{margin-top:12px}
+.hero-video-admin .checkbox-line{display:flex;align-items:center;gap:10px}
+.hero-video-admin .checkbox-line input{width:auto;min-width:18px}
+@media(max-width:640px){.hero-video-layer video,.hero-video-layer iframe{object-fit:cover}.hero-video-admin{padding:17px}}
