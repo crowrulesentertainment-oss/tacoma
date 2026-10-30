@@ -1103,3 +1103,44 @@ body.chat-fullscreen-page{height:100%;min-height:100dvh;overflow:hidden;backgrou
   .chat-fullscreen-page .chat-channel-dropdown[open] .chat-channel-menu{max-height:300px}
   .chat-fullscreen-page .chat-channel-menu .room-list{max-height:220px;flex:1 1 auto}
 }
+
+
+/* Tacoma Live Chat — inline presence below the channel picker and expanded conversation stage. */
+.chat-fullscreen-page main#main{min-height:100dvh}
+.chat-fullscreen-page main:has(.chat-experience-full)>.page-heading{padding-top:12px!important;padding-bottom:10px!important}
+.chat-fullscreen-page .chat-experience-full{padding:0 8px 12px!important;gap:8px}
+.chat-fullscreen-page .chat-welcome-strip{padding:12px 16px!important;min-height:0}
+.chat-fullscreen-page .chat-workspace{display:grid!important;grid-template-columns:minmax(230px,270px) minmax(0,1fr)!important;align-items:stretch;gap:12px!important;width:100%;min-height:calc(100dvh - 230px)}
+.chat-fullscreen-page .chat-sidebar{display:flex;flex-direction:column;align-self:start;min-width:0;max-height:calc(100dvh - 170px);overflow:visible}
+.chat-fullscreen-page .chat-channel-dropdown[open] .chat-channel-menu{max-height:calc(100dvh - 245px);overflow:hidden}
+.chat-fullscreen-page .chat-channel-menu .room-list{max-height:min(34vh,300px);flex:0 1 auto}
+.chat-fullscreen-page .chat-presence-inline{flex:0 0 auto;min-height:0;border-top:1px solid #29485b;margin-top:7px;padding-top:9px}
+.chat-fullscreen-page .chat-presence-inline .chat-presence-card{padding:10px 11px;border:1px solid #29485b;border-radius:12px;background:linear-gradient(145deg,#0d2637,#081722)}
+.chat-fullscreen-page .chat-presence-inline .chat-presence-card-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chat-fullscreen-page .chat-presence-inline .chat-presence-card-heading h2{font-size:.95rem;margin:2px 0}
+.chat-fullscreen-page .chat-presence-inline .chat-presence-card-heading p{font-size:.68rem;margin:0;color:#91aebe}
+.chat-fullscreen-page .chat-presence-inline .chat-presence-count{display:flex;align-items:baseline;gap:7px;margin:7px 0}
+.chat-fullscreen-page .chat-presence-inline .chat-presence-count strong{font-size:1.35rem;color:#a5f0ff}
+.chat-fullscreen-page .chat-presence-inline .chat-presence-count span,.chat-fullscreen-page .chat-presence-inline .chat-presence-footnote{font-size:.66rem;color:#91aebe}
+.chat-fullscreen-page .chat-presence-inline .chat-roster-list{display:grid;grid-template-columns:1fr;gap:5px;max-height:190px;overflow:auto}
+.chat-fullscreen-page .chat-presence-inline .chat-roster-person{display:flex;align-items:center;gap:7px;min-width:0;padding:5px 7px;border:1px solid #203d50;border-radius:8px;background:#071722}
+.chat-fullscreen-page .chat-presence-inline .chat-roster-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.75rem}
+.chat-fullscreen-page .chat-presence-inline .chat-presence-footnote{margin-top:7px;line-height:1.4}
+.chat-fullscreen-page .chat-panel{min-width:0;width:100%;height:calc(100dvh - 165px)!important;min-height:720px!important;display:flex;flex-direction:column;padding:clamp(12px,1.4vw,22px)!important}
+.chat-fullscreen-page .chat-panel .chat-messages{height:auto!important;min-height:0!important;flex:1 1 auto;max-height:none;overflow:auto}
+.chat-fullscreen-page .chat-panel .chat-room-top{flex:0 0 auto}
+.chat-fullscreen-page .chat-panel .chat-tools{flex:0 0 auto}
+.chat-fullscreen-page .chat-panel .chat-compose{flex:0 0 auto}
+@media(max-width:900px){
+ .chat-fullscreen-page .chat-workspace{grid-template-columns:1fr!important;min-height:0}
+ .chat-fullscreen-page .chat-sidebar{max-height:none}
+ .chat-fullscreen-page .chat-channel-dropdown[open] .chat-channel-menu{max-height:55vh}
+ .chat-fullscreen-page .chat-channel-menu .room-list{max-height:180px}
+ .chat-fullscreen-page .chat-presence-inline .chat-roster-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:130px}
+ .chat-fullscreen-page .chat-panel{height:78vh!important;min-height:620px!important}
+}
+@media(max-width:560px){
+ .chat-fullscreen-page .chat-experience-full{padding-inline:6px!important}
+ .chat-fullscreen-page .chat-panel{height:76vh!important;min-height:570px!important;padding:10px!important}
+ .chat-fullscreen-page .chat-presence-inline .chat-roster-list{grid-template-columns:1fr 1fr}
+}
