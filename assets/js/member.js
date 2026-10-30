@@ -48,7 +48,7 @@ async function showDashboard(){
  }catch(error){
    console.error("Tacoma Hub dashboard profile load failed:",error);
    if(greeting)greeting.textContent="Your community dashboard";
-   msg("#member-profile-status","Your dashboard is open, but the profile could not be loaded: "+(error?.message||"Unexpected error"),"error");
+   msg("#member-profile-status","Your dashboard is open, but the profile could not be loaded: "+(error?.message||"Unexpected error"),"error");msg("#member-dashboard-status","Your dashboard opened, but we could not load your profile data. Refresh the page or try again shortly.","error");
  }
  const tasks=[["email preferences",loadEmailPreferences],["saved favorites",loadFavorites],["recommendations",loadPersonalized],["activity",loadActivity]];
  const results=await Promise.allSettled(tasks.map(([,fn])=>Promise.resolve().then(fn)));
