@@ -603,10 +603,11 @@ button:disabled,.button:disabled{opacity:.58;cursor:not-allowed}
 
 /* Compact floating hero video: keep Tacoma imagery visible behind the player. */
 .hero-video-layer{
-  inset:auto  max(22px,calc((100vw - var(--max))/2 + 22px)) auto auto;
+  inset:auto max(22px,calc((100vw - var(--max))/2 + 22px)) auto auto;
   top:50%;
   transform:translateY(-50%);
-  width:clamp(230px,31vw,410px);
+  margin-right:clamp(0px,2.5vw,34px);
+  width:clamp(250px,34vw,440px);
   height:auto;
   aspect-ratio:16/9;
   z-index:3;
@@ -624,7 +625,7 @@ button:disabled,.button:disabled{opacity:.58;cursor:not-allowed}
 }
 .hero-photo-under-video{opacity:1}
 @media(min-width:761px){
-  .hero-content{padding-right:clamp(280px,36vw,470px)}
+  .hero-content{padding-right:clamp(300px,39vw,500px)}
 }
 @media(max-width:760px){
   .hero-video-layer{
