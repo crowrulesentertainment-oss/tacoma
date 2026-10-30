@@ -316,7 +316,18 @@ if(error)throw error;
 if(st)st.textContent=s==="approved"?"Approved and published. Permanent review record saved.":"Submission rejected. Reason and verification record saved.";
 await Promise.all([loadQueue(),loadModerationHistory(),loadAdminMetrics()]);
 }catch(error){console.warn("Moderation RPC failed",error);if(st)st.textContent="Could not complete moderation. Check moderator access and database migration.";alert("Could not update this submission: "+(error.message||"Check your moderator access and try again."));if(b)b.disabled=false}
-}document.addEventListener("DOMContentLoaded",()=>{init();nav();clock();presence();render()})})();
+}document.addEventListener("DOMContentLoaded",()=>{
+const run=(label,fn)=>{try{fn()}catch(error){console.error("Tacoma Hub "+label+" failed:",error)}};
+run("Supabase initialization",init);
+run("Navigation",nav);
+run("Status bar",clock);
+run("Visitor presence",presence);
+try{render()}catch(error){
+console.error("Tacoma Hub page rendering failed:",error);
+const main=document.querySelector("#main");
+if(main){main.innerHTML='<section class="section page-heading"><span class="eyebrow">Tacoma Community Hub</span><h1>Live Chat is having trouble loading</h1><p>The page opened, but one of its scripts encountered an error.</p><div class="notice warning" role="alert">Please refresh this page. If the problem continues, contact the Hub team and include this message: '+esc(error&&error.message?error.message:"Unknown page error")+'</div><p><a class="button-primary" href="chat.html?refresh='+Date.now()+'">Reload chat</a></p></section>'}
+}
+})})();
 
 /* Sitewide CrowRules ownership, free-access and cinematic Tacoma scene */
 (()=>{"use strict";document.addEventListener("DOMContentLoaded",()=>{
