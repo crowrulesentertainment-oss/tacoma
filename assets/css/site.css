@@ -867,3 +867,18 @@ textarea{resize:vertical}
 .chat-compose{border-top:1px solid rgba(81,167,196,.2)!important}
 @media(max-width:760px){.chat-live-stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.chat-live-stats>span{min-width:0;padding:8px 5px}.chat-live-stats>span b{font-size:1.15rem}.chat-roster-list{max-height:220px}}
 @media(prefers-reduced-motion:reduce){.room-button{transition:none}}
+
+
+/* Expanded all-channel online roster: every room shows its complete live member/guest list. */
+.room-live-roster{display:flex!important;flex-wrap:wrap;align-items:center;gap:5px 7px;margin-top:8px!important;max-width:100%;white-space:normal!important;overflow:visible!important}
+.room-roster-label{flex:0 0 100%;color:#6e9bad;font-size:.55rem;font-weight:900;letter-spacing:.14em}
+.room-roster-user{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:3px 6px;border:1px solid rgba(76,166,192,.2);border-radius:7px;background:rgba(4,17,28,.62);color:#c5e2eb;font-size:.63rem;line-height:1.35}
+.room-roster-user>span{overflow-wrap:anywhere}
+.room-roster-dot{width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:#62e7ad;box-shadow:0 0 8px rgba(98,231,173,.8)}
+.room-roster-user small{padding-left:4px;color:#80c9a9;font-size:.48rem;font-weight:900;letter-spacing:.06em}
+.room-roster-user small.is-guest{color:#9bafbd}
+.room-roster-empty{color:#7896a5;font-size:.62rem;font-style:italic}
+.room-button{align-items:flex-start!important}
+.room-button-copy{flex:1 1 auto}
+.room-live-count{flex:0 0 48px;margin-top:2px}
+@media(max-width:760px){.room-roster-user{font-size:.6rem}.room-roster-label{font-size:.52rem}}
