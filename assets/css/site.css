@@ -771,3 +771,7 @@ button:disabled,.button:disabled{opacity:.58;cursor:not-allowed}
 #admin-history-section .review-table-wrap{max-height:650px;overflow:auto}
 @media(max-width:850px){.admin-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:420px){.admin-stats-grid{grid-template-columns:1fr 1fr}.admin-stat-card>div{display:grid;gap:1px}}
+
+/* Signed-in member identity in the global navigation */
+.primary-nav>a.nav-member-signed-in{color:#9ee9fa;font-weight:800}
+.primary-nav>a.nav-member-signed-in::before{content:"●";font-size:.62em;margin-right:7px;vertical-align:2px;color:#69dfb0}
