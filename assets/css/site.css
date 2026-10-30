@@ -1079,3 +1079,27 @@ body.chat-fullscreen-page{height:100%;min-height:100dvh;overflow:hidden;backgrou
 .chat-fullscreen-page .chat-channel-menu .room-button-indicators{grid-template-columns:1fr;min-width:46px}
 .chat-fullscreen-page .chat-sidebar{gap:0}
 @media(max-width:700px){.chat-fullscreen-page .chat-sidebar{gap:8px}.chat-fullscreen-page .chat-channel-dropdown{flex:0 0 auto}.chat-fullscreen-page .chat-channel-dropdown[open] .chat-channel-menu{max-height:300px}.chat-fullscreen-page .chat-channel-menu .room-list{max-height:220px;grid-template-columns:1fr!important}}
+
+/* Keep the channel picker compact and scroll its channel list on every screen size. */
+.chat-fullscreen-page .chat-channel-dropdown[open] .chat-channel-menu{
+  max-height:min(58vh,460px);
+  min-height:0;
+  overflow:hidden;
+}
+.chat-fullscreen-page .chat-channel-menu .room-list{
+  flex:1 1 auto;
+  min-height:0;
+  max-height:min(48vh,380px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(104,211,230,.55) rgba(7,17,31,.35);
+}
+.chat-fullscreen-page .chat-channel-menu .room-list::-webkit-scrollbar{width:7px}
+.chat-fullscreen-page .chat-channel-menu .room-list::-webkit-scrollbar-track{background:rgba(7,17,31,.35);border-radius:8px}
+.chat-fullscreen-page .chat-channel-menu .room-list::-webkit-scrollbar-thumb{background:rgba(104,211,230,.55);border-radius:8px}
+@media(max-width:700px){
+  .chat-fullscreen-page .chat-channel-dropdown[open] .chat-channel-menu{max-height:300px}
+  .chat-fullscreen-page .chat-channel-menu .room-list{max-height:220px;flex:1 1 auto}
+}
