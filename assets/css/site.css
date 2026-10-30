@@ -757,3 +757,17 @@ button:disabled,.button:disabled{opacity:.58;cursor:not-allowed}
 .admin-workspace-footer a{font-weight:800}
 @media(max-width:850px){.admin-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-hero-mark{width:110px;height:110px;flex-basis:110px;font-size:3.7rem}.admin-workspace-top{flex-direction:column}.admin-top-actions{width:100%}}
 @media(max-width:620px){.admin-hero-inner{padding:42px 18px 36px}.admin-hero-mark{display:none}.admin-login-wrap{padding:0 14px}.admin-login-card{padding:18px}.admin-login-fields{grid-template-columns:1fr}.admin-workspace{padding:12px 14px 55px}.admin-stats-grid{gap:8px}.admin-stat-card{padding:11px;grid-template-columns:32px minmax(0,1fr);column-gap:8px}.admin-stat-icon{width:31px;height:31px;font-size:1rem}.admin-stat-card strong{font-size:1.25rem}.admin-stat-card>div span{font-size:.68rem}.admin-workspace-section{padding:15px;margin:13px 0}.admin-workspace-nav{margin:10px 0 15px}.admin-workspace-section .admin-chat-filters,.admin-workspace-section .chat-channel-admin-form{grid-template-columns:1fr}.admin-workspace-section .chat-channel-admin-form .field.full{grid-column:auto}.admin-section-heading{gap:8px}.admin-section-icon{width:36px;height:36px;flex-basis:36px}}
+
+/* Permanent moderation audit and live member analytics */
+.admin-stats-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.moderation-history-table{min-width:940px!important}
+.moderation-history-table td{vertical-align:top}
+.audit-check-list{display:grid;gap:4px;min-width:150px}
+.audit-check{display:block;font-size:.68rem;line-height:1.35}
+.audit-check.is-checked{color:#9de2bd}
+.audit-check.is-unchecked{color:#78909e}
+.audit-approved{background:#123d30;color:#a6ebc8}
+.audit-rejected{background:#48242b;color:#ffc0c4}
+#admin-history-section .review-table-wrap{max-height:650px;overflow:auto}
+@media(max-width:850px){.admin-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.admin-stats-grid{grid-template-columns:1fr 1fr}.admin-stat-card>div{display:grid;gap:1px}}
