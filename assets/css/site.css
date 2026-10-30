@@ -1156,3 +1156,12 @@ body.chat-fullscreen-page{height:100%;min-height:100dvh;overflow:hidden;backgrou
 .chat-fullscreen-page .chat-channel-dropdown .chat-channel-menu{position:static;inset:auto;margin-top:8px;max-height:55vh;overflow-y:auto;box-shadow:none}
 .chat-fullscreen-page .chat-channel-dropdown .chat-channel-menu .room-list{max-height:48vh;overflow-y:auto}
 .chat-fullscreen-page .chat-sidebar .chat-presence-inline{position:relative;display:block;clear:both;margin-top:12px;padding-top:12px;border-top:1px solid #29485b}
+
+/* Live chat activity and unread room indicators */
+.room-activity-preview{display:block;min-width:0;max-width:100%;margin-top:4px;color:#82b5c8;font-size:.63rem;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.room-unread-count{padding:3px 6px;border-radius:7px;background:rgba(122,91,220,.22);border:1px solid rgba(157,129,245,.4);color:#e0d6ff;text-align:center;font-size:.58rem;font-weight:900;white-space:nowrap}
+.room-unread-count[hidden],.chat-activity-notice[hidden]{display:none!important}
+.chat-activity-notice{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:var(--max);margin:10px auto;padding:11px 14px;border:1px solid rgba(98,215,239,.34);border-radius:12px;background:linear-gradient(110deg,rgba(12,53,70,.96),rgba(11,29,43,.96));color:#dff8ff;font-size:.78rem}
+.chat-activity-notice-copy{min-width:0;flex:1;overflow-wrap:anywhere}
+.chat-activity-dismiss{border:0;background:transparent;color:#a8c5d3;font-size:1.2rem}
+@media(max-width:760px){.chat-activity-notice{margin:9px 12px;align-items:flex-start;flex-wrap:wrap}.chat-activity-notice-copy{flex-basis:100%}}
