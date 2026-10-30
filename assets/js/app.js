@@ -142,22 +142,42 @@ try{
 presenceKey=sessionStorage.getItem("hub_chat_presence_id");
 if(!presenceKey){presenceKey=(crypto.randomUUID?crypto.randomUUID():"hub-"+Date.now()+"-"+Math.random().toString(36).slice(2));sessionStorage.setItem("hub_chat_presence_id",presenceKey)}
 }catch(e){presenceKey=(crypto.randomUUID?crypto.randomUUID():"hub-"+Date.now()+"-"+Math.random().toString(36).slice(2))}
+connectionEl.textContent="Connecting";
 globalPresenceChannel=db.channel("hub-chat-all-room-presence",{config:{presence:{key:presenceKey}}})
 .on("presence",{event:"sync"},updateRoomCounts)
 .on("presence",{event:"join"},updateRoomCounts)
-.on("presence",{event:"leave"},updateRoomCounts)
-.subscribe(async state=>{
+.on("presence",{event:"leave"},updateRoomCounts);
+globalPresenceChannel.subscribe(async(state,error)=>{
 if(state==="SUBSCRIBED"){
 connectionEl.textContent="Live";
 try{
-await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,joined_at:new Date().toISOString()});
+const result=await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,joined_at:new Date().toISOString()});
+if(result&&result.error)throw result.error;
 updateRoomCounts();
-}catch(e){connectionEl.textContent="Presence unavailable";onlineEl.textContent="—"}
-}else if(state==="CHANNEL_ERROR"||state==="TIMED_OUT"){
-connectionEl.textContent="Presence unavailable";onlineEl.textContent="—";
-}else if(state==="CLOSED"){connectionEl.textContent="Offline";onlineEl.textContent="—"}
+}catch(e){
+console.warn("Tacoma chat presence tracking failed",e);
+connectionEl.textContent="Presence unavailable";
+onlineEl.textContent="—";
+}
+}else if(state==="SUBSCRIBING"){
+connectionEl.textContent="Connecting";
+}else if(state==="CHANNEL_ERROR"){
+console.warn("Tacoma chat presence channel error",error||"Realtime channel error");
+connectionEl.textContent="Connection error";
+onlineEl.textContent="—";
+}else if(state==="TIMED_OUT"){
+console.warn("Tacoma chat presence channel timed out",error||"Realtime timeout");
+connectionEl.textContent="Connection timed out";
+onlineEl.textContent="—";
+}else if(state==="CLOSED"){
+connectionEl.textContent="Offline";
+onlineEl.textContent="—";
+}else{
+connectionEl.textContent=state||"Connecting";
+}
 });
 }
+
 async function switchRoom(next){
 if(bodyEl&&bodyEl.value.trim())draftsByRoom[room]=bodyEl.value;try{sessionStorage.setItem("hub_chat_drafts",JSON.stringify(draftsByRoom))}catch(e){}room=next;roomEpoch++;rows=[];reactionRows=[];unreadByRoom[room]=0;updateUnreadBadges();if(bodyEl){bodyEl.value=draftsByRoom[room]||"";charEl.textContent=bodyEl.value.length+" / 700"}onlineEl.textContent="—";connectionEl.textContent="Connecting";
 const meta=roomMeta[room]||[room,"Community conversation"];roomTitle.textContent=meta[0];roomDesc.textContent=meta[1];const selectedChannel=$("#chat-selected-channel");if(selectedChannel)selectedChannel.textContent=meta[0];const presenceRoomLabel=$("#chat-presence-room-label");if(presenceRoomLabel)presenceRoomLabel.textContent="In "+meta[0];const channelDropdown=$(".chat-channel-dropdown");if(channelDropdown)channelDropdown.open=false;
@@ -177,7 +197,7 @@ roomChannel=db.channel("hub-chat-"+room)
  const typingEl=$("#chat-typing-indicator");if(typingEl){typingEl.hidden=false;typingEl.textContent=[...typingNames].slice(0,3).join(", ")+(typingNames.size>3?" and others":"")+" typing…";}
  clearTimeout(typingTimer);typingTimer=setTimeout(()=>{typingNames.clear();if(typingEl){typingEl.hidden=true;typingEl.textContent="";}},2600);
 })
-.subscribe(async state=>{if(epoch!==roomEpoch)return;if(state==="SUBSCRIBED"){connectionEl.textContent="Live";updateRoomCounts()}else if(state==="CHANNEL_ERROR"||state==="TIMED_OUT"){connectionEl.textContent="Reconnecting"}else if(state==="CLOSED"){connectionEl.textContent="Offline"}});
+.subscribe((state,error)=>{if(epoch!==roomEpoch)return;if(state==="SUBSCRIBED"){if(!globalPresenceChannel||globalPresenceChannel.state==="joined")connectionEl.textContent="Live";updateRoomCounts()}else if(state==="SUBSCRIBING"){connectionEl.textContent="Connecting"}else if(state==="CHANNEL_ERROR"||state==="TIMED_OUT"){console.warn("Tacoma room realtime connection issue",error||state);connectionEl.textContent=state==="TIMED_OUT"?"Connection timed out":"Connection error"}else if(state==="CLOSED"){connectionEl.textContent="Offline"}});
 loadChat(epoch)
 }
 function bindRoomButtons(){ $$(".room-button").forEach(b=>b.onclick=()=>switchRoom(b.dataset.room)); }
