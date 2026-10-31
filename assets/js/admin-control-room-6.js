@@ -11,7 +11,7 @@ const note=(el,msg,bad=false)=>{if(el){el.textContent=msg;el.className="admin6-n
 document.addEventListener("DOMContentLoaded",()=>{
  if(document.body.dataset.page!=="admin")return;
  const db=window.__hubSupabaseClient;if(!db)return;
- let installed=false,installing=false,profiles=[],members=[],currentUser=null;
+ let installed=false,installing=false,profiles=[],members=[],profileCount=0,currentUser=null;
  const install=async()=>{
   const section=$("#admin3-members");if(!section||installed||installing)return;installing=true;
   const {data:{user},error:authError}=await db.auth.getUser();
@@ -32,15 +32,18 @@ document.addEventListener("DOMContentLoaded",()=>{
    try{
     const [p,m]=await Promise.all([
      db.from("hub_member_profiles").select("user_id,display_name,bio,interests,avatar_url,location,is_public,created_at,updated_at").order("created_at",{ascending:false}).limit(1000),
-     db.from("members").select("id,user_id,email,username,role,membership_type,status,created_at,suspension_reason,suspended_until").limit(2000)
+     db.from("members").select("id,user_id,display_name,avatar_url,email,username,role,membership_type,status,created_at,suspension_reason,suspended_until").limit(2000)
     ]);
     if(p.error)throw new Error("Member profiles: "+p.error.message);
     if(m.error)throw new Error("Membership records: "+m.error.message);
-    profiles=p.data||[];members=m.data||[];
+    const profileData=p.data||[];members=m.data||[];profileCount=profileData.length;
     const byUser=new Map(members.filter(x=>x.user_id).map(x=>[x.user_id,x]));
-    profiles=profiles.map(x=>({...x,membership:byUser.get(x.user_id)||null}));
-    $("#a6-total").textContent=profiles.length;
-    $("#a6-public").textContent=profiles.filter(x=>x.is_public).length;
+    const profileUsers=new Set(profileData.map(x=>x.user_id));
+    const profileRows=profileData.map(x=>({...x,membership:byUser.get(x.user_id)||null,profileMissing:false}));
+    const membershipOnly=members.filter(x=>!x.user_id||!profileUsers.has(x.user_id)).map(m=>({user_id:m.user_id||("membership:"+m.id),display_name:m.display_name||m.username||m.email||"Member",bio:"Hub profile has not been created yet.",interests:[],avatar_url:m.avatar_url||null,location:null,is_public:false,created_at:m.created_at,membership:m,profileMissing:true}));
+    profiles=profileRows.concat(membershipOnly);
+    $("#a6-total").textContent=profileCount;
+    $("#a6-public").textContent=profileRows.filter(x=>x.is_public).length;
     $("#a6-active").textContent=members.filter(x=>x.status==="Active").length;
     $("#a6-suspended").textContent=members.filter(x=>x.status==="Suspended").length;
     draw();
@@ -54,13 +57,14 @@ document.addEventListener("DOMContentLoaded",()=>{
     const status=m.status||"profile-only";
     return (!filter||status===filter)&&(!term||hay.includes(term));
    });
-   note($("#a6-note"),rows.length+" of "+profiles.length+" member profiles shown.");
+   note($("#a6-note"),rows.length+" of "+profiles.length+" member records shown ("+profileCount+" Hub profiles and "+members.length+" membership records).");
    $("#a6-table").innerHTML=rows.length?'<table class="admin6-table"><thead><tr><th>Member profile</th><th>Contact & membership</th><th>Profile visibility</th><th>Joined</th><th>Membership action</th></tr></thead><tbody>'+rows.map(p=>{
     const m=p.membership||{},name=p.display_name||m.username||"Hub member",status=m.status||"Profile only",interests=Array.isArray(p.interests)?p.interests:[];
     const avatar=p.avatar_url?'<img class="admin6-avatar" src="'+esc(p.avatar_url)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'<span class="admin6-avatar admin6-avatar-fallback">'+esc(name.slice(0,1).toUpperCase())+'</span>';
     const suspended=status==="Suspended";
     const action=m.id?(suspended?'<button class="button" type="button" data-a6-restore="'+esc(m.id)+'">Reinstate</button>':'<button class="button" type="button" data-a6-suspend="'+esc(m.id)+'">Suspend</button>'):'<span class="admin6-muted">No membership row</span>';
-    return '<tr><td><div class="admin6-person">'+avatar+'<div><strong>'+esc(name)+'</strong><small>'+esc(p.location||"Location not provided")+'</small><small>'+esc(p.bio||"No biography provided")+'</small>'+(interests.length?'<div class="admin6-tags">'+interests.map(v=>'<span>'+esc(v)+'</span>').join("")+'</div>':"")+'</div></div></td><td><strong>'+esc(m.email||"Email unavailable")+'</strong><small>@'+esc(m.username||"no username")+'</small><small>'+esc(m.role||m.membership_type||"Member")+' · '+esc(status)+'</small>'+(m.suspension_reason?'<small class="admin6-reason">Reason: '+esc(m.suspension_reason)+'</small>':"")+'</td><td><span class="admin6-visibility '+(p.is_public?"is-public":"is-private")+'">'+(p.is_public?"Public profile":"Private profile")+'</span></td><td>'+esc(date(p.created_at||m.created_at))+'</td><td>'+action+'</td></tr>';
+    const visibility=p.profileMissing?'<span class="admin6-visibility is-missing">No Hub profile yet</span>':'<span class="admin6-visibility '+(p.is_public?"is-public":"is-private")+'">'+(p.is_public?"Public profile":"Private profile")+'</span>';
+    return '<tr><td><div class="admin6-person">'+avatar+'<div><strong>'+esc(name)+'</strong><small>'+esc(p.location||"Location not provided")+'</small><small>'+esc(p.bio||"No biography provided")+'</small>'+(interests.length?'<div class="admin6-tags">'+interests.map(v=>'<span>'+esc(v)+'</span>').join("")+'</div>':"")+'</div></div></td><td><strong>'+esc(m.email||"Email unavailable")+'</strong><small>@'+esc(m.username||"no username")+'</small><small>'+esc(m.role||m.membership_type||"Member")+' · '+esc(status)+'</small>'+(m.suspension_reason?'<small class="admin6-reason">Reason: '+esc(m.suspension_reason)+'</small>':"")+'</td><td>'+visibility+'</td><td>'+esc(date(p.created_at||m.created_at))+'</td><td>'+action+'</td></tr>';
    }).join("")+'</tbody></table>':'<div class="admin6-empty">No member profiles match this search.</div>';
    $("#a6-table").querySelectorAll("[data-a6-suspend]").forEach(b=>b.addEventListener("click",()=>changeStatus(b,"suspend")));
    $("#a6-table").querySelectorAll("[data-a6-restore]").forEach(b=>b.addEventListener("click",()=>changeStatus(b,"restore")));
