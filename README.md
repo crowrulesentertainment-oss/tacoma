@@ -69,3 +69,10 @@ A free community initiative from Tacoma Community Hub × Tacoma Nights, produced
 Supabase migration: supabase/migrations/20261101000000_create_tacoma_christmas_2026.sql. It creates isolated hub_christmas_2026_ tables and uses existing hub_admins authorization. Run the migration manually in the Supabase SQL Editor before enabling public submissions. Public content remains pending until an authorized moderator approves it. Giving listings require moderator verification. Residential display submissions do not accept coordinates; exact home locations are not published.
 
 GitHub Pages URL: https://crowrulesentertainment-oss.github.io/tacoma/christmas/
+
+
+## Hub menu visibility manager (added 2026-10-31)
+
+The Control Room at `/admin.html` now includes **Menu visibility** for administrators. Toggle a navigation item ON/OFF; changes are saved to `public.hub_menu_items` and applied to shared header navigation, dropdowns, and footer links on the next page load. This does not delete pages or content and does not block direct URL access.
+
+Migration: `supabase/migrations/20261031000000_hub_menu_visibility.sql` (applied to project `cevylpnoexugwgygvtgu`). The table is RLS-enabled. Public users can read settings; only users with `hub_admins.role = 'admin'` can change them. Admin/control-room links are intentionally excluded from menu controls.
