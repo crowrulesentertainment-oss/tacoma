@@ -47,3 +47,15 @@ The public forms also use a honeypot and a short minimum interaction time, and t
 ### Workflow checks performed
 
 A transaction-based Supabase test confirmed anonymous-role inserts for listings, chat messages and reports pass the intended policies; public listing inserts are forced to `pending`; public visitors cannot read pending listings; an approved listing is visible to the public; and repeated writes with the same token are throttled. Test records were rolled back or removed, so the checks did not publish test content.
+
+
+## Thanksgiving in Tacoma 2026
+Campaign: `/thanksgiving/` · Admin moderation: `/thanksgiving/admin.html`.
+
+The Thanksgiving experience is a free campaign for Tacoma and surrounding communities. It includes 253 Reasons to Be Thankful submissions, partner registration, community event submissions, verified resource listings, an approved public gallery, and Tacoma Nights special promotion. Public content is held for moderation; private contact details are stored in separate RLS-protected tables.
+
+Live Supabase tables are prefixed `hub_thanksgiving_`. The migration is `supabase/migrations/20261031000000_create_tacoma_thanksgiving_2026.sql`. The campaign uses the existing `hub_admins` authorization table (admin/moderator roles). Sign in with an existing authorized Hub moderator account; do not add public admin self-registration.
+
+Public submissions support optional HTTPS media links. Direct file uploads are intentionally not enabled in this first release; this avoids exposing unmoderated uploads or consuming storage quotas. Resource listings only appear when an authorized moderator marks both `status=published` and `verification_status=verified`. Contact details are held separately from public content.
+
+GitHub Pages URL: https://crowrulesentertainment-oss.github.io/tacoma/thanksgiving/
