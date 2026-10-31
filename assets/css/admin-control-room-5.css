@@ -1,0 +1,65 @@
+/* Tacoma Community Hub · Control Room 5.0 — visual layout refresh */
+.admin-page{--adm-bg:#07131e;--adm-panel:#0d2231;--adm-panel-2:#102a3b;--adm-line:#29495d;--adm-muted:#9db4c2;--adm-text:#eaf4f8;--adm-accent:#70d9ec;--adm-gold:#e8c77d}
+.admin-page .admin-hero{position:relative;overflow:hidden;margin:22px auto 24px;max-width:1240px;border:1px solid #31566b;border-radius:24px;background:radial-gradient(ellipse at 88% 8%,#1c536b88,transparent 42%),linear-gradient(120deg,#071824 0%,#102e41 58%,#0a1b2a 100%);box-shadow:0 24px 60px #0005}
+.admin-page .admin-hero:after{content:"";position:absolute;inset:auto -6% -55% 42%;height:340px;border:1px solid #70d9ec25;border-radius:50%;box-shadow:0 0 0 28px #70d9ec09,0 0 0 58px #70d9ec07;pointer-events:none}
+.admin-page .admin-hero-inner{position:relative;z-index:1;min-height:230px;padding:clamp(24px,5vw,52px);display:flex;align-items:center;justify-content:space-between;gap:28px}
+.admin-page .admin-hero h1{margin:9px 0 10px;font:800 clamp(2.25rem,5vw,3.65rem)/1.05 Manrope,sans-serif;letter-spacing:-.045em;color:#f5fbff}
+.admin-page .admin-hero p{max-width:660px;color:#b2c8d4;font-size:1rem;line-height:1.7}
+.admin-page .admin-trust-ribbon{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.admin-page .admin-trust-ribbon span{padding:7px 10px;border:1px solid #41667a;border-radius:999px;background:#071a28a8;color:#bcd4df;font-size:.65rem;font-weight:800;letter-spacing:.09em}
+.admin-page .admin-trust-ribbon span:first-child{color:#8ce0bd;border-color:#36755f}
+.admin-page .admin-hero-mark{display:grid;place-items:center;flex:0 0 clamp(100px,15vw,170px);width:clamp(100px,15vw,170px);aspect-ratio:1;border:1px solid #70d9ec66;border-radius:34px;background:linear-gradient(145deg,#163e54,#071a28);box-shadow:inset 0 0 40px #70d9ec12,0 20px 50px #0004;color:#e9fbff;font:800 clamp(4rem,9vw,7rem) Manrope,sans-serif;transform:rotate(3deg)}
+.admin-page .admin-hero-mark span{font:800 .55rem 'DM Sans',sans-serif;letter-spacing:.3em;color:#70d9ec}
+.admin-page .admin-login-wrap{max-width:760px;margin:0 auto 34px;padding:0 16px}
+.admin-page .admin-login-card{padding:clamp(20px,3vw,30px);border:1px solid var(--adm-line);border-radius:20px;background:linear-gradient(145deg,#102a3b,#091b29);box-shadow:0 20px 48px #0004}
+.admin-page .admin-login-card h2{margin:7px 0;color:var(--adm-text);font:800 1.55rem Manrope,sans-serif}
+.admin-page .admin-login-card p{color:var(--adm-muted);line-height:1.55}
+.admin-page .admin-login-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.admin-page .admin-login-card input,.admin-page .admin-commandbar input,.admin-page .admin3-tools input,.admin-page .admin3-tools select,.admin-page .admin3-form input,.admin-page .admin3-form select,.admin-page .admin3-form textarea{min-height:44px;border:1px solid #35566b;border-radius:10px;background:#061722;color:#edf8fc;padding:11px 13px}
+.admin-page .admin-workspace{max-width:1320px;margin:28px auto 48px;padding:0 clamp(12px,2vw,24px)}
+.admin-page .admin-workspace-top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;padding:clamp(20px,3vw,30px);border:1px solid #31556a;border-radius:20px;background:radial-gradient(ellipse at 100% 0%,#1c4c6038,transparent 45%),linear-gradient(145deg,#102b3c,#091b29);box-shadow:0 18px 45px #0003}
+.admin-page .admin-workspace-top h2{margin:7px 0;color:#f1f8fb;font:800 clamp(1.45rem,3vw,2.1rem) Manrope,sans-serif}
+.admin-page .admin-workspace-top p{color:var(--adm-muted);line-height:1.55}
+.admin-page .admin-top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.admin-page .admin-session-pill{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #36755f;border-radius:999px;background:#0b2b29;color:#9ce4c4;font-size:.72rem;font-weight:750}
+.admin-page .admin-session-pill i{width:7px;height:7px;border-radius:50%;background:#79e0ad;box-shadow:0 0 12px #79e0ad}
+.admin-page .admin-workspace-status{margin:12px 0;padding:12px 15px;border:1px solid #29495d;border-radius:11px;background:#0a1d2a;color:#aac2cf;font-size:.82rem}
+.admin-page .admin-stats-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:16px 0 20px}
+.admin-page .admin-stat-card{position:relative;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;min-height:112px;padding:16px;border:1px solid #29495d;border-radius:15px;background:linear-gradient(145deg,#102a3a,#091b28);box-shadow:0 12px 28px #0002;transition:transform .18s,border-color .18s}
+.admin-page .admin-stat-card:hover{transform:translateY(-2px);border-color:#4e8198}
+.admin-page .admin-stat-icon{display:grid;place-items:center;width:42px;height:42px;border:1px solid #31566b;border-radius:12px;background:#0a2231;color:var(--adm-accent);font-size:1.2rem}
+.admin-page .admin-stat-card strong{display:block;color:#f3fbff;font:800 1.8rem Manrope,sans-serif;font-variant-numeric:tabular-nums}
+.admin-page .admin-stat-card div span{display:block;color:#b4c9d4;font-size:.72rem;line-height:1.35}
+.admin-page .admin-stat-card small{grid-column:1/-1;padding-top:9px;border-top:1px solid #294253;color:#829eae;font-size:.68rem}
+.admin-page .admin-stat-card.stat-pending{border-color:#856c3e}.admin-page .admin-stat-card.stat-pending .admin-stat-icon{color:var(--adm-gold);border-color:#856c3e}
+.admin-page .admin-stat-card.stat-attention{border-color:#654d51}
+.admin-page .admin-workspace-nav{top:10px;display:flex;gap:7px;padding:9px;border:1px solid #315267;border-radius:14px;background:#061722f2;box-shadow:0 12px 28px #0005;backdrop-filter:blur(14px)}
+.admin-page .admin-workspace-nav a{padding:9px 12px;border-radius:9px;color:#b6cbd6;font-weight:700}
+.admin-page .admin-workspace-nav a:hover,.admin-page .admin-workspace-nav a[aria-current=location]{background:#15394c;border-color:#3d7189;color:#f3fbff}
+.admin-page .admin-commandbar{top:76px;border-color:#315267;background:#081a27f2;box-shadow:0 12px 30px #0004}
+.admin-page .admin-workspace-section,.admin-page .admin3-section{margin:16px 0;padding:clamp(18px,2.4vw,28px);border:1px solid #29495d;border-radius:18px;background:linear-gradient(150deg,#0e2534,#091a27);box-shadow:0 15px 36px #0003}
+.admin-page .admin-section-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.admin-page .admin-section-heading h2,.admin-page .admin3-section h2{margin:7px 0;color:#f0f8fc;font:800 clamp(1.25rem,2.4vw,1.75rem) Manrope,sans-serif;letter-spacing:-.02em}
+.admin-page .admin-section-heading p,.admin-page .admin3-section>p{max-width:820px;color:#9fb8c7;line-height:1.65;font-size:.88rem}
+.admin-page .admin-section-icon{display:grid;place-items:center;flex:0 0 46px;width:46px;height:46px;border:1px solid #31566b;border-radius:13px;background:#0a2231;color:#70d9ec;font-size:1.25rem}
+.admin-page .admin-workflow-strip{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 18px}
+.admin-page .admin-workflow-strip span{padding:9px 12px;border:1px solid #29495d;border-radius:9px;background:#0a1e2b;color:#b8ccd6;font-size:.75rem}
+.admin-page .admin-workflow-strip b{display:inline-grid;place-items:center;width:21px;height:21px;margin-right:6px;border-radius:50%;background:#173d50;color:#8fe3f0}
+.admin-page .admin-page table,.admin-page .admin3-table{border-collapse:separate;border-spacing:0;width:100%;font-size:.82rem}
+.admin-page .admin-page table th,.admin-page .admin-page table td,.admin-page .admin3-table th,.admin-page .admin3-table td{padding:12px 13px;border-bottom:1px solid #294253;text-align:left}
+.admin-page .admin-workspace-section input:not([type=checkbox]),.admin-page .admin-workspace-section select,.admin-page .admin-workspace-section textarea{max-width:100%;border:1px solid #35566b;border-radius:10px;background:#071a28;color:#e9f5fa;padding:11px 12px}
+.admin-page .admin-workspace-section input:focus,.admin-page .admin-workspace-section select:focus,.admin-page .admin-workspace-section textarea:focus,.admin-page .admin-login-card input:focus{outline:2px solid #70d9ec;outline-offset:2px}
+.admin-page .admin-workspace-section button,.admin-page .admin3-section button,.admin-page .admin4-event button{border-radius:9px}
+.admin-page .admin-workspace-footer{margin-top:20px;padding:20px;border:1px solid #29495d;border-radius:16px;background:#091c29;color:#a8c0cd;line-height:1.65}
+.admin-page .admin-workspace-footer strong{color:#e8f4f8}
+.admin-page .admin3-wrap{gap:16px}
+.admin-page .admin3-section{margin:0}
+.admin-page .admin3-table-wrap{border-color:#29495d}
+.admin-page .admin3-table th{position:sticky;top:0;background:#102b3c}
+.admin-page .admin4-event{margin:16px 0 20px;border-radius:18px}
+.admin-page button,.admin-page a{transition:background-color .16s,border-color .16s,color .16s,transform .16s}
+.admin-page button:focus-visible,.admin-page a:focus-visible{outline:2px solid #70d9ec;outline-offset:3px}
+@media(max-width:1050px){.admin-page .admin-stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.admin-page .admin-hero-inner{min-height:0}.admin-page .admin-hero-mark{flex-basis:90px;width:90px;border-radius:22px}.admin-page .admin-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-page .admin-workspace-nav{top:0}.admin-page .admin-commandbar{top:auto}.admin-page .admin-login-fields{grid-template-columns:1fr}.admin-page .admin-section-heading{gap:10px}.admin-page .admin-section-icon{flex-basis:38px;width:38px;height:38px}}
+@media(max-width:480px){.admin-page .admin-hero-inner{align-items:flex-start}.admin-page .admin-hero-mark{display:none}.admin-page .admin-trust-ribbon span{font-size:.58rem}.admin-page .admin-stats-grid{gap:8px}.admin-page .admin-stat-card{grid-template-columns:1fr;gap:8px;min-height:120px;padding:12px}.admin-page .admin-stat-icon{width:34px;height:34px}.admin-page .admin-stat-card strong{font-size:1.55rem}.admin-page .admin-workspace-top{align-items:flex-start}.admin-page .admin-top-actions{width:100%}.admin-page .admin-top-actions>*{flex:1}.admin-page .admin-workspace-section,.admin-page .admin3-section{padding:15px}.admin-page .admin-workflow-strip{display:grid;grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.admin-page *{transition:none!important;scroll-behavior:auto!important}}
