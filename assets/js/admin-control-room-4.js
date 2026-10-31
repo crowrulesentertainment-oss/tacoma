@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded",()=>{
    $("#a4-state").className="admin4-event-status";$("#a4-state").textContent="Checking event operations…";$("#a4-note").textContent="Reading event management records.";
    try{
     const {data:{user},error:authError}=await db.auth.getUser();if(authError)throw authError;if(!user)throw Error("Sign in again to view event operations.");
-    const {data:admin,error:roleError}=await db.from("hub_admins").select("role").eq("user_id",user.id).maybeSingle();if(roleError)throw roleError;if(String(admin?.role||"").toLowerCase()!=="admin")throw Error("Event operations are restricted to Hub administrators.");
+    const {data:admin,error:roleError}=await db.from("hub_admins").select("role").eq("user_id",user.id).maybeSingle();if(roleError)throw roleError;if(String(admin?.role||"").toLowerCase()!=="admin"){section.hidden=true;const navLink=document.querySelector('.admin-workspace-nav a[href="#admin4-event-operations"]');if(navLink)navLink.hidden=true;throw Error("Event operations are restricted to Hub administrators.");}
     const opts={count:"exact",head:true};
     const [programs,teams,people,submissions,broadcast]=await Promise.all([
      db.from("tacoma_nye_schedule").select("id",opts).eq("event_key","nye_2026_2027"),
