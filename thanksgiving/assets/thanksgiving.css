@@ -61,3 +61,73 @@ footer b{color:#f5ead7}
 @media(max-width:850px){.hero-inner{grid-template-columns:1fr;gap:28px}.hero-note{max-width:360px}.hero{min-height:unset;padding-top:70px;padding-bottom:76px}.hero-scroll{display:none}}
 @media(max-width:700px){.hero{padding:56px 20px 50px;background-position:58% center}.hero h1{font-size:clamp(53px,15vw,82px)}.hero-kicker{font-size:9px!important;letter-spacing:.1em!important}.hero-note{padding:20px;max-width:100%}.hero-note strong{font-size:55px}.hero-meta{flex-wrap:wrap;font-size:9px;line-height:1.8}.hero-actions{align-items:stretch;flex-direction:column;max-width:360px}.hero-actions .btn{text-align:center}.hero .glass{margin:0}}
 @media(prefers-reduced-motion:reduce){.hero .btn{transition:none}}
+
+/* NIGHTFALL CINEMA — dark, photorealistic Thanksgiving experience */
+:root{color-scheme:dark;--ink:#f0eee8;--gold:#e9b96e;--line:#30343a;--cream:#101419;--forest:#0b1116;--forest2:#172129;--cranberry:#9b4c45;--copper:#bf8155}
+html{background:#090d11}
+body{background:#0b1015;color:#e9e7e1}
+.top{background:#06090d;color:#e9e4d9;border-bottom:1px solid #ffffff18}
+.top span{color:#e7bd7d}
+.top a:hover{color:#f4d39b}
+.hero{min-height:740px;background-image:linear-gradient(90deg,rgba(5,9,12,.96) 0%,rgba(7,12,16,.82) 42%,rgba(7,12,16,.28) 100%),linear-gradient(0deg,rgba(5,8,11,.9),transparent 48%),url("https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=2400&q=90");background-position:center 57%;background-size:cover}
+.hero:before{background:radial-gradient(ellipse at 78% 45%,rgba(229,170,92,.2),transparent 34%),linear-gradient(115deg,transparent 48%,rgba(4,8,11,.45))}
+.hero h1{color:#fffaf0;text-shadow:0 10px 44px #000b}
+.hero h1 em{color:#e8b66b}
+.hero h2{color:#fff3df}
+.hero .intro{color:#e2e0d9}
+.hero-note{background:linear-gradient(145deg,rgba(12,20,25,.91),rgba(7,12,16,.92));border:1px solid #d4a96870;box-shadow:0 24px 80px #0009}
+.hero-note p{color:#d5d6d2}
+.hero-scroll{color:#e4d8c4}
+nav{background:rgba(8,13,18,.97);border-bottom:1px solid #303942;box-shadow:0 10px 35px #0007;backdrop-filter:blur(14px)}
+nav a{color:#d9d9d5}
+nav a:hover,nav a:focus-visible{color:#f0c783}
+main{color:#e8e6df}
+section{border-color:#293039}
+section h2{color:#f4eee2}
+section>p{color:#b9bdc0}
+.eyebrow{color:#d9a65e}
+.tiles article,.story{background:linear-gradient(145deg,#171f26,#11171d);border:1px solid #303943;border-top:3px solid #b77e4d;box-shadow:0 16px 42px #0003}
+.tiles b,.story b{color:#e3b56e}
+.tiles h3,.card h3,.tiles article h3{color:#f2eee6}
+.tiles p{color:#c0c3c3}
+.tiles article a,.story a{color:#efc47f}
+.card{background:linear-gradient(145deg,#171e25,#11171d);border:1px solid #343d46;box-shadow:0 22px 55px #0005;border-radius:5px}
+.card h3{color:#f7f0e4}
+label{color:#e4e1d9}
+input,select,textarea{background:#0c1218;color:#f2eee6;border:1px solid #39434d;border-radius:3px}
+input::placeholder,textarea::placeholder{color:#87919a}
+input:focus,select:focus,textarea:focus{outline:2px solid #d5a45e;outline-offset:1px;border-color:#d5a45e;background:#101820}
+.check{color:#d9d9d2}
+.check input{accent-color:#d6a65e}
+.privacy{color:#aeb5b8}
+.status.success{color:#80d5a3}
+.status.error{color:#ff9a8d}
+.story{background:#151d24}
+.story p{color:#d2d4d2}
+.story small{color:#9da6aa}
+.empty{background:#171f26;color:#c2c6c6;border:1px solid #303943}
+.dark{background:linear-gradient(145deg,#111c22,#0a1015);color:#f1eee6;border-top:1px solid #303943;border-bottom:1px solid #303943}
+.dark>p{color:#c2c8c8}
+.dark .tiles article{background:linear-gradient(145deg,#1b2930,#121b21);border:1px solid #3b474e;border-top:3px solid #b77e4d}
+.dark .tiles h3{color:#f4eee4}
+.dark .tiles p{color:#c6cdcc}
+.dark .empty{background:#172129;color:#d5d9d7}
+.show{background:linear-gradient(105deg,rgba(6,11,15,.97),rgba(17,29,35,.94)),url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=85") center/cover;color:#fff;border:1px solid #39434a;border-left:4px solid #c58c55;box-shadow:0 20px 55px #0005}
+.show p{color:#d9dedd}
+.show h2{color:#fff3e2}
+.show b{color:#edc17b}
+.show em{color:#e8b66b}
+.btn.gold,.hero .gold{background:linear-gradient(135deg,#f0c981,#c98c4e);color:#17130e;box-shadow:0 8px 30px #0005}
+.btn.gold:hover,.hero .gold:hover{background:linear-gradient(135deg,#ffda98,#dba15d)}
+.btn.glass,.hero .glass{background:#101820b8;border:1px solid #c9b48f;color:#fff1d8}
+.btn.darkbtn{background:#d4a15f;color:#10151a}
+a{color:#e7bd7d}
+a:hover{color:#ffdda4}
+footer{background:#060a0e;color:#cbd0cf;border-top:1px solid #4a3828}
+footer b{color:#fff0d7}
+footer small{border-color:#293039;color:#929b9e}
+section[id]{scroll-margin-top:78px}
+nav a:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #e7b96e;outline-offset:3px}
+@media(max-width:850px){.hero{min-height:unset;padding-top:70px;padding-bottom:75px;background-position:62% center}}
+@media(max-width:700px){.hero{padding:54px 20px 50px;background-image:linear-gradient(90deg,rgba(5,9,12,.9),rgba(5,9,12,.57)),linear-gradient(0deg,rgba(5,8,11,.8),transparent 55%),url("https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1200&q=85")}.hero-note{background:#0a1117ed}.dark,.show{margin-left:-18px;margin-right:-18px}.card{padding:22px 17px}}
+@media(prefers-reduced-motion:reduce){.hero .btn{transition:none}}
