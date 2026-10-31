@@ -37,5 +37,6 @@ if not exists(select 1 from pg_policies where schemaname='public' and tablename=
 end $$;
 grant select on public.hub_thanksgiving_campaigns,public.hub_thanksgiving_submissions,public.hub_thanksgiving_partners,public.hub_thanksgiving_resources,public.hub_thanksgiving_events to anon,authenticated;
 grant insert on public.hub_thanksgiving_submissions,public.hub_thanksgiving_submission_contacts,public.hub_thanksgiving_partners,public.hub_thanksgiving_partner_contacts,public.hub_thanksgiving_events to anon,authenticated;
+grant usage,select on all sequences in schema public to authenticated;
 grant select,insert,update,delete on public.hub_thanksgiving_campaigns,public.hub_thanksgiving_submissions,public.hub_thanksgiving_submission_contacts,public.hub_thanksgiving_partners,public.hub_thanksgiving_partner_contacts,public.hub_thanksgiving_resources,public.hub_thanksgiving_events,public.hub_thanksgiving_moderation_log to authenticated;
 insert into public.hub_thanksgiving_campaigns(slug,title,tagline,start_date,end_date,is_active) values('thanksgiving-2026','Thanksgiving in Tacoma 2026','A Community. A Family. A Reason to Be Thankful.','2026-11-01','2026-11-29',true) on conflict(slug) do update set is_active=true,updated_at=now();
