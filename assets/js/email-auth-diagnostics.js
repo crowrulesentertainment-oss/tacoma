@@ -76,7 +76,9 @@ function exportHistory(){const list=read();if(!list.length){const s=$("#ops-secu
  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="tacoma-security-test-history.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
 }
 function init(){
- const b=$("#ops-auth-test");if(b)b.addEventListener("click",run);\n const rb=$("#ops-role-test");if(rb)rb.addEventListener("click",runRoleTest);\n const ib=$("#ops-invalid-token-test");if(ib)ib.addEventListener("click",runInvalidTokenTest);
+ const b=$("#ops-auth-test");if(b)b.addEventListener("click",run);
+ const rb=$("#ops-role-test");if(rb)rb.addEventListener("click",runRoleTest);
+ const ib=$("#ops-invalid-token-test");if(ib)ib.addEventListener("click",runInvalidTokenTest);
  const exp=$("#ops-security-export");if(exp)exp.addEventListener("click",exportHistory);
  const clear=$("#ops-security-clear");if(clear)clear.addEventListener("click",()=>{if(!window.confirm("Clear only this browser's saved security-test history? This will not affect server records."))return;try{localStorage.removeItem(KEY);render();}catch{const s=$("#ops-security-history-status");if(s)s.textContent="Browser blocked local storage; history could not be cleared."; }});
  render();
