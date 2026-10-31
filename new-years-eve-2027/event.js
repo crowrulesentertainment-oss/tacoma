@@ -30,6 +30,27 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 function render(){const q=(search?.value||"").trim().toLowerCase();const rows=schedule.filter(r=>(day==="all"||(day==="dec31"&&r[0]==="2026-12-31")||(day==="jan1"&&r[0]==="2027-01-01"))&&r.join(" ").toLowerCase().includes(q));if(!list)return;list.innerHTML=rows.length?rows.map(r=>'<article class="schedule-item"><div><div class="schedule-day">'+(r[0]==="2026-12-31"?"THURSDAY · DEC 31":"FRIDAY · JAN 1")+'</div><div class="schedule-time">'+esc(r[1])+'</div></div><div><h3>'+esc(r[2])+'</h3><p>'+esc(r[3])+' · '+esc(r[4])+'</p></div></article>').join(""):'<div class="schedule-empty">No programs match that search. Try another term.</div>'}
 search?.addEventListener("input",render);tabs.forEach(b=>b.addEventListener("click",()=>{day=b.dataset.day;tabs.forEach(x=>x.classList.toggle("active",x===b));render()}));render();
 async function loadManagedSchedule(){try{const cfg=window.HUB_CONFIG||{};if(!window.supabase||!cfg.url||!cfg.key)return;const client=window.supabase.createClient(cfg.url,cfg.key,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});const {data,error}=await client.from("tacoma_nye_public_schedule").select("starts_at,ends_at,title,format,team_label,status").order("starts_at");if(error)throw error;if(!data?.length)return;const dateKey=value=>{const parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date(value));const get=k=>parts.find(p=>p.type===k)?.value||"";return get("year")+"-"+get("month")+"-"+get("day")};const time=value=>new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"numeric",minute:"2-digit"}).format(new Date(value));schedule=data.map(row=>[dateKey(row.starts_at),time(row.starts_at)+"–"+time(row.ends_at),row.title,row.format+(row.status==="proposed"?" · Proposed":""),row.team_label||"Team to be assigned"]);render()}catch(error){console.warn("Managed event schedule unavailable; using published schedule fallback.",error)}}loadManagedSchedule();
+const submissionForm=document.querySelector("#nye-submission-form");
+submissionForm?.addEventListener("submit",async e=>{
+ e.preventDefault();
+ const status=document.querySelector("#nye-submission-status"),button=submissionForm.querySelector('button[type="submit"]');
+ if(status)status.textContent="Sending your submission…";
+ if(button)button.disabled=true;
+ try{
+  const cfg=window.HUB_CONFIG||{};
+  if(!window.supabase||!cfg.url||!cfg.key)throw Error("The event submission service is not configured.");
+  const client=window.supabase.createClient(cfg.url,cfg.key,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  const form=new FormData(submissionForm),asset=String(form.get("asset_url")||"").trim();
+  if(asset&&!asset.startsWith("https://"))throw Error("Please use a secure https:// link.");
+  const payload={submission_type:String(form.get("submission_type")),submitter_name:String(form.get("submitter_name")).trim(),submitter_email:String(form.get("submitter_email")).trim(),title:String(form.get("title")).trim(),description:String(form.get("description")||"").trim()||null,asset_url:asset||null,consent_confirmed:form.get("consent_confirmed")==="on",status:"new"};
+  const {error}=await client.from("tacoma_nye_submissions").insert(payload);
+  if(error)throw error;
+  submissionForm.reset();
+  if(status)status.textContent="Thank you. Your submission has been sent to the event review team. Submission does not guarantee selection or broadcast.";
+ }catch(error){if(status)status.textContent="Your submission could not be sent: "+(error.message||"Please try again later.");}
+ finally{if(button)button.disabled=false;}
+});
+
 const clock=document.querySelector("#pacific-clock");function tickClock(){if(clock)clock.textContent=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",second:"2-digit",timeZoneName:"short"}).format(new Date())}tickClock();setInterval(tickClock,1000);
 const target=new Date("2026-12-31T12:00:00-08:00").getTime(),end=new Date("2027-01-01T12:00:00-08:00").getTime();const pad=n=>String(n).padStart(2,"0");
 function countdown(){const now=Date.now(),status=document.querySelector("#countdown-status");if(now>=end){["count-days","count-hours","count-minutes","count-seconds"].forEach(id=>document.getElementById(id).textContent="00");if(status)status.textContent="The 24-hour broadcast has concluded. Thank you, Tacoma.";return}let remaining=Math.max(0,target-now);if(now>=target)remaining=end-now;const d=Math.floor(remaining/86400000),h=Math.floor(remaining%86400000/3600000),m=Math.floor(remaining%3600000/60000),s=Math.floor(remaining%60000/1000);document.getElementById("count-days").textContent=pad(d);document.getElementById("count-hours").textContent=pad(h);document.getElementById("count-minutes").textContent=pad(m);document.getElementById("count-seconds").textContent=pad(s);if(status)status.textContent=now<target?"Counting down to the opening broadcast.":now<end?"The 24-hour celebration is underway — welcome to Tacoma's New Year.":"The broadcast has concluded."}
