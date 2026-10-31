@@ -76,3 +76,9 @@ GitHub Pages URL: https://crowrulesentertainment-oss.github.io/tacoma/christmas/
 The Control Room at `/admin.html` now includes **Menu visibility** for administrators. Toggle a navigation item ON/OFF; changes are saved to `public.hub_menu_items` and applied to shared header navigation, dropdowns, and footer links on the next page load. This does not delete pages or content and does not block direct URL access.
 
 Migration: `supabase/migrations/20261031000000_hub_menu_visibility.sql` (applied to project `cevylpnoexugwgygvtgu`). The table is RLS-enabled. Public users can read settings; only users with `hub_admins.role = 'admin'` can change them. Admin/control-room links are intentionally excluded from menu controls.
+
+
+## Thanksgiving annual tradition expansion
+The Thanksgiving page now includes a seven-part annual tradition framework: 253 Reasons to Be Thankful, Tacoma Thankful Tree (approved story gallery), 253 Acts of Kindness, Thank-You Project, Community Table event listings, Tacoma Recipe Exchange, family activities and a year-by-year archive concept. It includes a permanent free-participation promise and clear caveats for independently hosted events. The 2026 campaign remains a pilot/launch edition; future editions should be opened as new annual records rather than overwriting prior years.
+
+Content permissions remain separated for Hub display, Tacoma Nights broadcast and social sharing. Only approved content appears publicly. Never imply that the Hub itself provides meals, money, transportation or supplies unless confirmed by a partner.
