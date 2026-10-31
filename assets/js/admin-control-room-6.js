@@ -11,13 +11,13 @@ const note=(el,msg,bad=false)=>{if(el){el.textContent=msg;el.className="admin6-n
 document.addEventListener("DOMContentLoaded",()=>{
  if(document.body.dataset.page!=="admin")return;
  const db=window.__hubSupabaseClient;if(!db)return;
- let installed=false,profiles=[],members=[],currentUser=null;
+ let installed=false,installing=false,profiles=[],members=[],currentUser=null;
  const install=async()=>{
-  const section=$("#admin3-members");if(!section||installed)return;
+  const section=$("#admin3-members");if(!section||installed||installing)return;installing=true;
   const {data:{user},error:authError}=await db.auth.getUser();
-  if(authError||!user)return;
+  if(authError||!user){installing=false;return;}
   const {data:admin,error:adminError}=await db.from("hub_admins").select("role").eq("user_id",user.id).maybeSingle();
-  if(adminError||String(admin?.role||"").toLowerCase()!=="admin")return;
+  if(adminError||String(admin?.role||"").toLowerCase()!=="admin"){installing=false;return;}
   installed=true;currentUser=user;
   section.innerHTML='<span class="eyebrow">08 · MEMBER SERVICES</span><h2>Member profile directory</h2><p>Member identity and profile details are read from <code>hub_member_profiles</code>. Membership status and suspension controls remain in the membership record.</p>'+
    '<div class="admin6-summary" id="a6-summary"><article><b id="a6-total">—</b><span>Profiles</span></article><article><b id="a6-public">—</b><span>Public profiles</span></article><article><b id="a6-active">—</b><span>Active memberships</span></article><article><b id="a6-suspended">—</b><span>Suspended memberships</span></article></div>'+
