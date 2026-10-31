@@ -5,7 +5,7 @@ create index if not exists hub_christmas_2026_public_idx on public.hub_christmas
 alter table public.hub_christmas_2026_submissions enable row level security;
 alter table public.hub_christmas_2026_contacts enable row level security;
 drop policy if exists "Public submit Christmas Together contributions" on public.hub_christmas_2026_submissions;
-create policy "Public submit Christmas Together contributions" on public.hub_christmas_2026_submissions for insert to anon,authenticated with check(status='pending' and reviewed_by is null and reviewed_at is null and allow_hub_display=true and map_lat is null and map_lng is null and allow_precise_map=false);
+create policy "Public submit Christmas Together contributions" on public.hub_christmas_2026_submissions for insert to anon,authenticated with check(status='pending' and reviewed_by is null and reviewed_at is null and allow_hub_display=true and verification_status='not-applicable' and map_lat is null and map_lng is null and allow_precise_map=false);
 drop policy if exists "Public read approved Christmas Together contributions" on public.hub_christmas_2026_submissions;
 create policy "Public read approved Christmas Together contributions" on public.hub_christmas_2026_submissions for select to anon,authenticated using(status='approved' and allow_hub_display=true);
 drop policy if exists "Hub moderators manage Christmas Together contributions" on public.hub_christmas_2026_submissions;
