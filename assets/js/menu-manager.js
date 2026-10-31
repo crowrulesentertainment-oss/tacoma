@@ -9,7 +9,7 @@ function candidates(){
  const found=new Map(),add=(a,group,order)=>{
   if(!a||!a.matches("a[href]"))return;
   const href=route(a.getAttribute("href")||"");
-  if(!href||!/[.]html$/i.test(href)||href==="admin.html"||href==="email-operations.html")return;
+  if(!href||href.startsWith("#")||href==="admin.html"||href==="email-operations.html")return;
   const label=labelOf(a);if(!label)return;
   const key=href.toLowerCase();
   if(!found.has(key))found.set(key,{href,label,menu_group:group,display_order:order,enabled:true});
@@ -94,7 +94,7 @@ async function boot(){
  if($("#admin-menu-manager"))return;
  actor=user;const w=$("#admin-content");if(!w)return;
  const section=document.createElement("section");section.className="admin-workspace-section menu-manager-section";section.id="admin-menu-manager";
- section.innerHTML='<div class="admin-section-heading"><div><span class="eyebrow">08 · Public navigation</span><h2>Menu visibility manager</h2><p>New links added to the Hub header or footer are detected automatically and added here. Turn links on or off without deleting pages or content.</p></div><span class="admin-section-icon">☷</span></div><div class="menu-manager-toolbar"><span>ON = visible · OFF = hidden · New links default to ON</span><button type="button" class="button" id="menu-manager-refresh">↻ Scan & refresh</button></div><div id="menu-manager-status" class="menu-manager-status">Discovering navigation links…</div><div id="menu-manager-list"></div><p class="menu-manager-footnote">Automatic discovery covers internal HTML links in the site header and footer. Admin/control-room and email-operations links are excluded. Direct page URLs remain accessible; this manager controls navigation visibility only.</p>';
+ section.innerHTML='<div class="admin-section-heading"><div><span class="eyebrow">08 · Public navigation</span><h2>Menu visibility manager</h2><p>New links added to the Hub header or footer are detected automatically and added here. Turn links on or off without deleting pages or content.</p></div><span class="admin-section-icon">☷</span></div><div class="menu-manager-toolbar"><span>ON = visible · OFF = hidden · New links default to ON</span><button type="button" class="button" id="menu-manager-refresh">↻ Scan & refresh</button></div><div id="menu-manager-status" class="menu-manager-status">Discovering navigation links…</div><div id="menu-manager-list"></div><p class="menu-manager-footnote">Automatic discovery covers internal page links, including directory-style URLs such as new-years-eve-2027/, in the site header and footer. Admin/control-room and email-operations links are excluded. Direct page URLs remain accessible; this manager controls navigation visibility only.</p>';
  w.append(section);
  const nav=$(".admin-workspace-nav");if(nav){const a=document.createElement("a");a.href="#admin-menu-manager";a.textContent="Menu visibility";nav.append(a)}
  $("#menu-manager-refresh").addEventListener("click",()=>refreshManager().catch(e=>note("Menu scan failed: "+e.message,true)));
