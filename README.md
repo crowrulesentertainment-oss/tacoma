@@ -59,3 +59,13 @@ Live Supabase tables are prefixed `hub_thanksgiving_`. The migration is `supabas
 Public submissions support optional HTTPS media links. Direct file uploads are intentionally not enabled in this first release; this avoids exposing unmoderated uploads or consuming storage quotas. Resource listings only appear when an authorized moderator marks both `status=published` and `verification_status=verified`. Contact details are held separately from public content.
 
 GitHub Pages URL: https://crowrulesentertainment-oss.github.io/tacoma/thanksgiving/
+
+
+## Christmas Together — Tacoma 2026
+Campaign: /christmas/ · Admin moderation: /christmas/admin.html.
+
+A free community initiative from Tacoma Community Hub × Tacoma Nights, produced by CrowRules Entertainment. The first website release includes a public campaign homepage, submissions, community story gallery, Lights of Tacoma listings, Shop Tacoma, Christmas Kindness, Tacoma Nights schedule, and moderator dashboard.
+
+Supabase migration: supabase/migrations/20261101000000_create_tacoma_christmas_2026.sql. It creates isolated hub_christmas_2026_ tables and uses existing hub_admins authorization. Run the migration manually in the Supabase SQL Editor before enabling public submissions. Public content remains pending until an authorized moderator approves it. Giving listings require moderator verification. Residential display submissions do not accept coordinates; exact home locations are not published.
+
+GitHub Pages URL: https://crowrulesentertainment-oss.github.io/tacoma/christmas/
