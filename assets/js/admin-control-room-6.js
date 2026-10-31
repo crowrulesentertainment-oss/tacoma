@@ -19,10 +19,13 @@ document.addEventListener("DOMContentLoaded",()=>{
   const {data:admin,error:adminError}=await db.from("hub_admins").select("role").eq("user_id",user.id).maybeSingle();
   if(adminError||String(admin?.role||"").toLowerCase()!=="admin"){installing=false;return;}
   installed=true;currentUser=user;
-  section.innerHTML='<span class="eyebrow">08 · MEMBER SERVICES</span><h2>Member profile directory</h2><p>Member identity and profile details are read from <code>hub_member_profiles</code>. Membership status and suspension controls remain in the membership record.</p>'+
+  section.querySelectorAll(".admin3-tools,#a3-mnote,#a3-members").forEach(el=>{el.hidden=true});
+  const directory=document.createElement("div");directory.className="admin6-directory";
+  directory.innerHTML='<span class="eyebrow">08 · MEMBER SERVICES</span><h2>Member profile directory</h2><p>Member identity and profile details are read from <code>hub_member_profiles</code>. Membership status and suspension controls remain in the membership record.</p>'+
    '<div class="admin6-summary" id="a6-summary"><article><b id="a6-total">—</b><span>Profiles</span></article><article><b id="a6-public">—</b><span>Public profiles</span></article><article><b id="a6-active">—</b><span>Active memberships</span></article><article><b id="a6-suspended">—</b><span>Suspended memberships</span></article></div>'+
    '<div class="admin6-toolbar"><input id="a6-search" type="search" placeholder="Search name, email, location, bio or interests…" aria-label="Search member profiles"><select id="a6-filter" aria-label="Filter membership status"><option value="">All membership statuses</option><option value="Active">Active</option><option value="Pending">Pending</option><option value="Suspended">Suspended</option><option value="profile-only">Profile only</option></select><button type="button" class="button" id="a6-refresh">↻ Refresh members</button></div>'+
    '<div class="admin6-note" id="a6-note" role="status" aria-live="polite">Loading member profiles…</div><div class="admin6-table-wrap" id="a6-table"></div>';
+  section.append(directory);
   const load=async()=>{
    const btn=$("#a6-refresh");if(btn)btn.disabled=true;
    note($("#a6-note"),"Loading profile and membership records…");
