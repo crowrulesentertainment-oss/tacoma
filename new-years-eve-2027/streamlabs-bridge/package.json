@@ -1,0 +1,13 @@
+{
+  "name": "crowrules-tacoma-streamlabs-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Secure local Streamlabs Desktop Remote Control adapter for 24 Hours of Tacoma",
+  "type": "module",
+  "engines": { "node": ">=20.11.0" },
+  "scripts": { "start": "node bridge.js" },
+  "dependencies": {
+    "dotenv": "16.4.7",
+    "sockjs-client": "1.6.1"
+  }
+}
