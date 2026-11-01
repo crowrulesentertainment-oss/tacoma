@@ -52,7 +52,7 @@ async function resolveChatIdentity(){
  const {data:profile,error:profileError}=await db.from("hub_member_profiles").select("display_name,bio,avatar_url,location,is_public").eq("user_id",user.id).maybeSingle();
  if(profileError||!profile||!String(profile.display_name||"").trim()){chatMember=null;chatIdentityError=true;if(identityField)identityField.hidden=true;identityEl.hidden=false;identityEl.textContent="Your member profile name could not be loaded. Please visit Member Dashboard to finish your profile before chatting.";loadSocialHub();return}
  chatMember={id:user.id,name:String(profile.display_name).trim(),bio:profile.bio||"",avatar_url:profile.avatar_url||"",location:profile.location||"",is_public:!!profile.is_public};nicknameEl.value=chatMember.name;nicknameEl.readOnly=true;if(identityField)identityField.hidden=true;identityEl.hidden=false;identityEl.replaceChildren();const strong=document.createElement("strong");strong.textContent="Posting as "+chatMember.name;const note=document.createElement("span");note.textContent="Signed-in member · your profile name is applied automatically";const edit=document.createElement("a");edit.href="member.html";edit.textContent="Edit profile";identityEl.append(strong,note,edit);
- if(globalPresenceChannel&&connectionEl.textContent==="Live")try{await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,visitor_id:visitorId,joined_at:new Date().toISOString()})}catch(e){}loadSocialHub().catch(e=>console.warn("Member network unavailable",e));
+ if(globalPresenceChannel&&connectionEl.textContent==="Live")trackChatPresence();loadSocialHub().catch(e=>console.warn("Member network unavailable",e));
 }
 let identityReady=resolveChatIdentity();db.auth.onAuthStateChange(()=>{setTimeout(()=>{identityReady=resolveChatIdentity()},0)});
 function draw(){
@@ -146,6 +146,35 @@ el.title=list.length?list.map(p=>p.nickname+(p.member?" (member)":" (guest)")).j
 });
 const channelRosterCount=$("#chat-roster-count");if(channelRosterCount)channelRosterCount.textContent=String(roster.length);
 }
+let lastPresenceSignature="",lastPresenceTrackAt=0,presenceTrackTimer=null,presenceTrackBusy=false;
+const chatPresenceJoinedAt=new Date().toISOString();
+async function trackChatPresence(force=false){
+if(!globalPresenceChannel||connectionEl.textContent!=="Live")return;
+const payload={room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,visitor_id:visitorId,joined_at:chatPresenceJoinedAt};
+const signature=JSON.stringify(payload);
+if(!force&&signature===lastPresenceSignature)return;
+const wait=Math.max(0,1400-(Date.now()-lastPresenceTrackAt));
+if(presenceTrackBusy||wait>0){
+if(presenceTrackTimer)clearTimeout(presenceTrackTimer);
+presenceTrackTimer=setTimeout(()=>{presenceTrackTimer=null;trackChatPresence(true)},Math.max(wait,250));
+return;
+}
+presenceTrackBusy=true;
+try{
+const result=await globalPresenceChannel.track(payload);
+if(result&&result.error)throw result.error;
+lastPresenceSignature=signature;
+lastPresenceTrackAt=Date.now();
+updateRoomCounts();
+}catch(error){
+console.warn("Tacoma chat presence update failed",error);
+connectionEl.textContent="Presence update unavailable";
+onlineEl.textContent="—";
+const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");
+if(total)total.textContent="—";if(active)active.textContent="—";
+$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
+}finally{presenceTrackBusy=false}
+}
 function ensureGlobalPresence(){
 if(globalPresenceChannel)return;
 const presenceKey=crypto.randomUUID?crypto.randomUUID():"hub-"+Date.now()+"-"+Math.random().toString(36).slice(2);
@@ -157,15 +186,7 @@ globalPresenceChannel=db.channel("hub-chat-all-room-presence",{config:{presence:
 globalPresenceChannel.subscribe(async(state,error)=>{
 if(state==="SUBSCRIBED"){
 connectionEl.textContent="Live";
-try{
-const result=await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,visitor_id:visitorId,joined_at:new Date().toISOString()});
-if(result&&result.error)throw result.error;
-updateRoomCounts();
-}catch(e){
-console.warn("Tacoma chat presence tracking failed",e);
-connectionEl.textContent="Presence unavailable";
-onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
-}
+lastPresenceSignature="";lastPresenceTrackAt=0;trackChatPresence(true);
 }else if(state==="SUBSCRIBING"){
 connectionEl.textContent="Connecting";onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
 }else if(state==="CHANNEL_ERROR"){
@@ -191,7 +212,7 @@ messageBox.innerHTML='<div class="empty-state">Opening '+esc(meta[0])+'…</div>
 if(roomChannel){try{await db.removeChannel(roomChannel)}catch(e){}roomChannel=null}
 if(epoch!==roomEpoch)return;
 ensureGlobalPresence();
-if(globalPresenceChannel)try{await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,visitor_id:visitorId,joined_at:new Date().toISOString()})}catch(e){}
+if(globalPresenceChannel)trackChatPresence();
 if(epoch!==roomEpoch)return;
 roomChannel=db.channel("hub-chat-"+room)
 .on("postgres_changes",{event:"INSERT",schema:"public",table:"hub_chat_messages",filter:"room=eq."+room},payload=>{if(epoch!==roomEpoch)return;const m=payload.new;if(m&&m.id&&!rows.some(x=>x.id===m.id)){rows=[...rows,m].slice(-100);draw()}})
@@ -242,7 +263,7 @@ bodyEl?.addEventListener("input",()=>{
  const now=Date.now();if(now-lastTypingAt<1800)return;lastTypingAt=now;
  roomChannel.send({type:"broadcast",event:"typing",payload:{nickname:activeChatName()}}).catch(()=>{});
 });
-nicknameEl?.addEventListener("change",()=>{if(chatMember)return;const nickname=nicknameEl.value.trim().slice(0,32);try{localStorage.setItem("hub_chat_nickname",nickname)}catch(e){}if(globalPresenceChannel&&connectionEl.textContent==="Live")globalPresenceChannel.track({room,nickname:nickname||"Neighbor",member:false,user_id:null,visitor_id:visitorId,joined_at:new Date().toISOString()}).catch(()=>{})});
+nicknameEl?.addEventListener("change",()=>{if(chatMember)return;const nickname=nicknameEl.value.trim().slice(0,32);try{localStorage.setItem("hub_chat_nickname",nickname)}catch(e){}if(globalPresenceChannel&&connectionEl.textContent==="Live")trackChatPresence(true)});
 $("#chat-form").addEventListener("submit",async e=>{
 e.preventDefault();await identityReady;if(chatAuthUser&&(!chatMember||chatIdentityError)){status(statusEl,"Your member profile must load before you can send a message. Open Member Dashboard and try again.","error");return}const nickname=chatMember?chatMember.name:nicknameEl.value.trim().replace(/\s+/g," "),body=bodyEl.value.trim();
 if(nickname.length<2||nickname.length>40){status(statusEl,"Your chat name must be between 2 and 40 characters.","error");return}
