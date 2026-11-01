@@ -5,7 +5,7 @@ if(menu&&nav){menu.addEventListener("click",()=>{const open=nav.classList.toggle
 const year=$("#year");if(year)year.textContent=new Date().getFullYear();
 const client=window.supabase&&window.HUB_CONFIG?window.supabase.createClient(window.HUB_CONFIG.url,window.HUB_CONFIG.key):null;
 const routes={"thanksgiving":"../thanksgiving/","valentines-day":"../valentines/","christmas-eve":"../christmas/","christmas-day":"../christmas/","new-years-eve":"../new-years-eve-2027/","easter":"../easter/"};
-const safeUrl=u=>{try{const x=new URL(u,location.href);return ["https:","http:"].includes(x.protocol)?x.href:""}catch{return ""}};
+const safeUrl=u=>{if(typeof u!=="string"||!u.trim())return "";try{const x=new URL(u,location.href);return ["https:","http:"].includes(x.protocol)?x.href:""}catch{return ""}};
 const nice=d=>new Date(d+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
 const holidayImages={
 "halloween":"photo-1509557965875-b88c97052f0e",
