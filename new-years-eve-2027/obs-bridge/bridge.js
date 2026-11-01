@@ -63,6 +63,7 @@ async function getTelemetry(){
     };
   }catch(error){
     lastError=error.message||String(error);
+    try{await obs.disconnect();}catch{}
     connected=false;
     return {lastError};
   }
