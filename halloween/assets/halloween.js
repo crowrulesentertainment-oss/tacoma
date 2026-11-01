@@ -1,0 +1,1 @@
+(()=>{"use strict";const now=new Date(),year=now.getFullYear();const halloween=new Date(year,9,31);const fmt=d=>d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});const y=document.getElementById("current-year"),d=document.getElementById("halloween-date");if(y)y.textContent=String(year);if(d)d.textContent=fmt(halloween).toUpperCase()+" · ANNUALLY";})();
