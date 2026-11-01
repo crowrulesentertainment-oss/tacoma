@@ -1,6 +1,6 @@
 # CrowRules 24 Hours of Tacoma — OBS Production Setup
 
-Version 1.0. Event: December 31, 2026 noon through January 1, 2027 noon Pacific.
+Version 1.1. Event: December 31, 2026 noon through January 1, 2027 noon Pacific.
 
 ## Chosen decisions
 - YouTube Live destination.
@@ -10,7 +10,7 @@ Version 1.0. Event: December 31, 2026 noon through January 1, 2027 noon Pacific.
 - Continuous local recording for the full 24 hours.
 
 ## Current implementation status
-The restricted Broadcast Headquarters reads event data from the existing Supabase tables and provides a browser-side checklist, scene blueprint and setup instructions. It does not yet control OBS, admit guests, switch scenes, start YouTube or verify encoder health. The secure bridge below is the target architecture and must be separately implemented and tested.
+The restricted Broadcast Headquarters now includes a secure producer command interface. The Supabase command service and bridge pairing API are deployed, and the local Node.js OBS Bridge is included in the repository. Actual OBS control becomes active only after an administrator pairs the production computer, installs the bridge, enters its one-time credential and starts it. Remote guest admission and video transport remain separate integrations.
 
 ## Target architecture
 1. GitHub Pages production headquarters: authenticated producer UI; no stream key or OBS password.
@@ -29,7 +29,7 @@ The restricted Broadcast Headquarters reads event data from the existing Supabas
 - Require explicit producer confirmation for on-air changes and a second confirmation for stream stop/shutdown.
 - Keep local OBS controls available if the website or cloud service fails.
 
-## OBS setup
+## Secure OBS Bridge setup\n\nThe bridge lives in `new-years-eve-2027/obs-bridge/`. Follow its [README](obs-bridge/README.md). Pair the production computer from the restricted Broadcast Studio, copy the one-time token into the local `.env`, add the OBS WebSocket password locally, run `npm install` and `npm start`, then verify BRIDGE ONLINE and a successful test scene switch. The bridge polls the secure Supabase Edge Function over outbound HTTPS, reports OBS scene/stream/recording/performance telemetry, and acknowledges commands. Credentials are hashed server-side and can be revoked from the Producer Studio. Host cues are audit-log notes only, not remote guest messaging.\n\n## OBS setup
 1. Install a current supported OBS Studio release on the production PC.
 2. Create profile CR-24H-TACOMA-2027 and scene collection CR-24H-TACOMA-2027.
 3. Initial target: 1920×1080 at 30 fps. Test actual encoder, upload and YouTube ingest before finalizing.
