@@ -12,3 +12,33 @@ html{scroll-behavior:smooth;scroll-padding-top:70px}body{background:#f3f0e8;colo
 @media(max-width:800px){.hero{min-height:720px;background-position:62% center;padding:75px 7%}.welcome{grid-template-columns:1fr;gap:35px;padding:75px 25px}.gift-scene{height:350px}.kindness-section{grid-template-columns:1fr;gap:25px;padding:70px 28px}.kindness-art{height:200px}.quiet-section{grid-template-columns:1fr;gap:30px;padding:75px 28px}.moment-cards{grid-template-columns:1fr 1fr}.moment-card:last-child{grid-column:span 2}}
 @media(max-width:520px){.top{font-size:8px;letter-spacing:.06em}.top span{display:none}.hero{min-height:700px;padding:65px 24px;background-position:58% center}.hero h1{font-size:clamp(53px,14vw,76px)}.hero-copy{font-size:13px}.hero-caption{display:none}.countdown{margin-top:32px}.welcome{padding:65px 22px}.gift-scene{height:300px}.mini-tree{left:43%;transform:scale(.8);transform-origin:top left}.gift-one{left:7%}.gift-two{left:32%}.gift-three{left:58%}.gift-four{left:78%}.moments-grid{padding:70px 20px}.moment-cards{grid-template-columns:1fr}.moment-card:last-child{grid-column:auto}.moment-card{min-height:210px}.kindness-section{padding:65px 22px}.community-section{padding:75px 22px}.quiet-section{padding:65px 22px}.quiet-quote{padding:28px;font-size:18px}.closing-section{padding:70px 22px}.story-actions .btn{width:100%;text-align:center}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.snowflake,.kindness-star,.scroll-cue{animation:none!important}.snowfall{display:none}}
+
+
+/* DARK CINEMATIC CHRISTMAS DAY THEME */
+body{background:#07120e!important;color:#edf1e8}
+nav{background:#0b1c15f2;border-color:#294033}
+nav a{color:#e6dfce}
+nav a:hover{color:#e5c58b}
+.welcome{color:#edf1e8}
+.welcome-copy h2,.section-heading h2,.kindness-copy h2,.community-section h2,.quiet-section h2,.closing-section h2{color:#f4f0e6}
+.welcome-copy h2 em,.section-heading h2 em,.kindness-copy h2 em,.community-section h2 em,.quiet-section h2 em{color:#e5c58b}
+.welcome-copy>p:not(.eyebrow),.section-heading>p:not(.eyebrow),.kindness-copy>p:not(.eyebrow),.community-section>p:not(.eyebrow),.quiet-section p:not(.eyebrow),.closing-section>p:not(.eyebrow){color:#c0ccc2}
+.soft-note{border-color:#d5b574;color:#e5d5b5}
+.moments-grid{background:#0b1b14}
+.moment-card{background:#14281e;border-color:#30483a;box-shadow:0 16px 45px #0004}
+.moment-card h3{color:#f0e8d8}
+.moment-card p{color:#bdc9bf}
+.moment-card>span{color:#e0bd7b}
+.card-symbol{color:#e5c58b}
+.gift-scene{box-shadow:0 24px 65px #0008;border:1px solid #314537}
+.kindness-section{background:#10271e;border-top:1px solid #2b4435;border-bottom:1px solid #2b4435}
+.community-section{background:linear-gradient(#091810ed,#091810ed),url("https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=1800&q=80") center/cover;border-top:1px solid #263d2e;border-bottom:1px solid #263d2e}
+.community-section .dark-outline{color:#f0e7d5;border-color:#8c9c8f}
+.quiet-section{color:#edf1e8}
+.quiet-quote{background:#14271d;border-left-color:#d5b574;color:#e8ddc8}
+.quiet-quote span{color:#e5c58b}
+.text-link{color:#e5c58b}
+.closing-section{background:#10271e;border-top:1px solid #2b4435}
+footer{background:#040c08;color:#dce5dc;border-top:1px solid #253b2d}
+footer a{color:#e5c58b}
+@media(prefers-reduced-motion:reduce){.snowfall{display:none}}
