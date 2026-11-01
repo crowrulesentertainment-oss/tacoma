@@ -2,12 +2,12 @@
 
 This is the local connector between the secure Tacoma producer control service and **OBS Studio**. It runs on the same Windows/Mac/Linux computer as OBS and connects to OBS only through loopback. Remote producers never connect to OBS WebSocket directly.
 
-**Streamlabs Desktop is not supported by this bridge.** Streamlabs Desktop has a separate Remote Control API and pairing token; it does not expose the OBS WebSocket v5 endpoint used here. A separate Streamlabs adapter must be implemented and security-reviewed before the Broadcast Studio can remotely control it. Never paste a Streamlabs Remote Control token into `OBS_BRIDGE_TOKEN` or `OBS_WS_PASSWORD`.
+**Streamlabs Desktop uses a separate adapter.** This folder remains OBS Studio only. For Streamlabs, use [`../streamlabs-bridge/README.md`](../streamlabs-bridge/README.md). Never paste a Streamlabs Remote Control token into `OBS_BRIDGE_TOKEN` or `OBS_WS_PASSWORD`.
 
 ## Requirements
 
 - OBS Studio 28 or newer (built-in obs-websocket 5.x)
-- This bridge does not connect to Streamlabs Desktop
+- This bridge does not connect to Streamlabs Desktop; use the separate Streamlabs adapter
 - Node.js 20.11 or newer
 - A signed-in Hub administrator to pair the computer in the restricted Broadcast Studio
 
