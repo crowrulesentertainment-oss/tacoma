@@ -156,7 +156,7 @@ if(!force&&signature===lastPresenceSignature)return;
 const wait=Math.max(0,1400-(Date.now()-lastPresenceTrackAt));
 if(presenceTrackBusy||wait>0){
 if(presenceTrackTimer)clearTimeout(presenceTrackTimer);
-presenceTrackTimer=setTimeout(()=>{presenceTrackTimer=null;trackChatPresence(true)},Math.max(wait,250));
+presenceTrackTimer=setTimeout(()=>{presenceTrackTimer=null;trackChatPresence(false)},Math.max(wait,250));
 return;
 }
 presenceTrackBusy=true;
