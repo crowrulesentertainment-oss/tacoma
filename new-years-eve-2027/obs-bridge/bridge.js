@@ -6,7 +6,7 @@ const BRIDGE_TOKEN = process.env.OBS_BRIDGE_TOKEN || "";
 const OBS_WS_URL = process.env.OBS_WS_URL || "ws://127.0.0.1:4455";
 const OBS_WS_PASSWORD = process.env.OBS_WS_PASSWORD || "";
 const DEVICE_NAME = process.env.OBS_DEVICE_NAME || "OBS Production PC";
-const POLL_MS = Math.max(700, Number(process.env.POLL_INTERVAL_MS || 1200));
+const POLL_MS = Math.max(700, Number(process.env.POLL_INTERVAL_MS || 2000));
 const approvedScenes = new Set([
   "01 OPENING","02 MAIN STUDIO","03 TWO HOSTS","04 REMOTE HOST","05 REMOTE INTERVIEW",
   "06 COMMUNITY SPOTLIGHT","07 TACOMA SHOWCASE","08 FULL SCREEN VIDEO","09 PERFORMANCE",
