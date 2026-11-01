@@ -1,12 +1,14 @@
 "use strict";
-const CACHE_NAME = "tacoma-hub-shell-v3-20261101";
+const CACHE_NAME = "tacoma-hub-shell-v4-20261101";
 const CORE_URLS = [
   "./", "./index.html", "./directory.html", "./businesses.html",
   "./resources.html", "./events.html", "./opportunities.html",
   "./lost-found.html", "./community-alerts.html", "./emergency-resources.html",
   "./chat.html", "./submit.html", "./moderation.html", "./privacy.html",
   "./member.html", "./offline.html", "./manifest.webmanifest",
-  "./holidays/", "./holidays/index.html", "./holidays/assets/css/holidays.css", "./holidays/assets/js/holidays.js",
+  "./holidays/", "./holidays/index.html", "./holidays/holiday.html", "./holidays/assets/css/holidays.css", "./holidays/assets/js/holidays.js",
+  "./holidays/assets/css/holiday-detail.css", "./holidays/assets/js/holiday-detail.js",
+  "./holidays/assets/css/holiday-sync.css", "./holidays/assets/js/holiday-sync.js",
   "./assets/css/site.css", "./assets/js/config.js", "./assets/js/app.js",
   "./assets/js/member.js", "./assets/img/tacoma-hub-icon.svg"
 ];
