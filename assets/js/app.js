@@ -171,7 +171,7 @@ connectionEl.textContent="Presence unavailable";
 onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
 }
 }else if(state==="SUBSCRIBING"){
-connectionEl.textContent="Connecting";
+connectionEl.textContent="Connecting";onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
 }else if(state==="CHANNEL_ERROR"){
 console.warn("Tacoma chat presence channel error",error||"Realtime channel error");
 connectionEl.textContent="Connection error";onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
@@ -179,8 +179,7 @@ connectionEl.textContent="Connection error";onlineEl.textContent="—";const tot
 console.warn("Tacoma chat presence channel timed out",error||"Realtime timeout");
 connectionEl.textContent="Connection timed out";onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
 }else if(state==="CLOSED"){
-connectionEl.textContent="Offline";
-onlineEl.textContent="—";
+connectionEl.textContent="Offline";onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
 }else{
 connectionEl.textContent=state||"Connecting";
 }
