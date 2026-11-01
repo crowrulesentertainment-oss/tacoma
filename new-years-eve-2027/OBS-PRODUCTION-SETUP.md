@@ -19,6 +19,11 @@ The restricted Broadcast Headquarters now includes a secure producer command int
 4. Local production bridge: service on the OBS PC; initiates outbound authenticated polling or private channel; calls OBS WebSocket only on loopback.
 5. OBS Studio: scenes, transitions, encoder and local recording; sends program to YouTube using a key stored only in OBS.
 
+The Broadcast Studio includes an embedded public YouTube channel monitor so producers can watch the viewer-facing output from event headquarters.
+
+### Streamlabs Desktop compatibility
+The current `obs-bridge` package is for OBS Studio only. Streamlabs Desktop has a distinct Remote Control API (Settings → Remote Control) and needs a separately implemented adapter. Do not configure Streamlabs as if it were an OBS WebSocket v5 server, and do not share its Remote Control token with the OBS bridge. Until that adapter is deployed and tested, run Streamlabs locally and use the embedded YouTube player plus Streamlabs' own local status/preview for monitoring. Either encoder may be selected as the active YouTube source, but only one should be the active program encoder at a time.
+
 ## Security requirements
 - Never port-forward OBS WebSocket port 4455.
 - Never place OBS password, YouTube stream key, Supabase service-role key or bridge secret in GitHub, HTML, JavaScript, browser storage or chat.
