@@ -52,7 +52,7 @@ async function resolveChatIdentity(){
  const {data:profile,error:profileError}=await db.from("hub_member_profiles").select("display_name,bio,avatar_url,location,is_public").eq("user_id",user.id).maybeSingle();
  if(profileError||!profile||!String(profile.display_name||"").trim()){chatMember=null;chatIdentityError=true;if(identityField)identityField.hidden=true;identityEl.hidden=false;identityEl.textContent="Your member profile name could not be loaded. Please visit Member Dashboard to finish your profile before chatting.";loadSocialHub();return}
  chatMember={id:user.id,name:String(profile.display_name).trim(),bio:profile.bio||"",avatar_url:profile.avatar_url||"",location:profile.location||"",is_public:!!profile.is_public};nicknameEl.value=chatMember.name;nicknameEl.readOnly=true;if(identityField)identityField.hidden=true;identityEl.hidden=false;identityEl.replaceChildren();const strong=document.createElement("strong");strong.textContent="Posting as "+chatMember.name;const note=document.createElement("span");note.textContent="Signed-in member · your profile name is applied automatically";const edit=document.createElement("a");edit.href="member.html";edit.textContent="Edit profile";identityEl.append(strong,note,edit);
- if(globalPresenceChannel&&connectionEl.textContent==="Live")try{await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,joined_at:new Date().toISOString()})}catch(e){}loadSocialHub().catch(e=>console.warn("Member network unavailable",e));
+ if(globalPresenceChannel&&connectionEl.textContent==="Live")try{await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,visitor_id:visitorId,joined_at:new Date().toISOString()})}catch(e){}loadSocialHub().catch(e=>console.warn("Member network unavailable",e));
 }
 let identityReady=resolveChatIdentity();db.auth.onAuthStateChange(()=>{setTimeout(()=>{identityReady=resolveChatIdentity()},0)});
 function draw(){
@@ -105,7 +105,7 @@ Object.entries(states).forEach(([key,entries])=>{
 const list=Array.isArray(entries)?entries:[];
 list.forEach((presence,index)=>{
 if(!presence||typeof presence.room!=="string"||!roomMeta[presence.room])return;
-people.push({key:key+":"+index,identity:presence.user_id?"member:"+presence.user_id:"guest:"+key,room:presence.room,nickname:String(presence.nickname||"Neighbor").trim().slice(0,32)||"Neighbor",member:presence.member===true,joined_at:presence.joined_at||""});
+people.push({key:key+":"+index,identity:presence.user_id?"member:"+presence.user_id:(presence.visitor_id?"guest:"+presence.visitor_id:"guest:"+key),room:presence.room,nickname:String(presence.nickname||"Neighbor").trim().slice(0,32)||"Neighbor",member:presence.member===true,joined_at:presence.joined_at||""});
 });
 });
 return people;
@@ -148,11 +148,7 @@ const channelRosterCount=$("#chat-roster-count");if(channelRosterCount)channelRo
 }
 function ensureGlobalPresence(){
 if(globalPresenceChannel)return;
-let presenceKey;
-try{
-presenceKey=sessionStorage.getItem("hub_chat_presence_id");
-if(!presenceKey){presenceKey=(crypto.randomUUID?crypto.randomUUID():"hub-"+Date.now()+"-"+Math.random().toString(36).slice(2));sessionStorage.setItem("hub_chat_presence_id",presenceKey)}
-}catch(e){presenceKey=(crypto.randomUUID?crypto.randomUUID():"hub-"+Date.now()+"-"+Math.random().toString(36).slice(2))}
+const presenceKey=crypto.randomUUID?crypto.randomUUID():"hub-"+Date.now()+"-"+Math.random().toString(36).slice(2);
 connectionEl.textContent="Connecting";
 globalPresenceChannel=db.channel("hub-chat-all-room-presence",{config:{presence:{key:presenceKey}}})
 .on("presence",{event:"sync"},updateRoomCounts)
@@ -162,7 +158,7 @@ globalPresenceChannel.subscribe(async(state,error)=>{
 if(state==="SUBSCRIBED"){
 connectionEl.textContent="Live";
 try{
-const result=await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,joined_at:new Date().toISOString()});
+const result=await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,visitor_id:visitorId,joined_at:new Date().toISOString()});
 if(result&&result.error)throw result.error;
 updateRoomCounts();
 }catch(e){
@@ -195,7 +191,7 @@ messageBox.innerHTML='<div class="empty-state">Opening '+esc(meta[0])+'…</div>
 if(roomChannel){try{await db.removeChannel(roomChannel)}catch(e){}roomChannel=null}
 if(epoch!==roomEpoch)return;
 ensureGlobalPresence();
-if(globalPresenceChannel)try{await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,joined_at:new Date().toISOString()})}catch(e){}
+if(globalPresenceChannel)try{await globalPresenceChannel.track({room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,visitor_id:visitorId,joined_at:new Date().toISOString()})}catch(e){}
 if(epoch!==roomEpoch)return;
 roomChannel=db.channel("hub-chat-"+room)
 .on("postgres_changes",{event:"INSERT",schema:"public",table:"hub_chat_messages",filter:"room=eq."+room},payload=>{if(epoch!==roomEpoch)return;const m=payload.new;if(m&&m.id&&!rows.some(x=>x.id===m.id)){rows=[...rows,m].slice(-100);draw()}})
@@ -246,7 +242,7 @@ bodyEl?.addEventListener("input",()=>{
  const now=Date.now();if(now-lastTypingAt<1800)return;lastTypingAt=now;
  roomChannel.send({type:"broadcast",event:"typing",payload:{nickname:activeChatName()}}).catch(()=>{});
 });
-nicknameEl?.addEventListener("change",()=>{if(chatMember)return;const nickname=nicknameEl.value.trim().slice(0,32);try{localStorage.setItem("hub_chat_nickname",nickname)}catch(e){}if(globalPresenceChannel&&connectionEl.textContent==="Live")globalPresenceChannel.track({room,nickname:nickname||"Neighbor",joined_at:new Date().toISOString()}).catch(()=>{})});
+nicknameEl?.addEventListener("change",()=>{if(chatMember)return;const nickname=nicknameEl.value.trim().slice(0,32);try{localStorage.setItem("hub_chat_nickname",nickname)}catch(e){}if(globalPresenceChannel&&connectionEl.textContent==="Live")globalPresenceChannel.track({room,nickname:nickname||"Neighbor",member:false,user_id:null,visitor_id:visitorId,joined_at:new Date().toISOString()}).catch(()=>{})});
 $("#chat-form").addEventListener("submit",async e=>{
 e.preventDefault();await identityReady;if(chatAuthUser&&(!chatMember||chatIdentityError)){status(statusEl,"Your member profile must load before you can send a message. Open Member Dashboard and try again.","error");return}const nickname=chatMember?chatMember.name:nicknameEl.value.trim().replace(/\s+/g," "),body=bodyEl.value.trim();
 if(nickname.length<2||nickname.length>40){status(statusEl,"Your chat name must be between 2 and 40 characters.","error");return}
