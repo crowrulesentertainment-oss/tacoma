@@ -6,9 +6,9 @@ An annual Tacoma Community Hub and Tacoma Nights community celebration, presente
 
 ## Public experience
 
-- Main page: https://crowrulesentertainment-oss.github.io/crowrulesentertainment/tacoma-nights/valentines/
-- Submission Center: https://crowrulesentertainment-oss.github.io/crowrulesentertainment/tacoma-nights/valentines/submit.html
-- Admin Control Room: https://crowrulesentertainment-oss.github.io/crowrulesentertainment/tacoma-nights/valentines/admin.html
+- Main page: https://crowrulesentertainment-oss.github.io/tacoma/valentines/
+- Submission Center: https://crowrulesentertainment-oss.github.io/tacoma/valentines/submit.html
+- Admin Control Room: https://crowrulesentertainment-oss.github.io/tacoma/valentines/admin.html
 
 ## Annual tradition
 
