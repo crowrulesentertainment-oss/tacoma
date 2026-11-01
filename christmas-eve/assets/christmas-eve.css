@@ -1,34 +1,49 @@
-:root{--forest:#07191b;--gold:#f0d49a;--ink:#eaf1ec}
-body{background:#071316;color:#eaf1ec}
-.top{background:#030b10;border-bottom:1px solid #ffffff16}
-.hero{position:relative;isolation:isolate;min-height:clamp(760px,94vh,1020px);padding:clamp(88px,10vw,145px) max(calc((100vw - 1120px)/2),clamp(24px,6vw,80px));background-color:#061218;background-image:linear-gradient(90deg,rgba(2,9,14,.96) 0%,rgba(3,12,18,.83) 37%,rgba(3,12,18,.24) 76%,rgba(2,9,14,.18) 100%),linear-gradient(0deg,rgba(2,8,13,.82),rgba(2,8,13,.03) 55%,rgba(2,8,13,.32)),url("https://images.unsplash.com/photo-1767615016264-2352a47f0dcd?auto=format&fit=crop&fm=jpg&q=88&w=3000");background-position:center;background-size:cover;background-repeat:no-repeat;box-shadow:inset 0 -1px 0 #ffffff22}
-.hero-santa{position:absolute;z-index:0;right:3%;bottom:0;width:min(42vw,570px);height:80%;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;opacity:.9;mask-image:linear-gradient(to bottom,#000 72%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent 100%)}
-.hero-santa img{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 15px 45px #0009)}
-.light-garland{position:absolute;z-index:2;left:0;right:0;top:0;height:72px;pointer-events:none;border-top:3px solid #6b4a22;border-radius:0 0 50% 50%;filter:drop-shadow(0 3px 9px #000)}
-.light-garland:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 6% 48%,#ffe8a2 0 4px,transparent 7px),radial-gradient(ellipse at 16% 63%,#ff6257 0 4px,transparent 8px),radial-gradient(ellipse at 27% 73%,#a9f2c2 0 4px,transparent 8px),radial-gradient(ellipse at 39% 78%,#ffe8a2 0 4px,transparent 8px),radial-gradient(ellipse at 51% 80%,#ff6257 0 4px,transparent 8px),radial-gradient(ellipse at 63% 77%,#a9f2c2 0 4px,transparent 8px),radial-gradient(ellipse at 75% 69%,#ffe8a2 0 4px,transparent 8px),radial-gradient(ellipse at 87% 57%,#ff6257 0 4px,transparent 8px),radial-gradient(ellipse at 97% 44%,#a9f2c2 0 4px,transparent 8px);animation:twinkle 2.8s ease-in-out infinite alternate}
-@keyframes twinkle{from{opacity:.58;filter:brightness(.8)}to{opacity:1;filter:brightness(1.55)}}
-.hero:before,.hero:after{content:"";position:absolute;inset:-35% 0 0;z-index:1;pointer-events:none}
-.hero:before{opacity:.7;background-image:radial-gradient(2px 2px at 20px 30px,#fff 98%,transparent),radial-gradient(1.5px 1.5px at 80px 110px,#fff 98%,transparent),radial-gradient(2.5px 2.5px at 150px 70px,#fff 98%,transparent),radial-gradient(1px 1px at 220px 160px,#fff 98%,transparent);background-size:260px 210px;animation:snow-drift 18s linear infinite}
-.hero:after{opacity:.45;background-image:radial-gradient(3px 3px at 40px 60px,#fff 98%,transparent),radial-gradient(2px 2px at 180px 130px,#fff 98%,transparent),radial-gradient(1px 1px at 110px 190px,#fff 98%,transparent);background-size:320px 260px;animation:snow-fall 28s linear infinite}
+/* Christmas Eve Together — cinematic winter-night treatment */
+:root{--forest:#061316;--gold:#f0d49a;--ink:#edf2ee;--muted:#bdcbc4}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:#050e12;color:var(--ink);font-family:"DM Sans",sans-serif;overflow-x:hidden}
+body:after{content:"";position:fixed;inset:0;z-index:8;pointer-events:none;opacity:.12;background-image:radial-gradient(ellipse at center,transparent 40%,#000 100%)}
+.top{position:relative;z-index:10;background:#03090d;color:#e6eee8;padding:12px 5%;display:flex;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:.12em;border-bottom:1px solid #ffffff18}
+.top a{color:#f0d49a;text-decoration:none}
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(780px,96vh,1040px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:clamp(90px,10vw,145px) max(calc((100vw - 1120px)/2),clamp(24px,6vw,80px));background-color:#07151b;background-image:linear-gradient(90deg,rgba(2,8,13,.96) 0%,rgba(3,11,17,.84) 38%,rgba(3,12,18,.28) 75%,rgba(2,9,14,.34) 100%),linear-gradient(0deg,rgba(2,8,13,.88),transparent 48%,rgba(2,8,13,.28)),url("https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=2600&q=90");background-position:center;background-size:cover;background-repeat:no-repeat;box-shadow:inset 0 -1px 0 #ffffff22}
+.hero:before,.hero:after{content:"";position:absolute;inset:-30% 0 0;z-index:2;pointer-events:none}
+.hero:before{opacity:.82;background-image:radial-gradient(2px 2px at 20px 30px,#fff 98%,transparent),radial-gradient(1.5px 1.5px at 80px 110px,#fff 98%,transparent),radial-gradient(2.5px 2.5px at 150px 70px,#fff 98%,transparent),radial-gradient(1px 1px at 220px 160px,#fff 98%,transparent);background-size:260px 210px;animation:snow-drift 17s linear infinite}
+.hero:after{opacity:.58;background-image:radial-gradient(3px 3px at 40px 60px,#fff 98%,transparent),radial-gradient(2px 2px at 180px 130px,#fff 98%,transparent),radial-gradient(1px 1px at 110px 190px,#fff 98%,transparent);background-size:320px 260px;animation:snow-fall 25s linear infinite}
 @keyframes snow-drift{from{transform:translate3d(0,-8%,0)}to{transform:translate3d(3%,18%,0)}}@keyframes snow-fall{from{transform:translate3d(0,-12%,0)}to{transform:translate3d(-2%,28%,0)}}
-.hero>*:not(.hero-santa):not(.light-garland){position:relative;z-index:3}
-.hero .eyebrow{color:#f5dba8;text-shadow:0 2px 14px #000}
+.hero-tree{position:absolute;z-index:1;right:23%;bottom:-4%;width:min(31vw,390px);height:77%;opacity:.94;pointer-events:none;filter:drop-shadow(0 15px 45px #000b);mask-image:linear-gradient(to bottom,#000 82%,transparent);-webkit-mask-image:linear-gradient(to bottom,#000 82%,transparent)}
+.hero-tree img{width:100%;height:100%;object-fit:cover;object-position:center;mix-blend-mode:screen;filter:brightness(.72) saturate(1.25)}
+.hero-santa{position:absolute;z-index:1;right:0;bottom:0;width:min(39vw,530px);height:76%;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;opacity:.96;mask-image:linear-gradient(to bottom,#000 72%,transparent);-webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent)}
+.hero-santa img{width:100%;height:100%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 15px 45px #000b)}
+.light-garland{position:absolute;z-index:4;left:-2%;right:-2%;top:-4px;height:90px;pointer-events:none;border-top:4px solid #63451f;border-radius:0 0 50% 50%;filter:drop-shadow(0 4px 12px #000)}
+.light-garland:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 5% 48%,#fff0b2 0 4px,transparent 10px),radial-gradient(ellipse at 14% 61%,#ff645a 0 4px,transparent 10px),radial-gradient(ellipse at 25% 72%,#a8f3c2 0 4px,transparent 10px),radial-gradient(ellipse at 36% 78%,#ffe8a2 0 4px,transparent 10px),radial-gradient(ellipse at 48% 81%,#ff6257 0 4px,transparent 10px),radial-gradient(ellipse at 60% 78%,#a9f2c2 0 4px,transparent 10px),radial-gradient(ellipse at 72% 69%,#ffe8a2 0 4px,transparent 10px),radial-gradient(ellipse at 84% 57%,#ff6257 0 4px,transparent 10px),radial-gradient(ellipse at 96% 43%,#a9f2c2 0 4px,transparent 10px);animation:twinkle 2.5s ease-in-out infinite alternate}
+@keyframes twinkle{0%{opacity:.5;filter:brightness(.8)}100%{opacity:1;filter:brightness(1.8)}}
+.snow-ground{position:absolute;z-index:1;left:0;right:0;bottom:0;height:16%;pointer-events:none;background:linear-gradient(0deg,#eaf5f5aa,transparent);filter:blur(16px);opacity:.35}
+.hero>*:not(.hero-tree):not(.hero-santa):not(.light-garland):not(.snow-ground){position:relative;z-index:5}
+.hero .eyebrow{color:#f5dba8;text-shadow:0 2px 14px #000;font-size:10px;letter-spacing:.2em;font-weight:800}
 .scene-note{font-size:10px!important;letter-spacing:.3em;color:#f2d7a1!important;font-weight:800;margin-top:30px;text-shadow:0 2px 12px #000}
 .hero .date-label{font:800 11px "DM Sans",sans-serif;letter-spacing:.22em;color:#f5dfb4;text-shadow:0 2px 12px #000}
-.hero h1{max-width:850px;margin:20px 0 18px;font-size:clamp(58px,9.3vw,116px);line-height:.88;letter-spacing:-.075em;text-shadow:0 5px 28px #0009}
+.hero h1{max-width:850px;margin:20px 0 18px;font:800 clamp(58px,9.3vw,116px)/.88 Manrope,sans-serif;letter-spacing:-.075em;text-shadow:0 5px 28px #000b}
 .hero h1 em{color:#f0d59a;font-style:normal}
 .hero h2{max-width:600px;margin:8px 0 18px;color:#fff0d2;font-size:clamp(17px,2.1vw,25px);line-height:1.35;letter-spacing:.08em;text-shadow:0 2px 16px #000}
 .hero>p:not(.eyebrow):not(.date-label):not(.scene-note){max-width:590px;color:#f0f3ef;font-size:clamp(14px,1.2vw,17px);line-height:1.85;text-shadow:0 2px 12px #000}
-.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}.hero .btn{box-shadow:0 8px 26px #0005;transition:transform .25s ease,background .25s ease}.hero .btn:hover{transform:translateY(-3px)}.hero .btn.outline{background:#05121488;backdrop-filter:blur(8px)}
-.count{margin-top:28px;border-top-color:#ffffff66;text-shadow:0 2px 12px #000}.count b{color:#f5dca7}.count span,.count small{color:#f1eee5}
-nav{background:#09191c;border-bottom:1px solid #ffffff20}nav a{color:#e9eee9}nav a:hover{color:#f0d49a}
-main{background:radial-gradient(ellipse at 50% 0%,#153235 0%,#071316 52%)}
-.intro,main>section{color:#eaf1ec}.intro h2,.wish h2,.show h2{color:#f6f3e9}.intro>p:not(.eyebrow),.wish p,.show p{color:#c3d0ca}
-.stats b{color:#f0d49a}.stats small{color:#aab9b2}
-.tile{background:linear-gradient(145deg,#142c2e,#0b1b1e);border:1px solid #ffffff20;border-top:3px solid #d8b779;color:#e8cf9d;box-shadow:0 14px 34px #0003}.tile h3{color:#f6f3e9}.tile p{color:#c3d0ca}
-.wish,.show{background:linear-gradient(120deg,#0d292b,#071316 75%);border-top:1px solid #ffffff15;border-bottom:1px solid #ffffff15}
-.btn.gold{background:linear-gradient(135deg,#f4dfa9,#c9a65e);color:#172321}.btn.outline{border-color:#d7c08f;color:#fff4d8}
-footer{background:#030b10;color:#d5dfd9;border-top:1px solid #ffffff20}
-@media(max-width:700px){.hero{min-height:790px;padding:76px 25px 62px;background-position:58% center}.hero-santa{right:-15%;width:75vw;height:55%;opacity:.62}.hero:before{opacity:.48}.hero h1{font-size:clamp(55px,13vw,78px)}.hero h2{letter-spacing:.035em}.hero>p:not(.eyebrow):not(.date-label):not(.scene-note){max-width:560px}.scene-note{letter-spacing:.18em!important}}
-@media(max-width:420px){.hero{min-height:820px;padding-left:21px;padding-right:21px}.hero .actions{align-items:stretch;flex-direction:column;width:100%;max-width:310px}.hero .actions .btn{text-align:center}.hero-santa{right:-25%;width:88vw;height:48%;opacity:.52}}
-@media(prefers-reduced-motion:reduce){.hero:before,.hero:after,.light-garland:before{animation:none}.hero .btn{transition:none}}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}.hero .btn{box-shadow:0 8px 26px #0007;transition:transform .25s ease,filter .25s ease}.hero .btn:hover{transform:translateY(-3px);filter:brightness(1.1)}.hero .btn.outline{background:#051214a8;backdrop-filter:blur(8px)}
+.count{margin-top:28px;border-top:1px solid #ffffff66;text-shadow:0 2px 12px #000}.count b{color:#f5dca7}.count span,.count small{color:#f1eee5}
+nav{position:sticky;top:0;z-index:9;background:#071316ed;border-bottom:1px solid #ffffff20;backdrop-filter:blur(14px);display:flex;justify-content:center;gap:26px;padding:15px;overflow:auto}
+nav a{color:#e9eee9;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap;transition:color .2s}nav a:hover{color:#f0d49a}
+main{position:relative;background:radial-gradient(ellipse at 50% 0%,#173438 0%,#09191c 42%,#050e12 100%)}
+.intro,main>section{position:relative;max-width:1100px;margin:auto;padding:78px 28px;color:#eaf1ec}
+.intro h2,.wish h2,.show h2{font:800 clamp(34px,5vw,55px)/1.08 Manrope,sans-serif;letter-spacing:-.05em;color:#f6f3e9}
+.intro>p:not(.eyebrow),.wish p,.show p{max-width:670px;line-height:1.8;color:#c3d0ca}
+.eyebrow{font-size:10px;letter-spacing:.19em;font-weight:800;color:#e0bd7b}
+.stats{display:flex;gap:50px;margin-top:35px}.stats div{display:grid;gap:4px}.stats b{font:800 27px Manrope;color:#f0d49a}.stats small{font-size:9px;letter-spacing:.12em;color:#aab9b2}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+.tile{display:block;padding:26px;background:linear-gradient(145deg,#142c2e,#09191c);border:1px solid #ffffff20;border-top:3px solid #d8b779;text-decoration:none;color:#e8cf9d;font-size:11px;font-weight:700;box-shadow:0 14px 34px #0005;transition:transform .25s,border-color .25s}.tile:hover{transform:translateY(-5px);border-color:#d8b779}
+.tile small{color:#d5b779;font-size:9px;letter-spacing:.15em}.tile h3{font:700 21px Manrope;color:#f6f3e9;margin:12px 0}.tile p{font-size:13px;line-height:1.65;color:#c3d0ca}
+.wish,.show{max-width:none;background:linear-gradient(120deg,#0d292b,#071316 75%);border-top:1px solid #ffffff18;border-bottom:1px solid #ffffff18;padding:70px max(calc((100vw - 1044px)/2),35px)}
+.btn{display:inline-block;border:0;border-radius:3px;padding:14px 19px;font:800 12px Manrope;text-decoration:none;cursor:pointer}
+.btn.gold{background:linear-gradient(135deg,#f4dfa9,#c9a65e);color:#172321}.btn.outline{border:1px solid #d7c08f;color:#fff4d8}
+footer{background:#030b10;color:#d5dfd9;text-align:center;padding:36px 20px;font-size:12px;border-top:1px solid #ffffff20}footer a{color:#f0d49a}footer small{display:block;max-width:750px;margin:16px auto 0;color:#9eaaa3;line-height:1.6}
+[hidden]{display:none!important}
+@media(max-width:700px){.hero{min-height:850px;padding:76px 25px 62px;background-position:58% center}.hero-santa{right:-17%;width:76vw;height:51%;opacity:.78}.hero-tree{right:24%;width:42vw;height:53%;opacity:.65}.hero:before{opacity:.58}.hero h1{font-size:clamp(55px,13vw,78px)}.hero h2{letter-spacing:.035em}.hero>p:not(.eyebrow):not(.date-label):not(.scene-note){max-width:560px}.scene-note{letter-spacing:.18em!important}nav{justify-content:flex-start}.grid{grid-template-columns:1fr 1fr}.wish,.show{padding:52px 25px}}
+@media(max-width:460px){.hero{min-height:880px;padding-left:21px;padding-right:21px}.hero .actions{align-items:stretch;flex-direction:column;width:100%;max-width:310px}.hero .actions .btn{text-align:center}.hero-santa{right:-28%;width:91vw;height:43%;opacity:.65}.hero-tree{right:25%;width:48vw;height:45%;opacity:.56}.top{font-size:8px}.grid{grid-template-columns:1fr}.stats{gap:22px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero:before,.hero:after,.light-garland:before{animation:none}.hero .btn,.tile{transition:none}}
