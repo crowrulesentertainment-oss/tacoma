@@ -1,1 +1,61 @@
-:root{--forest:#102a2b;--gold:#e4c987;--ink:#172525}.hero{background:linear-gradient(90deg,#071719f5,#0a2425a8),url("https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=2200&q=88") center/cover}.date-label{font:800 11px "DM Sans";letter-spacing:.22em;color:#f1dcae}.hero h1 em{color:#f0d59a}.hero h2{color:#f0e4c8}.count b{color:#f0d59a}.tile{border-top-color:#e4c987}.wish{background:linear-gradient(120deg,#183333,#102a2b)}@media(max-width:700px){.hero{background-position:60% center}}
+:root{--forest:#102a2b;--gold:#e4c987;--ink:#172525}
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:clamp(680px,86vh,900px);
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  padding:clamp(76px,9vw,132px) max(calc((100vw - 1120px)/2),clamp(24px,6vw,80px));
+  background-color:#071719;
+  background-image:
+    linear-gradient(90deg,rgba(3,14,17,.94) 0%,rgba(5,20,23,.82) 38%,rgba(7,24,26,.36) 72%,rgba(5,18,20,.25) 100%),
+    linear-gradient(0deg,rgba(3,13,15,.72),transparent 42%),
+    url("https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=2400&q=90");
+  background-position:center,center,center 48%;
+  background-size:cover;
+  background-repeat:no-repeat;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.12)
+}
+.hero:before,.hero:after{content:"";position:absolute;inset:-35% 0 0;z-index:-1;pointer-events:none}
+.hero:before{
+  opacity:.62;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px,rgba(255,255,255,.95) 98%,transparent),
+    radial-gradient(1.5px 1.5px at 80px 110px,rgba(255,255,255,.85) 98%,transparent),
+    radial-gradient(2.5px 2.5px at 150px 70px,rgba(255,255,255,.9) 98%,transparent),
+    radial-gradient(1px 1px at 220px 160px,rgba(255,255,255,.8) 98%,transparent);
+  background-size:260px 210px;
+  animation:snow-drift 18s linear infinite
+}
+.hero:after{
+  opacity:.42;
+  background-image:
+    radial-gradient(3px 3px at 40px 60px,rgba(255,255,255,.9) 98%,transparent),
+    radial-gradient(2px 2px at 180px 130px,rgba(255,255,255,.8) 98%,transparent),
+    radial-gradient(1px 1px at 110px 190px,rgba(255,255,255,.8) 98%,transparent);
+  background-size:320px 260px;
+  animation:snow-fall 28s linear infinite
+}
+@keyframes snow-drift{from{transform:translate3d(0,-8%,0)}to{transform:translate3d(3%,18%,0)}}
+@keyframes snow-fall{from{transform:translate3d(0,-12%,0)}to{transform:translate3d(-2%,28%,0)}}
+.hero>*{position:relative;z-index:1}
+.hero>.eyebrow{color:#f0d9a8;text-shadow:0 2px 14px #000}
+.hero .date-label{font:800 11px "DM Sans",sans-serif;letter-spacing:.22em;color:#f5dfb4;text-shadow:0 2px 12px #000}
+.hero h1{max-width:950px;margin:25px 0 18px;font-size:clamp(58px,9.3vw,116px);line-height:.88;letter-spacing:-.075em;text-shadow:0 5px 28px rgba(0,0,0,.48)}
+.hero h1 em{color:#f0d59a;font-style:normal}
+.hero h2{max-width:650px;margin:8px 0 18px;color:#fff0d2;font-size:clamp(17px,2.1vw,25px);line-height:1.35;letter-spacing:.08em;text-shadow:0 2px 16px #000}
+.hero>p:not(.eyebrow):not(.date-label){max-width:650px;color:#f0f3ef;font-size:clamp(14px,1.2vw,17px);line-height:1.85;text-shadow:0 2px 12px rgba(0,0,0,.9)}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0}
+.hero .btn{box-shadow:0 8px 26px rgba(0,0,0,.2);transition:transform .25s ease,background .25s ease}
+.hero .btn:hover{transform:translateY(-3px)}
+.hero .btn.outline{background:rgba(5,18,20,.34);backdrop-filter:blur(8px)}
+.count{margin-top:28px;border-top-color:rgba(255,255,255,.38);text-shadow:0 2px 12px #000}
+.count b{color:#f5dca7}
+.count span,.count small{color:#f1eee5}
+@media(max-width:700px){
+ .hero{min-height:760px;padding:72px 25px 62px;background-position:center,center,58% center}
+ .hero:before{opacity:.48}
+ .hero h1{font-size:clamp(55px,13vw,78px)}
+ .hero h2{letter-spacing:.035em}
+ .hero>p:not(.eyebrow):not(.date-label){max-width:560px}
+}
+@media(max-width:420px){.hero{min-height:790px;padding-left:21px;padding-right:21px}.hero .actions{align-items:stretch;flex-direction:column;width:100%;max-width:310px}.hero .actions .btn{text-align:center}}
+@media(prefers-reduced-motion:reduce){.hero:before,.hero:after{animation:none}.hero .btn{transition:none}}
