@@ -149,7 +149,7 @@ const channelRosterCount=$("#chat-roster-count");if(channelRosterCount)channelRo
 let lastPresenceSignature="",lastPresenceTrackAt=0,presenceTrackTimer=null,presenceTrackBusy=false;
 const chatPresenceJoinedAt=new Date().toISOString();
 async function trackChatPresence(force=false){
-if(!globalPresenceChannel||connectionEl.textContent!=="Live")return;
+if(!globalPresenceChannel||globalPresenceChannel.state!=="joined")return;
 const payload={room,nickname:activeChatName(),member:!!chatMember,user_id:chatAuthUser?.id||null,visitor_id:visitorId,joined_at:chatPresenceJoinedAt};
 const signature=JSON.stringify(payload);
 if(!force&&signature===lastPresenceSignature)return;
@@ -165,6 +165,7 @@ const result=await globalPresenceChannel.track(payload);
 if(result&&result.error)throw result.error;
 lastPresenceSignature=signature;
 lastPresenceTrackAt=Date.now();
+connectionEl.textContent="Live";
 updateRoomCounts();
 }catch(error){
 console.warn("Tacoma chat presence update failed",error);
