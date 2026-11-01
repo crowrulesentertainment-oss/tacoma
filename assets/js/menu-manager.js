@@ -29,6 +29,10 @@ function candidates(){
   const group=heading.includes("particip")?"footer-participate":heading.includes("community")?"footer-community":heading.includes("operation")?"footer-operations":"footer-discover";
   col.querySelectorAll("a[href]").forEach((a,j)=>add(a,group,(i+1)*100+j*10));
  });
+ // Keep annual campaign destinations manageable even when the current admin page's
+ // own header/footer does not contain the public campaign link.
+ const loveIsLocal=route("valentines/");
+ if(loveIsLocal&&!found.has(loveIsLocal.toLowerCase()))found.set(loveIsLocal.toLowerCase(),{href:loveIsLocal,label:"Love Is Local",menu_group:"main",display_order:60,enabled:true});
  return [...found.values()];
 }
 async function syncNewLinks(){
