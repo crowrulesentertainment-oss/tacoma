@@ -1,5 +1,5 @@
 "use strict";
-const CACHE_NAME = "tacoma-hub-shell-v4-20261101";
+const CACHE_NAME = "tacoma-hub-shell-v5-20261101";
 const CORE_URLS = [
   "./", "./index.html", "./directory.html", "./businesses.html",
   "./resources.html", "./events.html", "./opportunities.html",
