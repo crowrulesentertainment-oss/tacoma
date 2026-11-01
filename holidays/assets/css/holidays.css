@@ -8,3 +8,6 @@
 .event-card .card-image:before{z-index:1;pointer-events:none;background:linear-gradient(0deg,rgba(3,10,15,.94),rgba(3,10,15,.05) 76%),linear-gradient(90deg,rgba(7,19,31,.35),transparent 70%)}
 .event-card .card-image .season-tag,.event-card .card-image .card-arrow,.event-card .card-image .card-image-copy{z-index:2}
 .event-card .card-image .card-image-copy h3{max-width:100%;text-wrap:balance}
+
+/* Current-year-only calendar label */
+.hub-tools .current-year-label{margin:0;color:var(--gold);font-size:.72rem;letter-spacing:.12em;font-weight:700}.hub-tools .current-year-label strong{display:inline-block;margin-left:8px;color:var(--white);font:800 1.05rem Manrope;letter-spacing:.02em}
