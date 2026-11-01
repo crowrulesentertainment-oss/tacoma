@@ -19,10 +19,10 @@ The restricted Broadcast Headquarters now includes a secure producer command int
 4. Local production bridge: service on the OBS PC; initiates outbound authenticated polling or private channel; calls OBS WebSocket only on loopback.
 5. OBS Studio: scenes, transitions, encoder and local recording; sends program to YouTube using a key stored only in OBS.
 
-The Broadcast Studio includes an embedded public YouTube channel monitor so producers can watch the viewer-facing output from event headquarters.
+The Broadcast Studio can pair either OBS Studio or Streamlabs Desktop; the Remote Host Room lets the producer explicitly select the target encoder for scene cues. The Broadcast Studio includes an embedded public YouTube channel monitor so producers can watch the viewer-facing output from event headquarters.
 
 ### Streamlabs Desktop compatibility
-The current `obs-bridge` package is for OBS Studio only. Streamlabs Desktop has a distinct Remote Control API (Settings → Remote Control) and needs a separately implemented adapter. Do not configure Streamlabs as if it were an OBS WebSocket v5 server, and do not share its Remote Control token with the OBS bridge. Until that adapter is deployed and tested, run Streamlabs locally and use the embedded YouTube player plus Streamlabs' own local status/preview for monitoring. Either encoder may be selected as the active YouTube source, but only one should be the active program encoder at a time.
+A separate `streamlabs-bridge` adapter now supports Streamlabs Desktop through its native SockJS / JSON-RPC Remote Control API. Pair it independently in Broadcast Studio using **Pair Streamlabs Desktop**, then configure both `STREAMLABS_BRIDGE_TOKEN` (issued by CrowRules) and `STREAMLABS_API_TOKEN` (from Streamlabs Settings → Remote Control) in the local `.env`. Follow [the Streamlabs bridge README](streamlabs-bridge/README.md). The adapter currently supports allowlisted scene switching and host-cue logging; stream / recording status and performance telemetry are not yet available through it. Do not use the OBS bridge token fields for Streamlabs credentials. Either encoder may be selected as the active YouTube source, but only one should be the active program encoder at a time.
 
 ## Security requirements
 - Never port-forward OBS WebSocket port 4455.
