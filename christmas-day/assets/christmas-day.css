@@ -42,3 +42,55 @@ nav a:hover{color:#e5c58b}
 footer{background:#040c08;color:#dce5dc;border-top:1px solid #253b2d}
 footer a{color:#e5c58b}
 @media(prefers-reduced-motion:reduce){.snowfall{display:none}}
+
+
+/* LAYOUT REPAIR — prevent inherited shared-section sizing from clipping full-width bands */
+html,body{width:100%;max-width:100%;overflow-x:clip}
+body{min-width:320px}
+main{width:100%;max-width:100%;overflow:clip}
+main>section{max-width:none;margin:0;padding:0}
+.welcome{width:min(1200px,100%);max-width:1200px;margin:0 auto;padding:105px 30px;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+.welcome-copy,.gift-scene,.kindness-copy,.kindness-art,.quiet-section>div{min-width:0}
+.gift-scene{width:100%;min-height:300px}
+.moments-grid{width:100%;padding:95px max(calc((100vw - 1160px)/2),30px)}
+.section-heading,.moment-cards{width:100%;max-width:1160px}
+.moment-card{min-width:0;overflow-wrap:anywhere}
+.kindness-section{width:100%;padding:90px max(calc((100vw - 1100px)/2),30px);grid-template-columns:minmax(0,.85fr) minmax(0,1fr)}
+.community-section{width:100%;padding:100px 28px}
+.community-section>p:not(.eyebrow){max-width:650px}
+.quiet-section{width:min(1100px,100%);max-width:1100px;margin:0 auto;padding:95px 30px;grid-template-columns:minmax(0,1fr) minmax(0,.8fr)}
+.quiet-quote{min-width:0;overflow-wrap:anywhere}
+.closing-section{width:100%;padding:85px 28px}
+footer{width:100%;padding:36px 22px}
+nav{width:100%;max-width:100%;gap:clamp(14px,2vw,26px);scrollbar-width:thin}
+.top{align-items:center;flex-wrap:wrap}
+.top a{white-space:nowrap}
+.hero{width:100%;min-height:790px}
+.hero-content{width:min(660px,100%);min-width:0}
+.hero-copy{overflow-wrap:break-word}
+.actions,.story-actions{align-items:center}
+.btn{max-width:100%;white-space:normal;text-align:center}
+@media(max-width:800px){
+ .welcome{grid-template-columns:minmax(0,1fr);padding:75px 25px}
+ .kindness-section{grid-template-columns:minmax(0,1fr);padding:70px 28px}
+ .quiet-section{grid-template-columns:minmax(0,1fr);padding:75px 28px}
+ .moments-grid{padding:75px 25px}
+}
+@media(max-width:520px){
+ .top{gap:8px;padding:11px 16px}
+ .top a{font-size:8px}
+ .hero{min-height:700px;padding:65px 22px}
+ .hero h1{overflow-wrap:normal;word-break:normal}
+ .countdown{gap:12px;flex-wrap:wrap}
+ .countdown>p{margin:0}
+ .welcome{padding:62px 20px}
+ .gift-scene{height:280px;min-height:280px}
+ .moments-grid{padding:65px 18px}
+ .kindness-section{padding:60px 20px}
+ .community-section{padding:70px 20px}
+ .quiet-section{padding:62px 20px}
+ .closing-section{padding:65px 20px}
+ .story-actions{width:100%}
+ .story-actions .btn{width:100%}
+ nav{padding:13px 16px}
+}
