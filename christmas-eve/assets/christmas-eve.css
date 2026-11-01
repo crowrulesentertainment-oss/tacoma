@@ -6,11 +6,19 @@
   padding:clamp(76px,9vw,132px) max(calc((100vw - 1120px)/2),clamp(24px,6vw,80px));
   background-color:#071719;
   background-image:
-    linear-gradient(90deg,rgba(3,14,17,.94) 0%,rgba(5,20,23,.82) 38%,rgba(7,24,26,.36) 72%,rgba(5,18,20,.25) 100%),
-    linear-gradient(0deg,rgba(3,13,15,.72),transparent 42%),
-    url("https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=2400&q=90");
-  background-position:center,center,center 48%;
-  background-size:cover;
+    linear-gradient(90deg,rgba(2,9,14,.91) 0%,rgba(3,12,18,.78) 34%,rgba(3,12,18,.32) 72%,rgba(2,9,14,.22) 100%),
+    linear-gradient(0deg,rgba(2,8,13,.78),rgba(2,8,13,.04) 52%,rgba(2,8,13,.34)),
+    radial-gradient(circle at 8% 10%,rgba(255,214,126,.95) 0 2px,rgba(255,178,73,.42) 3px,transparent 12px),
+    radial-gradient(circle at 20% 13%,rgba(255,239,183,.98) 0 2px,rgba(255,196,102,.38) 3px,transparent 13px),
+    radial-gradient(circle at 32% 9%,rgba(255,89,67,.95) 0 2px,rgba(255,89,67,.32) 3px,transparent 12px),
+    radial-gradient(circle at 44% 13%,rgba(255,224,145,.98) 0 2px,rgba(255,188,86,.4) 3px,transparent 13px),
+    radial-gradient(circle at 56% 9%,rgba(108,221,160,.95) 0 2px,rgba(108,221,160,.32) 3px,transparent 12px),
+    radial-gradient(circle at 68% 13%,rgba(255,225,153,.98) 0 2px,rgba(255,190,93,.4) 3px,transparent 13px),
+    radial-gradient(circle at 80% 9%,rgba(255,87,70,.95) 0 2px,rgba(255,87,70,.32) 3px,transparent 12px),
+    radial-gradient(circle at 92% 13%,rgba(255,230,165,.98) 0 2px,rgba(255,190,93,.4) 3px,transparent 13px),
+    url("https://images.unsplash.com/photo-1767615016264-2352a47f0dcd?auto=format&fit=crop&fm=jpg&q=88&w=3000");
+  background-position:center,center,center,center,center,center,center,center,center,center,center;
+  background-size:cover,cover,100% 180px,100% 180px,100% 180px,100% 180px,100% 180px,100% 180px,100% 180px,100% 180px,cover;
   background-repeat:no-repeat;
   box-shadow:inset 0 -1px 0 rgba(255,255,255,.12)
 }
