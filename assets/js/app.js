@@ -277,7 +277,7 @@ button.disabled=false;button.innerHTML='Send message <span aria-hidden="true">â†
 if(error){console.warn("Tacoma public chat message insert failed",error);status(statusEl,"Message could not be sent: "+(error.message||"check your connection and chat permissions"),"error");return}
 try{localStorage.setItem("hub_chat_nickname",nickname);localStorage.setItem("hub_chat_last_sent",String(Date.now()))}catch(e){}
 bodyEl.value="";delete draftsByRoom[room];try{sessionStorage.setItem("hub_chat_drafts",JSON.stringify(draftsByRoom))}catch(e){}charEl.textContent="0 / 700";status(statusEl,"Message sent to "+(roomMeta[room]?.[0]||room)+".","success");
-if(globalPresenceChannel)try{await globalPresenceChannel.track({room,nickname,member:!!chatMember,user_id:chatAuthUser?.id||null,joined_at:new Date().toISOString()})}catch(e){}
+if(globalPresenceChannel)trackChatPresence();
 await loadChat()
 });
 switchRoom(room)
