@@ -1,0 +1,1 @@
+(()=>{"use strict";const year=new Date().getFullYear(),date=new Date(year,11,26),fmt=d=>d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});const y=document.getElementById("current-year"),d=document.getElementById("boxing-day-date");if(y)y.textContent=String(year);if(d)d.textContent=fmt(date).toUpperCase()+" · ANNUALLY";})();
