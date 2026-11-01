@@ -111,18 +111,28 @@ people.push({key:key+":"+index,identity:presence.user_id?"member:"+presence.user
 return people;
 }
 function updateRoomCounts(){
-const rawPeople=currentPresenceRoster(),uniquePeople=new Map();
-rawPeople.forEach(p=>{const existing=uniquePeople.get(p.identity);if(!existing||(!existing.member&&p.member))uniquePeople.set(p.identity,p)});
-const people=[...uniquePeople.values()],counts=Object.create(null),byRoom=Object.create(null);
-people.forEach(p=>{counts[p.room]=(counts[p.room]||0)+1;(byRoom[p.room]||(byRoom[p.room]=[])).push(p)});
+const rawPeople=currentPresenceRoster(),uniqueByRoom=Object.create(null),allIdentities=new Set();
+rawPeople.forEach(person=>{
+allIdentities.add(person.identity);
+const roomPeople=uniqueByRoom[person.room]||(uniqueByRoom[person.room]=new Map());
+const previous=roomPeople.get(person.identity);
+if(!previous||(!previous.member&&person.member))roomPeople.set(person.identity,person);
+});
+const byRoom=Object.create(null),counts=Object.create(null);
+Object.keys(uniqueByRoom).forEach(slug=>{
+byRoom[slug]=[...uniqueByRoom[slug].values()];
+counts[slug]=byRoom[slug].length;
+});
 $$(".room-live-count").forEach(el=>{
 const n=counts[el.dataset.roomCount]||0;
 el.replaceChildren(document.createTextNode(String(n)+" "));
 const small=document.createElement("small");small.textContent="live";el.appendChild(small);
-el.setAttribute("aria-label",n+" active chat sessions");
+el.setAttribute("aria-label",n+" people online in this channel");
 });
-const total=$("#chat-total-online-count");if(total)total.textContent=String(people.length);
+const total=$("#chat-total-online-count");if(total)total.textContent=String(allIdentities.size);
 onlineEl.textContent=String(counts[room]||0);
+const activeCount=$("#chat-active-channel-count");
+if(activeCount)activeCount.textContent=String(Object.values(counts).filter(n=>n>0).length);
 const roster=byRoom[room]||[],rosterBox=$("#chat-channel-roster");
 if(rosterBox){
 rosterBox.innerHTML=roster.length?roster.map(p=>'<div class="chat-roster-person"><span class="chat-roster-avatar">'+esc((p.nickname||"N").trim().charAt(0).toUpperCase())+'</span><span class="chat-roster-name">'+esc(p.nickname)+'</span><span class="chat-roster-role '+(p.member?"is-member":"is-guest")+'">'+(p.member?"MEMBER":"GUEST")+'</span></div>').join(""):'<p class="chat-roster-empty">No one is in this channel yet. Be the first to join.</p>';
@@ -158,18 +168,16 @@ updateRoomCounts();
 }catch(e){
 console.warn("Tacoma chat presence tracking failed",e);
 connectionEl.textContent="Presence unavailable";
-onlineEl.textContent="—";
+onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
 }
 }else if(state==="SUBSCRIBING"){
 connectionEl.textContent="Connecting";
 }else if(state==="CHANNEL_ERROR"){
 console.warn("Tacoma chat presence channel error",error||"Realtime channel error");
-connectionEl.textContent="Connection error";
-onlineEl.textContent="—";
+connectionEl.textContent="Connection error";onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
 }else if(state==="TIMED_OUT"){
 console.warn("Tacoma chat presence channel timed out",error||"Realtime timeout");
-connectionEl.textContent="Connection timed out";
-onlineEl.textContent="—";
+connectionEl.textContent="Connection timed out";onlineEl.textContent="—";const total=$("#chat-total-online-count"),active=$("#chat-active-channel-count");if(total)total.textContent="—";if(active)active.textContent="—";$(".room-live-count").forEach(el=>{el.replaceChildren(document.createTextNode("— "));const small=document.createElement("small");small.textContent="live";el.appendChild(small)});
 }else if(state==="CLOSED"){
 connectionEl.textContent="Offline";
 onlineEl.textContent="—";
@@ -225,7 +233,7 @@ const roomFilter=$("#room-filter");roomFilter?.addEventListener("input",()=>{con
   list.innerHTML=data.map(c=>'<button type="button" class="room-button '+(c.slug===room?"active":"")+'" data-room="'+esc(c.slug)+'" aria-pressed="'+String(c.slug===room)+'"><span class="room-icon">'+esc(c.icon||"◉")+'</span><span class="room-button-copy"><strong>'+esc(c.title)+'</strong><small>'+esc(c.description||"Community conversation")+'</small><span class="room-live-roster" data-roster-room="'+esc(c.slug)+'">Be the first to chat</span></span><span class="room-button-indicators"><span class="room-unread-count" data-unread-room="'+esc(c.slug)+'" hidden>0 new</span><span class="room-live-count" data-room-count="'+esc(c.slug)+'" aria-label="0 active sessions">0 <small>live</small></span></span></button>').join("");
   bindRoomButtons();updateUnreadBadges();updateRoomCounts();
   const total=$(".channel-total");if(total)total.textContent=data.length+" rooms";
-  const activeCount=$("#chat-active-channel-count");if(activeCount)activeCount.textContent=String(data.length);
+  updateRoomCounts();
   if(!roomMeta[room])switchRoom(data[0].slug);
   else{$("#chat-selected-channel").textContent=roomMeta[room][0];const label=$("#chat-presence-room-label");if(label)label.textContent="In "+roomMeta[room][0];}
  }
