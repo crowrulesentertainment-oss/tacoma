@@ -36,12 +36,19 @@ const status=$("#holiday-sync-status");
 try{const [{data:holidays,error},{data:years},{data:themes}] = await Promise.all([client.from("holidays").select("id,year_id,name,slug,holiday_date,description,holiday_type,is_featured,is_published,sort_order,hero_image_url").eq("is_published",true).order("holiday_date",{ascending:true}),client.from("holiday_years").select("id,year,is_active"),client.from("crowrules_holiday_calendar").select("starts_on,ends_on,background_url,accent_color,secondary_color,css_class,particle_set,priority").eq("is_active",true).order("priority",{ascending:true})]);
 if(error)throw error;
 const yearMap=new Map((years||[]).map(y=>[y.id,y.year]));
-const rows=(holidays||[]).map(h=>({...h,year:yearMap.get(h.year_id)||new Date(h.holiday_date).getFullYear()})).sort((a,b)=>a.holiday_date.localeCompare(b.holiday_date)||a.sort_order-b.sort_order);
-const grid=$("#holiday-grid");grid.replaceChildren();
-const select=$("#holiday-year-filter");const yearsAvailable=[...new Set(rows.map(h=>h.year))].sort();select.replaceChildren(new Option("All published years","all"));yearsAvailable.forEach(y=>select.add(new Option(String(y),String(y))));
-const draw=()=>{const chosen=select.value;const shown=rows.filter(h=>chosen==="all"||String(h.year)===chosen);grid.replaceChildren(...shown.map(card));status.textContent=shown.length+" published celebrations · synced with the central database";};
-select.addEventListener("change",draw);draw();
-const today=new Date().toISOString().slice(0,10);const upcoming=rows.filter(h=>h.holiday_date>=today);const featured=upcoming[0]||rows[0];renderCountdown(featured);renderTimeline(upcoming.length?upcoming:rows);
+const currentYear=new Date().getFullYear();
+const currentYearRows=(holidays||[]).map(h=>({...h,year:yearMap.get(h.year_id)||new Date(h.holiday_date+"T12:00:00").getFullYear()})).filter(h=>Number(h.year)===currentYear).sort((a,b)=>a.holiday_date.localeCompare(b.holiday_date)||a.sort_order-b.sort_order);
+const grid=$("#holiday-grid");grid.replaceChildren(...currentYearRows.map(card));
+const yearLabel=$("#current-year-label");if(yearLabel)yearLabel.textContent=String(currentYear);
+status.textContent=currentYearRows.length+" celebrations for "+currentYear+" · synced with the central database";
+const now=new Date();const today=[now.getFullYear(),String(now.getMonth()+1).padStart(2,"0"),String(now.getDate()).padStart(2,"0")].join("-");
+const upcoming=currentYearRows.filter(h=>h.holiday_date>=today);
+if(upcoming.length){renderCountdown(upcoming[0]);}else{$("#next-title").textContent="That's a wrap for "+currentYear;$("#next-date").textContent="The next calendar year begins January 1.";["days","hours","minutes","seconds"].forEach(id=>$("#"+id).textContent="--");}
+renderTimeline(currentYearRows);
+// Re-open the page at local midnight on January 1 so an already-open tab rolls
+// forward automatically without requiring the visitor to refresh.
+const nextYearStart=new Date(currentYear+1,0,1,0,0,2);
+window.setTimeout(()=>window.location.reload(),Math.max(1000,nextYearStart.getTime()-Date.now()));
 const theme=(themes||[]).find(t=>today>=t.starts_on&&today<=t.ends_on);if(theme){const bg=safeUrl(theme.background_url);if(bg)document.querySelector(".hero-backdrop").style.backgroundImage="linear-gradient(90deg,rgba(4,12,20,.9),rgba(4,12,20,.38)),url('"+bg.replace(/'/g,"%27")+"')";if(theme.accent_color)document.documentElement.style.setProperty("--gold",theme.accent_color);if(theme.secondary_color)document.documentElement.style.setProperty("--cyan",theme.secondary_color);}
 }catch(e){console.error("Holiday Hub live sync:",e);status.textContent="Could not load the live holiday calendar. Please refresh later.";}}
 load();
