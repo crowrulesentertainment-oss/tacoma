@@ -89,6 +89,49 @@ Deno.serve(async (req) => {
       return reply({ ok: true, acknowledged: Boolean(data) });
     }
     const user = await requireAdmin(req);
+    if (action === "replay_feed") {
+      let response: Response;
+      try {
+        response = await fetch("https://www.youtube.com/feeds/videos.xml?channel_id=UCOSm_4z9LIQUWHOc8yzPgkw", {
+          headers: {
+            "Accept": "application/atom+xml,application/xml,text/xml",
+            "User-Agent": "Mozilla/5.0 (compatible; CrowRulesReplayLibrary/1.0)"
+          },
+          signal: AbortSignal.timeout(12000)
+        });
+      } catch (feedError) {
+        const detail = feedError instanceof Error ? feedError.message : "Network request failed";
+        console.error("replay_feed upstream fetch failed:", detail);
+        return reply({ ok:false, error:"YouTube could not be reached from the replay service: " + detail, videos:[] });
+      }
+      if (!response.ok) {
+        console.error("replay_feed YouTube HTTP status:", response.status);
+        return reply({ ok:false, error:"YouTube channel feed returned HTTP " + response.status, videos:[] });
+      }
+      const xml = await response.text();
+      const decode = (s:string) => s.replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">");
+      const entries = xml.match(/<entry>[\s\S]*?<\/entry>/g) || [];
+      const videos = entries.slice(0,40).map((entry) => {
+        const field = (tag:string) => decode(entry.match(new RegExp("<"+tag+"[^>]*>([\\s\\S]*?)<\\/"+tag+">"))?.[1] || "");
+        const id = field("yt:videoId");
+        const title = field("title");
+        const published = field("published");
+        const thumbnail = decode(entry.match(/<media:thumbnail[^>]*url="([^"]+)"/)?.[1] || "");
+        return {id,title,published,thumbnail};
+      }).filter(v => /^[A-Za-z0-9_-]{11}$/.test(v.id) && v.title);
+      return reply({ok:true,videos});
+    }
+    if (action === "replay.set") {
+      const videoId = body.videoId == null || body.videoId === "" ? null : String(body.videoId);
+      if (videoId && !/^[A-Za-z0-9_-]{11}$/.test(videoId)) return reply({error:"Invalid YouTube video ID."},400);
+      const title = String(body.title || "").slice(0,200);
+      const {error} = await adminDb.from("tacoma_replay_state").upsert({
+        event_key:"nye_2026_2027", video_id:videoId, video_title:videoId?title:"", updated_at:new Date().toISOString()
+      },{onConflict:"event_key"});
+      if (error) throw error;
+      return reply({ok:true,videoId,title:videoId?title:""});
+    }
+
     if (action === "status") {
       const [{ data: devices, error: de }, { data: commands, error: ce }] = await Promise.all([
         adminDb.from("tacoma_obs_bridge_devices").select("id,event_key,device_name,created_at,last_seen,revoked_at,obs_version,websocket_version,current_scene,streaming,recording,active_fps,cpu_usage,memory_usage,render_skipped_frames,output_skipped_frames,output_congestion,last_error,telemetry").eq("event_key","nye_2026_2027").order("created_at",{ascending:false}),
