@@ -12,7 +12,8 @@ const scenes = [
 ];
 const cors = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-bridge-token",
+  "Access-Control-Allow-Headers": "authorization, apikey, content-type, x-client-info, x-bridge-token",
+  "Access-Control-Max-Age": "86400",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Content-Type": "application/json"
 };
