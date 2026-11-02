@@ -5,8 +5,26 @@ const checklist=["OBS profile and scene collection loaded","YouTube event and st
 const sceneData=[["01 OPENING","Event intro and logo"],["02 MAIN STUDIO","Primary host and lower third"],["03 TWO HOSTS","Two-up host layout"],["04 REMOTE HOST","Approved remote host source"],["05 REMOTE INTERVIEW","Host and guest split-screen"],["06 COMMUNITY SPOTLIGHT","Local creator and organization features"],["07 TACOMA SHOWCASE","Approved local B-roll and stories"],["08 FULL SCREEN VIDEO","Prerecorded segment"],["09 PERFORMANCE","Approved performance"],["10 COMMUNITY MESSAGES","Reviewed greetings"],["11 HOURLY UPDATE","Pacific clock and announcements"],["12 COUNTDOWN","2027 countdown graphics"],["13 WELCOME 2027","Midnight celebration"],["14 OVERNIGHT LOOP","Recorded blocks and live check-in slate"],["15 NEW YEAR MORNING","Morning host and conversation"],["16 EMERGENCY HOLD","Technical difficulty slate"],["17 AUDIO ONLY HOLD","Static recovery scene"],["18 CLOSING","Thank-you and credits"]];
 const key="tacoma-nye-studio-checks-v3";
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-function clock(){const n=new Date();$("#studio-clock").textContent=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true}).format(n);$("#studio-date").textContent=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",weekday:"long",month:"long",day:"numeric",year:"numeric"}).format(n)}
-clock();setInterval(clock,1000);
+function clock(){
+ const timeEl=$("#studio-clock"),dateEl=$("#studio-date");
+ if(!timeEl||!dateEl)return;
+ const now=new Date();
+ try{
+  timeEl.textContent=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"numeric",minute:"2-digit",second:"2-digit",hour12:true}).format(now);
+  dateEl.textContent=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",weekday:"long",month:"long",day:"numeric",year:"numeric"}).format(now)+" · Pacific Time";
+ }catch(error){
+  try{
+   timeEl.textContent=now.toLocaleTimeString("en-US",{timeZone:"America/Los_Angeles"});
+   dateEl.textContent=now.toLocaleDateString("en-US",{timeZone:"America/Los_Angeles"})+" · Pacific Time";
+  }catch(fallbackError){
+   timeEl.textContent="TIME UNAVAILABLE";
+   dateEl.textContent="Please refresh the studio";
+  }
+ }
+}
+clock();
+setInterval(clock,1000);
+
 function renderChecks(){let s={};try{s=JSON.parse(localStorage.getItem(key)||"{}")}catch{}$("#checks").innerHTML=checklist.map((v,i)=>'<label class="check '+(s[i]?"done":"")+'"><input type="checkbox" data-check="'+i+'" '+(s[i]?"checked":"")+'><span>'+v+'</span></label>').join("");$("#checks").querySelectorAll("input").forEach(c=>c.addEventListener("change",()=>{let x={};try{x=JSON.parse(localStorage.getItem(key)||"{}")}catch{}x[c.dataset.check]=c.checked;localStorage.setItem(key,JSON.stringify(x));c.closest(".check").classList.toggle("done",c.checked);progress()}));progress()}
 function progress(){const n=$("#checks").querySelectorAll("input:checked").length;$("#check-progress").style.width=(n/checklist.length*100)+"%";$("#check-count").textContent=n+" of "+checklist.length+" checks complete"}
 renderChecks();
