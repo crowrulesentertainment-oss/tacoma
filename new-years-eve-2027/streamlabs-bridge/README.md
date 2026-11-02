@@ -49,16 +49,18 @@ On Windows, `start-bridge.bat` launches the bridge after configuration.
 ## 4. Test
 
 1. Confirm the bridge terminal reports **Authenticated** and lists the Streamlabs scenes.
-2. Create or rename the event scenes to match the approved 24 Hours of Tacoma names.
-3. In Broadcast Studio, refresh status and select the Streamlabs production computer.
-4. Queue a harmless test scene change and verify Streamlabs changes scenes.
-5. Revoke the device from Broadcast Studio to disable its Tacoma bridge credential.
+2. Keep Streamlabs Desktop open and leave the bridge running. The bridge polls telemetry every 2 seconds by default.
+3. Create or rename the event scenes to match the approved 24 Hours of Tacoma names.
+4. In Broadcast Studio, refresh status and select the Streamlabs production computer.
+5. Check the LIVE/OFFLINE and RECORDING/STOPPED indicators against Streamlabs Desktop. Confirm FPS/CPU/drop data when Streamlabs returns them.
+6. Queue a harmless test scene change and verify Streamlabs changes scenes.
+7. Revoke the device from Broadcast Studio to disable its Tacoma bridge credential.
 
 ## Scope and safety
 
 - Supports approved scene switching and producer host-cue logging.
 - Does not start/stop the stream or recording; use Streamlabs locally for those safety-critical actions.
-- This adapter currently reports scene state only. Stream/recording state and encoder performance telemetry are not yet available through this adapter.
+- The adapter reads Streamlabs `StreamingService.getModel()` for live/starting/reconnecting/offline and recording states, and `PerformanceService.getModel()` for CPU, frame rate, bandwidth, dropped-frame count and dropped-frame percentage. The Broadcast Studio displays only values returned by Streamlabs; unavailable values remain unavailable.
 - Scene switching is restricted to the approved 18-scene allowlist and requires the target scene to exist in the current Streamlabs collection.
 - The Streamlabs API token and Tacoma bridge token remain on the production computer. Neither belongs in GitHub, browser storage, chat or the public website.
 - Keep a local operator at the encoder. If the dashboard, network or bridge fails, use Streamlabs locally.
