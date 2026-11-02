@@ -62,12 +62,12 @@ Deno.serve(async (req) => {
         websocket_version: String(t.websocketVersion || "").slice(0,80) || null,
         current_scene: String(t.currentScene || "").slice(0,100) || null,
         streaming: Boolean(t.streaming), recording: Boolean(t.recording),
-        active_fps: Number.isFinite(Number(t.activeFps)) ? Number(t.activeFps) : null,
-        cpu_usage: Number.isFinite(Number(t.cpuUsage)) ? Number(t.cpuUsage) : null,
-        memory_usage: Number.isFinite(Number(t.memoryUsage)) ? Number(t.memoryUsage) : null,
-        render_skipped_frames: Number.isFinite(Number(t.renderSkippedFrames)) ? Number(t.renderSkippedFrames) : null,
-        output_skipped_frames: Number.isFinite(Number(t.outputSkippedFrames)) ? Number(t.outputSkippedFrames) : null,
-        output_congestion: Number.isFinite(Number(t.outputCongestion)) ? Number(t.outputCongestion) : null,
+        active_fps: numberOrNull(t.activeFps),
+        cpu_usage: numberOrNull(t.cpuUsage),
+        memory_usage: numberOrNull(t.memoryUsage),
+        render_skipped_frames: numberOrNull(t.renderSkippedFrames),
+        output_skipped_frames: numberOrNull(t.outputSkippedFrames),
+        output_congestion: numberOrNull(t.outputCongestion),
         last_error: String(t.lastError || "").slice(0,500) || null,
         telemetry: t
       }).eq("id", device.id);
