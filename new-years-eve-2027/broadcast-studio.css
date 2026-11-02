@@ -18,7 +18,7 @@
 .presenter-option span{font-size:.72rem;line-height:1.5;color:#c2d3dd}
 .presenter-option small{font-size:.61rem;color:var(--gold);letter-spacing:.08em}
 .presenter-option:hover,.presenter-option:focus-visible{border-color:var(--cyan);outline:2px solid #66d8eb33}
-.presenter-option:disabled{opacity:.45;cursor:not--allowed}
+.presenter-option:disabled{opacity:.45;cursor:not-allowed}
 .presenter-switch-foot{display:grid;grid-template-columns:minmax(190px,260px) 1fr;gap:8px 12px;align-items:center}
 .presenter-switch-foot label{font-size:.72rem;color:#c9dce7}
 .presenter-switch-foot input{background:#06111c;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:11px;min-width:0}
