@@ -57,7 +57,6 @@ Deno.serve(async (req) => {
       const t = body.telemetry && typeof body.telemetry === "object" ? body.telemetry : {};
       const { error: updateError } = await adminDb.from("tacoma_obs_bridge_devices").update({
         last_seen: new Date().toISOString(),
-        platform: String(t.platform || (String(t.obsVersion || "").toLowerCase().includes("streamlabs") ? "streamlabs" : "obs")).toLowerCase() === "streamlabs" ? "streamlabs" : "obs",
         obs_version: String(t.obsVersion || "").slice(0,80) || null,
         websocket_version: String(t.websocketVersion || "").slice(0,80) || null,
         current_scene: String(t.currentScene || "").slice(0,100) || null,
@@ -91,7 +90,7 @@ Deno.serve(async (req) => {
     const user = await requireAdmin(req);
     if (action === "status") {
       const [{ data: devices, error: de }, { data: commands, error: ce }] = await Promise.all([
-        adminDb.from("tacoma_obs_bridge_devices").select("id,event_key,device_name,platform,created_at,last_seen,revoked_at,obs_version,websocket_version,current_scene,streaming,recording,active_fps,cpu_usage,memory_usage,render_skipped_frames,output_skipped_frames,output_congestion,last_error").eq("event_key","nye_2026_2027").order("created_at",{ascending:false}),
+        adminDb.from("tacoma_obs_bridge_devices").select("id,event_key,device_name,created_at,last_seen,revoked_at,obs_version,websocket_version,current_scene,streaming,recording,active_fps,cpu_usage,memory_usage,render_skipped_frames,output_skipped_frames,output_congestion,last_error").eq("event_key","nye_2026_2027").order("created_at",{ascending:false}),
         adminDb.from("tacoma_obs_commands").select("id,command_type,payload,status,created_at,expires_at,completed_at,result").eq("event_key","nye_2026_2027").order("created_at",{ascending:false}).limit(20)
       ]);
       if (de || ce) throw de || ce;
