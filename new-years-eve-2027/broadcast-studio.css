@@ -31,3 +31,19 @@
 
 /* Replay deck layout */
 .replay-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.replay-list{display:grid;gap:8px;max-height:360px;overflow:auto}.replay-item{display:flex;gap:10px;padding:8px;border:1px solid var(--line);border-radius:9px;background:#071522;color:var(--text)}.replay-item img{width:100px;aspect-ratio:16/9;object-fit:cover}.replay-preview-frame{aspect-ratio:16/9;background:#02070c}.replay-preview-frame iframe{width:100%;height:100%;border:0}@media(max-width:760px){.replay-grid{grid-template-columns:1fr}}
+
+/* Uploaded replay media controls */
+.upload-replay{display:grid;gap:12px;padding:15px;margin:12px 0;border:1px solid #347087;border-radius:11px;background:linear-gradient(135deg,#0d2232,#07121e)}
+.upload-replay>b,.upload-replay strong,.upload-replay div>b{font:800 .78rem Manrope;color:var(--cyan);letter-spacing:.08em}
+.upload-replay p{margin:6px 0 0;font-size:.72rem}
+.upload-fields{display:grid;grid-template-columns:minmax(180px,1fr) minmax(180px,1fr) auto;gap:9px;align-items:center}
+.upload-fields input[type=text]{min-width:0;width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#06111c;color:var(--text)}
+.file-pick{display:flex;align-items:center;justify-content:center;min-height:42px;padding:9px 12px;border:1px dashed #43829a;border-radius:9px;color:#bdeaf1;font-size:.72rem;cursor:pointer}
+.file-pick input{position:absolute;width:1px;height:1px;opacity:0}
+.upload-progress{font-size:.7rem;color:var(--muted);overflow-wrap:anywhere}
+.replay-source-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.replay-source-tabs .active{border-color:var(--cyan);color:var(--cyan);box-shadow:inset 0 -2px var(--cyan)}
+.replay-thumb{display:grid;place-items:center;flex:0 0 104px;aspect-ratio:16/9;border-radius:6px;background:linear-gradient(135deg,#15364a,#06111c);color:#8bdce8;font-size:.55rem;letter-spacing:.08em;overflow:hidden}
+.replay-thumb img{width:100%;height:100%;object-fit:cover}
+#replay-preview-video{width:100%;height:100%;object-fit:contain;background:#02070c}
+@media(max-width:760px){.upload-fields{grid-template-columns:1fr}.upload-fields>*{width:100%}}
