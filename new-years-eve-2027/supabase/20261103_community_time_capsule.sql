@@ -101,3 +101,11 @@ with check (
 );
 grant insert on public.tacoma_nye_submissions to anon,authenticated;
 grant select,insert,update,delete on public.tacoma_nye_submissions to authenticated;
+
+
+-- Large community media uploads: bucket cap raised to the Pro-plan maximum.
+-- Supabase project-wide Storage Settings must also be set to 500 GB in the Dashboard;
+-- the bucket cap cannot override a lower project-wide cap.
+update storage.buckets
+set file_size_limit = 536870912000, updated_at = now()
+where id = 'ny2027-community-media';
