@@ -31,9 +31,6 @@ alter table public.tacoma_nye_submissions
     'photo_memory','audio_greeting'
   ]));
 
-create index if not exists tacoma_nye_submissions_media_idx
-  on public.tacoma_nye_submissions using gin (media_files);
-
 insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
 values (
   'ny2027-community-media','ny2027-community-media',false,52428800,
