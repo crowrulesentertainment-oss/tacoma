@@ -1262,7 +1262,7 @@ header a[hidden], footer a[hidden], .nav-dropdown[hidden], .footer-main > div[hi
  .primary-nav .nav-group{width:100%;border:1px solid #233f52;border-radius:11px;background:#0b1c29}
  .nav-group>.nav-drop-button{width:100%;justify-content:space-between;padding:13px 14px;border:0;text-align:left;font-size:.9rem}
  .nav-group .nav-drop-menu{position:static;display:none;max-height:none;min-width:0;margin:0 8px 8px;padding:6px;border-radius:9px;box-shadow:none;background:#071722;border:1px solid #203b4e}
- .nav-group:focus-within>.nav-drop-menu{display:grid}
+ .nav-group>.nav-drop-button[aria-expanded="true"]+.nav-drop-menu{display:grid}
  .nav-group .nav-drop-menu a{padding:11px 12px;font-size:.88rem}
  .primary-nav>.nav-submit{width:100%;margin-top:5px;padding:13px}
 }
