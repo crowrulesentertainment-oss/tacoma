@@ -47,7 +47,7 @@ submissionForm?.addEventListener("submit",async e=>{
  e.preventDefault();const status=document.querySelector("#nye-submission-status"),button=submissionForm.querySelector('button[type="submit"]');if(mediaRecorder&&mediaRecorder.state!=="inactive"){status.textContent="Stop your recording before submitting.";return}
  const files=selectedFiles();if(files.length>MAX_FILES){status.textContent="You may submit up to 4 media files.";return}
  if(files.some(f=>f.size>MAX_FILE)){status.textContent="Each file must be 50 MB or smaller.";return}
- if(!submissionForm.elements.consent_broadcast.checked){status.textContent="Please confirm broadcast-use permission before submitting.";return}
+ if(!submissionForm.elements.consent_broadcast.checked){status.textContent="Please confirm broadcast-use permission before submitting.";return}if(recordedBlob&&!submissionForm.elements.consent_recording.checked){status.textContent="Please confirm the recording permission checkbox before submitting your on-page recording.";return}
  if(files.some(f=>f.type.startsWith("video/"))){try{for(const f of files){const d=await fileDuration(f);if(d!==null&&d>MAX_DURATION+1)throw Error(f.name+" is longer than 120 seconds. Please trim it before uploading.")}}catch(error){status.textContent=error.message;return}}
  status.textContent="Preparing your private submission…";button.disabled=true;
  const uploadedPaths=[];
