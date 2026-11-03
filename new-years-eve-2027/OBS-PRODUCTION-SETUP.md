@@ -102,3 +102,13 @@ The public event form accepts photos, audio and video, including browser-recorde
 The Event Control Room displays media metadata and provides one-hour signed preview/download links for administrators. The Broadcast Studio Replay Deck includes a **Community submissions** source. It lists only approved/scheduled/published video submissions with explicit broadcast consent. When a producer selects one, the `tacoma-obs-control` Edge Function verifies the submission status, broadcast consent and exact storage path, then creates a fresh one-hour signed Storage URL for the replay state. The existing OBS Browser Source can then play it in scene **08 FULL SCREEN VIDEO**. Confirm the preview and audio locally before switching the scene on air.
 
 Public time-capsule text is published only after an administrator approves the submission and copies consented text into the dedicated public-display fields. Archive consent can expose the approved memory, wish and resolution text; Wish Wall consent exposes only wish/resolution text with a generic display name. Uploaded media remains private and is not automatically made public by archive consent.
+
+
+## Large community video uploads (November 3, 2026)
+- Community media bucket: `ny2027-community-media` (private).
+- Per-bucket object limit: 500 GB (536,870,912,000 bytes), matching the Pro plan maximum.
+- Public submission form: up to four media files per contribution; no fixed video-duration cap.
+- Browser file uploads use TUS resumable uploads in 6 MiB chunks with retry support and progress reporting. Large uploads can resume after transient network interruption while the browser retains the upload fingerprint.
+- Direct browser recording has no hard duration timer; very long recordings consume browser memory. For large videos, use file upload rather than recording directly in the page.
+- IMPORTANT: the per-bucket cap is not sufficient by itself. In Supabase Dashboard → Storage → Settings, set the project-wide Global file size limit to 500 GB. This global setting applies to every bucket and cannot be changed through the SQL bucket record. Keep the event bucket private.
+- Supabase TUS upload URLs are temporary (up to 24 hours); an upload that remains unfinished beyond that window must be restarted.
