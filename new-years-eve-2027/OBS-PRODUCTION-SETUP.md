@@ -93,3 +93,12 @@ Maintain at least 30 minutes overlap between outgoing and incoming production op
 
 ## Go-live release criteria
 Do not declare ready until secure bridge deployment, server-side role enforcement, command expiry and audit, loopback-only OBS socket, YouTube rehearsal, full recording verification, remote host relay and recovery rehearsal are complete.
+
+
+## Community Time Capsule media workflow
+
+The public event form accepts photos, audio and video, including browser-recorded greetings. Video contributions are limited to 120 seconds and each file is limited to 50 MB. Uploads enter the private `ny2027-community-media` bucket under `incoming/{submission_id}/`. New submissions remain pending until a Hub administrator reviews them.
+
+The Event Control Room displays media metadata and provides one-hour signed preview/download links for administrators. The Broadcast Studio Replay Deck includes a **Community submissions** source. It lists only approved/scheduled/published video submissions with explicit broadcast consent. When a producer selects one, the `tacoma-obs-control` Edge Function verifies the submission status, broadcast consent and exact storage path, then creates a fresh one-hour signed Storage URL for the replay state. The existing OBS Browser Source can then play it in scene **08 FULL SCREEN VIDEO**. Confirm the preview and audio locally before switching the scene on air.
+
+Public time-capsule text is published only after an administrator approves the submission and copies consented text into the dedicated public-display fields. Archive consent can expose the approved memory, wish and resolution text; Wish Wall consent exposes only wish/resolution text with a generic display name. Uploaded media remains private and is not automatically made public by archive consent.
