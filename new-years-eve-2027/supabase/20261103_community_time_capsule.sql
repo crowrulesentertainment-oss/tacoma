@@ -13,7 +13,12 @@ alter table public.tacoma_nye_submissions
   add column if not exists consent_archive boolean not null default false,
   add column if not exists consent_recording boolean not null default false,
   add column if not exists consent_public_wall boolean not null default false,
-  add column if not exists preferred_broadcast_segment text;
+  add column if not exists preferred_broadcast_segment text,
+  add column if not exists public_display_title text,
+  add column if not exists public_display_name text,
+  add column if not exists public_display_category text,
+  add column if not exists public_display_text text,
+  add column if not exists public_display_location text;
 
 alter table public.tacoma_nye_submissions
   drop constraint if exists tacoma_nye_submissions_submission_type_check;
@@ -70,13 +75,32 @@ with check (bucket_id='ny2027-community-media' and public.crowrules_is_admin());
 drop policy if exists "NY2027 public approved archive read" on public.tacoma_nye_submissions;
 create policy "NY2027 public approved archive read"
 on public.tacoma_nye_submissions for select to anon
-using (
-  status in ('approved','scheduled','published','archived')
-  and (consent_archive=true or consent_public_wall=true)
-);
+using (status in ('approved','scheduled','published','archived') and public_display_text is not null);
 
 revoke select on public.tacoma_nye_submissions from anon;
-grant select (id,submission_type,submitter_name,title,memory_text,wish_text,resolution_text,display_location,created_at)
+revoke select (id,submission_type,submitter_name,title,memory_text,wish_text,resolution_text,display_location,created_at) on public.tacoma_nye_submissions from anon;
+grant select (id,public_display_title,public_display_name,public_display_category,public_display_text,public_display_location,created_at)
 on public.tacoma_nye_submissions to anon;
+
+drop policy if exists tacoma_nye_public_submission_intake on public.tacoma_nye_submissions;
+create policy tacoma_nye_public_submission_intake
+on public.tacoma_nye_submissions for insert to anon,authenticated
+with check (
+ status='new' and consent_confirmed=true and consent_broadcast=true
+ and length(trim(title)) between 3 and 180
+ and submitter_name is not null and length(trim(submitter_name)) between 2 and 120
+ and submitter_email is not null and length(trim(submitter_email)) between 5 and 254
+ and (description is null or length(description)<=3000)
+ and (memory_text is null or length(memory_text)<=3000)
+ and (wish_text is null or length(wish_text)<=2000)
+ and (resolution_text is null or length(resolution_text)<=2000)
+ and (display_location is null or length(display_location)<=100)
+ and jsonb_typeof(media_files)='array' and jsonb_array_length(media_files)<=4
+ and (asset_url is null or asset_url like 'https://%')
+ and reviewer_notes is null and reviewed_by is null and reviewed_at is null
+ and public_display_title is null and public_display_name is null
+ and public_display_category is null and public_display_text is null
+ and public_display_location is null
+);
 grant insert on public.tacoma_nye_submissions to anon,authenticated;
 grant select,insert,update,delete on public.tacoma_nye_submissions to authenticated;
