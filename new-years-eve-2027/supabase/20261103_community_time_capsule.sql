@@ -48,7 +48,7 @@ on conflict (id) do update set
 
 drop policy if exists "NY2027 public incoming uploads" on storage.objects;
 create policy "NY2027 public incoming uploads"
-on storage.objects for insert to anon, authenticated
+on storage.objects for insert to anon
 with check (
   bucket_id='ny2027-community-media'
   and name like 'incoming/%'
