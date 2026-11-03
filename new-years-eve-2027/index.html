@@ -15,7 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/site.css?v=20261031-nye">
 <link rel="stylesheet" href="event.css?v=20261103-7">
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script><script defer src="../assets/js/config.js"></script><script defer src="event.js?v=20261103-7"></script><script defer src="video-studio.js?v=20261103-2"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script><script defer src="../assets/js/config.js"></script><script defer src="event.js?v=20261103-8"></script><script defer src="video-studio.js?v=20261103-2"></script>
 <link rel="stylesheet" href="../holidays/assets/css/holiday-sync.css"></head>
 <body class="nye-page">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -106,7 +106,7 @@
 <div class="wide nye-media-selected" id="nye-media-selected" aria-live="polite">No files selected.</div>
 <div class="wide nye-recorder">
 <div><b>Record directly on this page</b><p>Record a video greeting or audio message using your device. No fixed recording time cap. Long browser recordings use substantial memory; for very large videos, upload a recorded file instead. Your browser will ask for camera/microphone permission.</p></div>
-<div class="nye-recorder-controls"><label>Recording type<select id="nye-recording-type"><option value="video">Video + audio</option><option value="audio">Audio only</option></select></label><label id="nye-camera-choice-wrap">Camera<select id="nye-camera-facing"><option value="user">Front / selfie camera</option><option value="environment">Rear camera</option></select></label><button type="button" class="button" id="nye-camera-refresh">Find cameras</button><button type="button" class="button" id="nye-record-start">Start recording</button><button type="button" class="button" id="nye-record-stop" disabled>Stop recording</button><span id="nye-record-status" role="status">Not recording.</span></div>
+<div class="nye-recorder-controls"><label>Recording type<select id="nye-recording-type"><option value="video">Video + audio</option><option value="audio">Audio only</option></select></label><label id="nye-camera-choice-wrap">Camera<select id="nye-camera-facing"><option value="default">Computer webcam / USB webcam (system default)</option><option value="user">Front / selfie camera</option><option value="environment">Rear camera</option></select></label><button type="button" class="button" id="nye-camera-refresh">Allow &amp; find cameras</button><button type="button" class="button" id="nye-record-start">Start recording</button><button type="button" class="button" id="nye-record-stop" disabled>Stop recording</button><span id="nye-record-status" role="status">Not recording.</span></div>
 <video id="nye-record-preview" controls playsinline hidden></video>
 </div>
 <label class="wide">Optional video or portfolio link<input name="asset_url" type="url" maxlength="1000" placeholder="https://…"></label>
