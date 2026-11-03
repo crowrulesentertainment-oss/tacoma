@@ -14,8 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/site.css?v=20261031-nye">
-<link rel="stylesheet" href="event.css?v=20261103-3">
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="../assets/js/config.js"></script><script defer src="event.js?v=20261103-4"></script>
+<link rel="stylesheet" href="event.css?v=20261103-5">
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js"></script><script defer src="../assets/js/config.js"></script><script defer src="event.js?v=20261103-5"></script>
 <link rel="stylesheet" href="../holidays/assets/css/holiday-sync.css"></head>
 <body class="nye-page">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -102,10 +102,10 @@
 <label class="wide">Your New Year's wish<textarea name="wish_text" maxlength="2000" rows="3" placeholder="What do you wish for your family, Tacoma or the world in 2027?"></textarea></label>
 <label class="wide">Your 2027 resolution<textarea name="resolution_text" maxlength="2000" rows="3" placeholder="What is one thing you hope to do, change or accomplish?"></textarea></label>
 <label class="wide">Anything else you'd like us to know<textarea name="description" maxlength="3000" rows="3" placeholder="Add context, a dedication or details for the producer."></textarea></label>
-<label class="wide">Upload photos, videos or audio<input id="nye-media-files" name="media_files" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,video/x-m4v,audio/webm,audio/mp4,audio/ogg,audio/mpeg,audio/wav,audio/x-m4a"><small>Up to 4 files · 50 MB per file · Videos up to 120 seconds · MP4/WebM preferred. Your uploads stay private while awaiting review.</small></label>
+<label class="wide">Upload photos, videos or audio<input id="nye-media-files" name="media_files" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,video/x-m4v,audio/webm,audio/mp4,audio/ogg,audio/mpeg,audio/wav,audio/x-m4a"><small>Up to 4 files · Up to 500 GB per file (subject to project-wide Supabase limit) · No fixed video duration cap. Large files upload in resumable chunks. Your uploads stay private while awaiting review.</small></label>
 <div class="wide nye-media-selected" id="nye-media-selected" aria-live="polite">No files selected.</div>
 <div class="wide nye-recorder">
-<div><b>Record directly on this page</b><p>Record a video greeting or audio message using your device. Maximum recording time: 2 minutes. Your browser will ask for camera/microphone permission.</p></div>
+<div><b>Record directly on this page</b><p>Record a video greeting or audio message using your device. No fixed recording time cap. Long browser recordings use substantial memory; for very large videos, upload a recorded file instead. Your browser will ask for camera/microphone permission.</p></div>
 <div class="nye-recorder-controls"><label>Recording type<select id="nye-recording-type"><option value="video">Video + audio</option><option value="audio">Audio only</option></select></label><button type="button" class="button" id="nye-record-start">Start recording</button><button type="button" class="button" id="nye-record-stop" disabled>Stop recording</button><span id="nye-record-status" role="status">Not recording.</span></div>
 <video id="nye-record-preview" controls playsinline hidden></video>
 </div>
