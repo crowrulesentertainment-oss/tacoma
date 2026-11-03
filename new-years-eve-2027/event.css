@@ -84,3 +84,6 @@
 .livestream-topline{padding:8px 6px 16px}
 .livestream-footer{padding:18px 6px 4px}
 @media(min-width:1500px){.livestream-shell{max-width:1600px}}
+
+/* Community time capsule form and media capture */
+.nye-recorder{grid-column:1/-1;border:1px solid #38586c;border-radius:13px;padding:16px;background:#0a1c29;display:grid;gap:12px}.nye-recorder p,.nye-form-grid small{color:#9fb5c2;font-size:.78rem;line-height:1.55}.nye-recorder-controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.nye-recorder-controls label{display:flex;gap:7px;align-items:center}.nye-recorder-controls select{background:#071a28;color:#edf7fb;border:1px solid #35576b;border-radius:8px;padding:9px}.nye-recorder video{width:min(100%,520px);max-height:300px;background:#000;border-radius:10px}.nye-media-selected{font-size:.8rem;color:#b9cbd5;padding:10px 12px;background:#071723;border:1px dashed #35576b;border-radius:9px;overflow-wrap:anywhere}.nye-recorder-controls button:disabled{opacity:.45;cursor:not-allowed}.nye-submission-form button[disabled]{opacity:.55;cursor:wait}
