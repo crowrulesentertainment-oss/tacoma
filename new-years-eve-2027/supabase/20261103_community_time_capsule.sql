@@ -35,7 +35,7 @@ insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types)
 values (
   'ny2027-community-media','ny2027-community-media',false,52428800,
   array[
-    'video/mp4','video/webm','video/quicktime',
+    'video/mp4','video/webm','video/quicktime','video/x-m4v',
     'audio/webm','audio/mp4','audio/ogg','audio/mpeg','audio/wav','audio/x-m4a',
     'image/jpeg','image/png','image/webp','image/gif'
   ]
