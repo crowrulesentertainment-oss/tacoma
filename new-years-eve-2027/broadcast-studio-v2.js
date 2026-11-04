@@ -37,7 +37,7 @@ function render(){
   }
  }
  root.innerHTML=html;
- root.querySelectorAll("[data-key]").forEach(el=>el.addEventListener("input",()=>{const card=el.closest("[data-row]"),i=Number(card.dataset.row);rows[i][el.dataset.key]=el.value;$("#v2-save-state").textContent="Changes pending save…";$("#v2-save-state").className="v2-unsaved;"}));
+ root.querySelectorAll("[data-key]").forEach(el=>el.addEventListener("input",()=>{const card=el.closest("[data-row]"),i=Number(card.dataset.row);rows[i][el.dataset.key]=el.value;$("#v2-save-state").textContent="Changes pending save…";$("#v2-save-state").className="v2-unsaved"}));
 }
 function report(){return "24 HOURS OF TACOMA — PRODUCTION RUN SHEET\nDecember 31, 2026 noon – January 1, 2027 noon Pacific\n\n"+rows.map((r,i)=>"HOUR "+String(i+1).padStart(2,"0")+" · "+timeLabel(i)+"\nProgram: "+(r.title||"TBD")+"\nHost: "+(r.host||"UNASSIGNED")+"\nProducer: "+(r.producer||"UNASSIGNED")+"\nFormat: "+(r.format||"TBD")+"\nBackup: "+(r.backup||"NOT SET")+"\nNotes: "+(r.notes||"—")).join("\n\n")}
 function download(){const lines=[["Hour","Pacific time","Program","Primary host","Producer","Format","Backup","Notes"],...rows.map((r,i)=>[i+1,timeLabel(i),r.title,r.host,r.producer,r.format,r.backup,r.notes])];const csv=lines.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="24-hours-of-tacoma-run-of-show-v2.csv";a.click();URL.revokeObjectURL(url)}
