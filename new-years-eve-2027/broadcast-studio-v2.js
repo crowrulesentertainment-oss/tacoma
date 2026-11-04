@@ -37,7 +37,7 @@ function render(){
   }
  }
  root.innerHTML=html;
- root.querySelectorAll("[data-key]").forEach(el=>el.addEventListener("input",()=>{const card=el.closest("[data-row]"),i=Number(card.dataset.row);rows[i][el.dataset.key]=el.value;$("#v2-save-state").textContent="Changes pending save…";$("#v2-save-state").className="v2-unsaved"}));
+ root.querySelectorAll("[data-key]").forEach(el=>el.addEventListener("input",()=>{const card=el.closest("[data-row]"),i=Number(card.dataset.row);rows[i][el.dataset.key]=el.value;save()}));
 }
 function report(){return "24 HOURS OF TACOMA — PRODUCTION RUN SHEET\nDecember 31, 2026 noon – January 1, 2027 noon Pacific\n\n"+rows.map((r,i)=>"HOUR "+String(i+1).padStart(2,"0")+" · "+timeLabel(i)+"\nProgram: "+(r.title||"TBD")+"\nHost: "+(r.host||"UNASSIGNED")+"\nProducer: "+(r.producer||"UNASSIGNED")+"\nFormat: "+(r.format||"TBD")+"\nBackup: "+(r.backup||"NOT SET")+"\nNotes: "+(r.notes||"—")).join("\n\n")}
 function download(){const lines=[["Hour","Pacific time","Program","Primary host","Producer","Format","Backup","Notes"],...rows.map((r,i)=>[i+1,timeLabel(i),r.title,r.host,r.producer,r.format,r.backup,r.notes])];const csv=lines.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="24-hours-of-tacoma-run-of-show-v2.csv";a.click();URL.revokeObjectURL(url)}
@@ -53,7 +53,7 @@ function inject(){
  '<button class="v2-action" id="v2-main-host"><b>④ RETURN TO MAIN HOST</b><span>Queue scene 02 MAIN STUDIO when the remote guest is released.</span></button></div>'+
  '<div class="v2-note"><b>Safe handoff:</b> Open the Remote Host Room first. Confirm the guest is admitted, camera and microphone are working, and the host is ready. Then use TAKE REMOTE HOST. Keep the outgoing host connected until the incoming host is confirmed on the program monitor.</div>'+
  '<div class="v2-statrow"><div class="v2-stat"><small>PROGRAM HOURS</small><b>24</b></div><div class="v2-stat"><small>SHIFT ROTATIONS</small><b>4 × 6 HRS</b></div><div class="v2-stat"><small>PLANNED SEGMENTS</small><b>24</b></div><div class="v2-stat"><small>PLAN STORAGE</small><b>LOCAL DRAFT</b></div></div>'+
- '<div class="v2-head"><div><p class="v2-kicker">RUN OF SHOW · DEC 31 NOON → JAN 1 NOON</p><h3>24-hour planning board</h3><p class="v2-sub">Edit the title, host, producer, format, relief host and production notes for each hour. Your draft saves in this browser and can be copied or exported for the team.</p></div></div>'+
+ '<div class="v2-head"><div><p class="v2-kicker">RUN OF SHOW · DEC 31 NOON → JAN 1 NOON</p><h3>24-hour planning board</h3><p class="v2-sub">Edit the title, host, producer, format, relief host and production notes for each hour. Changes autosave in this browser and can be copied or exported for the team.</p></div></div>'+
  '<div class="v2-tools"><button id="v2-save">Save planning draft</button><button id="v2-copy">Copy complete run sheet</button><button id="v2-export">Download CSV</button><button id="v2-reset">Restore starting schedule</button></div>'+
  '<div id="v2-planner"></div><div class="v2-foot"><span id="v2-save-state">Draft not saved yet.</span><span>Pacific Time · Draft planner does not publish changes to the event website or database.</span></div>';
  const toolbar=$("#workspace .toolbar");if(toolbar)toolbar.insertAdjacentElement("afterend",panel);else workspace.prepend(panel);
