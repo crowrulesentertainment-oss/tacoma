@@ -1,0 +1,56 @@
+/* Control Room v2 — rebuilt dashboard layout. Presentation-only; existing admin modules remain enabled. */
+.admin-page{background:#07111b;color:#eaf3f8}
+.admin-page main#main{width:min(1720px,calc(100% - 40px));margin:26px auto 72px}
+.admin-workspace{display:flex!important;flex-direction:column!important;gap:18px!important;align-items:stretch!important}
+.admin-workspace>*{width:100%;min-width:0}
+.admin-workspace-top{position:relative;isolation:isolate;overflow:hidden;min-height:190px;padding:clamp(26px,4vw,48px)!important;border:1px solid #315568!important;border-radius:26px!important;background:radial-gradient(ellipse at 82% 18%,rgba(47,188,207,.23),transparent 34%),radial-gradient(ellipse at 100% 100%,rgba(54,115,175,.2),transparent 45%),linear-gradient(125deg,#102e40 0%,#0b1c2a 58%,#111c32 100%)!important;box-shadow:0 24px 70px #0005}
+.admin-workspace-top:after{content:"";position:absolute;z-index:-1;width:360px;height:360px;right:-130px;top:-220px;border:1px solid #83e7ef30;border-radius:50%;box-shadow:0 0 0 32px #83e7ef0b,0 0 0 70px #83e7ef08}
+.admin-workspace-top h2{font-size:clamp(2rem,4vw,3.2rem)!important;line-height:1.04!important;letter-spacing:-.055em!important;color:#f6fcff!important;margin:10px 0!important}
+.admin-workspace-top p{max-width:760px;color:#bdd1dc!important;font-size:1rem!important}
+.admin-workspace-top .eyebrow{color:#78e0eb;letter-spacing:.17em;font-size:.7rem;font-weight:800}
+.admin-workspace-top .admin-top-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.admin-session-pill{background:#0b3b38!important;border:1px solid #2c8c79!important;color:#b8f3db!important}
+.cr-console-intro{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:20px 24px;border:1px solid #28495a;border-radius:18px;background:linear-gradient(110deg,#102635,#0b1a27)}
+.cr-console-intro h2{font-size:1.3rem;margin:5px 0;color:#f4fbff}
+.cr-console-intro p{margin:0;color:#a9bfcc;max-width:760px;font-size:.88rem}
+.cr-console-intro .eyebrow{color:#71d9e7;font-size:.65rem;letter-spacing:.15em;font-weight:800}
+.cr-console-clock{min-width:190px;padding:13px 16px;border:1px solid #315568;border-radius:13px;background:#081925;text-align:right}
+.cr-console-clock span,.cr-console-clock small{display:block;color:#82a6b7;font-size:.62rem;letter-spacing:.1em}
+.cr-console-clock strong{display:block;color:#effaff;font-size:1.1rem;margin:5px 0;font-variant-numeric:tabular-nums}
+.admin-workspace-status{padding:12px 16px!important;border:1px solid #2a4b5d!important;border-radius:13px!important;background:#0c202d!important;color:#c1d5df!important}
+.admin-stats-grid{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important}
+.admin-stat-card{position:relative;overflow:hidden;min-height:112px;padding:18px!important;border:1px solid #2b4859!important;border-radius:17px!important;background:linear-gradient(145deg,#112a3a,#0a1925)!important;box-shadow:0 12px 30px #0002;transition:transform .18s,border-color .18s}
+.admin-stat-card:hover{transform:translateY(-3px);border-color:#4ba9bd!important}
+.admin-stat-card strong{font-size:clamp(1.55rem,2.4vw,2.15rem)!important;color:#f5fcff!important;font-variant-numeric:tabular-nums}
+.admin-stat-card span,.admin-stat-card small{color:#a6bdc9!important}
+.admin-commandbar{position:relative!important;top:auto!important;z-index:2;display:flex!important;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px!important;border:1px solid #315064!important;border-radius:15px!important;background:#0b1d2a!important}
+.admin-commandbar>*{min-width:0}
+.admin-command-actions{display:flex;flex-wrap:wrap;gap:8px}
+.admin-workspace-nav{position:sticky!important;top:8px!important;z-index:30;display:flex!important;flex-direction:row!important;align-items:center!important;gap:6px!important;max-height:none!important;overflow-x:auto!important;overflow-y:hidden!important;padding:10px!important;border:1px solid #315064!important;border-radius:15px!important;background:rgba(7,21,32,.96)!important;box-shadow:0 12px 32px #0005!important;backdrop-filter:blur(16px)}
+.admin-workspace-nav:before{content:"SECTIONS";flex:0 0 auto;padding:0 12px 0 5px;color:#6f9aab;font-size:.62rem;font-weight:900;letter-spacing:.14em}
+.admin-workspace-nav a{display:inline-flex!important;align-items:center;flex:0 0 auto;white-space:nowrap;padding:9px 12px!important;border:1px solid transparent!important;border-radius:10px!important;color:#b9ccd7!important;font-size:.78rem!important;font-weight:700!important;text-decoration:none}
+.admin-workspace-nav a:before{content:none!important}
+.admin-workspace-nav a:hover,.admin-workspace-nav a[aria-current=location]{background:#15394b!important;border-color:#2b687b!important;color:#f4fdff!important}
+.admin-workspace>.admin-workspace-section,.admin-workspace>.admin3-wrap,.admin-workspace>.admin4-event,.admin-workspace>.admin7-alerts,.admin-workspace>#admin-traffic-records{margin:0!important;min-width:0}
+.admin-workspace-section,.admin3-section,.admin4-event,.admin7-alerts,#admin-traffic-records{padding:clamp(18px,2.4vw,30px)!important;border:1px solid #29495a!important;border-radius:20px!important;background:linear-gradient(145deg,#102432,#0a1924)!important;box-shadow:0 15px 38px #0003;scroll-margin-top:92px}
+.admin-workspace-section .admin-section-heading{display:flex;align-items:flex-start;gap:14px;padding-bottom:17px!important;border-bottom:1px solid #294453}
+.admin-workspace-section .admin-section-heading h2,.admin3-section h2,.admin4-event h2,.admin7-alerts h2{color:#f3f9fc!important;letter-spacing:-.025em}
+.admin-workspace-section .admin-section-heading p,.admin3-section>p{color:#a5bdc9!important}
+.admin-section-icon{display:grid;place-items:center;min-width:44px;min-height:44px;border:1px solid #2d6b7c;border-radius:13px;background:#103544;color:#7de1eb}
+.admin-section-tools{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}
+.admin-workspace-section table,.admin-traffic-records table{width:100%;border-collapse:collapse}
+.admin-workspace-section th,.admin-traffic-records th{color:#9bc4d2;background:#0b202d}
+.admin-workspace-section td,.admin-traffic-records td{color:#d8e6ec}
+.admin-workspace-section th,.admin-workspace-section td,.admin-traffic-records th,.admin-traffic-records td{padding:12px;border-bottom:1px solid #294150;text-align:left}
+.admin-workspace-section input,.admin-workspace-section select,.admin-workspace-section textarea,.admin-commandbar input{background:#081722!important;border:1px solid #315064!important;color:#eaf5f9!important;border-radius:10px!important}
+.admin-workspace-section input:focus,.admin-workspace-section select:focus,.admin-workspace-section textarea:focus,.admin-commandbar input:focus{outline:2px solid #48bed0!important;outline-offset:2px}
+.admin-workspace .button,.admin-workspace button{border-radius:10px}
+.admin-workspace .button-primary,.admin-workspace button.button-primary{background:linear-gradient(120deg,#1b8296,#17617c)!important;border:1px solid #49b5c7!important;color:#fff!important}
+.admin-workspace .admin-table-wrap,.admin-workspace .admin3-table-wrap{max-width:100%;overflow:auto}
+.admin-workspace .admin-empty,.admin-workspace .admin3-empty{padding:18px;border:1px dashed #385667;border-radius:12px;color:#a7bfcb;background:#0b1b27}
+.admin-workspace a{color:#7bd8e6}.admin-workspace a:hover{color:#c0f6ff}
+.admin-page .admin-site-footer{margin-top:58px}
+@media(max-width:1100px){.admin-stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:760px){.admin-page main#main{width:calc(100% - 20px);margin:14px auto 42px}.admin-workspace{gap:12px!important}.admin-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.admin-workspace-nav{position:relative!important;top:auto!important;border-radius:12px}.admin-workspace-nav:before{display:none}.admin-commandbar{align-items:stretch;flex-direction:column}.cr-console-intro{align-items:stretch;flex-direction:column}.cr-console-clock{min-width:0;text-align:left}.admin-workspace-section .admin-section-heading{flex-wrap:wrap}.admin-section-tools{width:100%;margin:8px 0 0}.admin-workspace-section th,.admin-workspace-section td{white-space:nowrap}}
+@media(max-width:420px){.admin-stats-grid{grid-template-columns:1fr 1fr!important}.admin-stat-card{padding:13px!important;min-height:98px}}
+@media(prefers-reduced-motion:reduce){.admin-stat-card,.admin-workspace-nav a{transition:none}}
