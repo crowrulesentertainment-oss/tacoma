@@ -356,7 +356,7 @@ return '<tr><td><strong>'+esc(x.listing_title)+'</strong><br><span class="tag '+
 async function loadQueue(){
 const q=$("#admin-queue"),r=$("#admin-reports");if(!q||!r)return;
 q.innerHTML='<div class="empty-state">Loading submissions for review…</div>';
-const {data,error}=await db.from("hub_listings").select("*").eq("status","pending").order("created_at",{ascending:true}).limit(100);const pendingCount=$("#admin-pending-count");if(pendingCount)pendingCount.textContent=String(data?.length??"—");
+const {data,error}=await db.from("hub_listings").select("*").eq("status","pending").order("created_at",{ascending:true}).limit(100);
 if(error){q.innerHTML='<div class="notice error">Could not load submissions. Check moderator permissions and the Supabase connection.</div>';console.warn("Hub submission queue failed",error)}
 else if(!data?.length){q.innerHTML='<div class="empty-state">No pending submissions. The review queue is clear.</div>'}
 else{
