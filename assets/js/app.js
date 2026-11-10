@@ -318,11 +318,28 @@ function bindHeroVideoAdmin(){
  $("#hero-video-clear")?.addEventListener("click",()=>{$("#hero-video-url").value="";$("#hero-video-poster").value="";$("#hero-video-autoplay").checked=true;$("#hero-video-loop").checked=false;form.requestSubmit()})
 }
 async function bindAdmin(){const f=$("#admin-login"),st=$("#admin-status"),content=$("#admin-content");if(!db){status(st,"Supabase is not connected. Check assets/js/config.js.","error");return}const show=async()=>{const {data:{user}}=await db.auth.getUser();if(!user){content.classList.add("hidden");return}const {data:a,error}=await db.from("hub_admins").select("role").eq("user_id",user.id).maybeSingle();if(error||!a){content.classList.add("hidden");status(st,"Signed in, but this account is not authorized. Add its Auth user UUID to hub_admins.","error");return}status(st,"Authorized moderator: "+a.role,"success");const moderatorSection=$("#admin-moderators-section"),moderatorNav=$("#admin-moderators-nav");if(moderatorSection)moderatorSection.hidden=String(a.role).toLowerCase()!=="admin";if(moderatorNav)moderatorNav.hidden=String(a.role).toLowerCase()!=="admin";const it=document.querySelector("#admin-identity-title"),id=document.querySelector("#admin-identity-detail");if(it)it.textContent="Signed in as "+(user.email||"authorized moderator");if(id)id.textContent="Verified Supabase session · Role: "+a.role+" · User ID: "+user.id;content.classList.remove("hidden");loadQueue();loadModerationHistory();loadAdminMetrics();if(adminMetricsTimer)clearInterval(adminMetricsTimer);adminMetricsTimer=setInterval(loadAdminMetrics,15000);loadChatModeration();loadAdminChannels();loadHeroVideoSettings(user,a.role);};f.onsubmit=async e=>{e.preventDefault();const {error}=await db.auth.signInWithPassword({email:$("#admin-email").value,password:$("#admin-password").value});if(error)status(st,"Sign-in failed. Check credentials and Supabase Auth.","error");else show()};$("#admin-logout").onclick=async()=>{await db.auth.signOut();if(adminMetricsTimer){clearInterval(adminMetricsTimer);adminMetricsTimer=null}content.classList.add("hidden");status(st,"Signed out.");};await show();$("#admin-refresh-all")?.addEventListener("click",()=>{loadQueue();loadModerationHistory();loadAdminMetrics();loadChatModeration();loadAdminChannels();status($("#admin-workspace-status"),"Workspace data refreshed.","success")});$("#chat-mod-refresh")?.addEventListener("click",loadChatModeration);bindChatChannelAdmin();bindHeroVideoAdmin();bindModeratorAdmin()}function bindModeratorAdmin(){const form=$("#admin-add-moderator-form");if(!form)return;form.addEventListener("submit",async e=>{e.preventDefault();const email=$("#admin-moderator-email").value.trim();const button=$("#admin-add-moderator-button"),st=$("#admin-moderator-status");if(!email)return;button.disabled=true;status(st,"Checking the account and assigning moderator access…");try{const {data,error}=await db.rpc("hub_add_moderator",{p_email:email});if(error)throw error;const assigned=Array.isArray(data)?data[0]:data;status(st,"Moderator access granted to "+(assigned?.moderator_email||email)+". They can now sign in to the Control Room with their existing account.","success");form.reset()}catch(error){status(st,error?.message||"Could not add this moderator. Confirm that you are an administrator and that the member has a verified Hub account.","error")}finally{button.disabled=false}})}async function loadAdminMetrics(){
+const setCount=(id,value)=>{const el=$("#"+id);if(el)el.textContent=value==null?"—":Number(value).toLocaleString()};
 const {data,error}=await db.rpc("hub_admin_dashboard_metrics");
-if(error){console.warn("Hub admin metrics failed",error);["admin-member-count","admin-live-visitors","admin-live-members","admin-live-guests"].forEach(id=>{const el=$("#"+id);if(el)el.textContent="—"});return}
+if(!error&&data){
 const values={"admin-member-count":data.member_count,"admin-live-visitors":data.live_visitors,"admin-live-members":data.live_members,"admin-live-guests":data.live_guests,"admin-pending-count":data.pending_submissions,"admin-approved-count":data.approved_listings,"admin-rejected-count":data.rejected_listings,"admin-open-reports-count":data.open_reports};
-Object.entries(values).forEach(([id,value])=>{const el=$("#"+id);if(el)el.textContent=String(value??"—")});
-const stamp=$("#admin-live-updated");if(stamp)stamp.textContent="Live counts refreshed "+new Date(data.updated_at||Date.now()).toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"});
+Object.entries(values).forEach(([id,value])=>setCount(id,value));
+}else{
+console.warn("Hub admin metrics RPC unavailable; using authorized count-query fallback",error);
+const since=new Date(Date.now()-3*60*1000).toISOString();
+const count=async(table,configure)=>{let q=db.from(table).select("*",{count:"exact",head:true});if(configure)q=configure(q);const r=await q;if(r.error)throw r.error;return r.count??0};
+const tasks=[
+["admin-member-count",()=>count("hub_member_profiles")],
+["admin-live-visitors",()=>count("hub_visitor_presence",q=>q.gt("last_seen_at",since))],
+["admin-live-members",()=>count("hub_visitor_presence",q=>q.gt("last_seen_at",since).not("user_id","is",null))],
+["admin-live-guests",()=>count("hub_visitor_presence",q=>q.gt("last_seen_at",since).is("user_id",null))],
+["admin-pending-count",()=>count("hub_listings",q=>q.eq("status","pending"))],
+["admin-approved-count",()=>count("hub_listings",q=>q.eq("status","approved"))],
+["admin-rejected-count",()=>count("hub_listings",q=>q.eq("status","rejected"))],
+["admin-open-reports-count",()=>count("hub_reports",q=>q.eq("status","open"))]
+];
+await Promise.all(tasks.map(async([id,fn])=>{try{setCount(id,await fn())}catch(e){console.warn("Hub metric fallback failed:",id,e);setCount(id,null)}}));
+}
+const stamp=$("#admin-live-updated");if(stamp)stamp.textContent="Live counts refreshed "+new Date().toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"});
 }
 async function loadModerationHistory(){
 const box=$("#admin-moderation-history");if(!box)return;
