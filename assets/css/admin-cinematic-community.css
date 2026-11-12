@@ -1,0 +1,71 @@
+/* Tacoma Community Hub — cinematic community operations theme
+   Final presentation layer. Keeps all existing admin markup, actions and data modules intact. */
+.admin-page{
+  --tacoma-ink:#07131d;--tacoma-panel:#0c1d29;--tacoma-line:rgba(190,220,231,.18);
+  background:#06111a;color:#edf6f8;
+}
+.admin-page:before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(3,12,19,.55),rgba(4,13,21,.92) 58%,#06111a),
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Commencement_Bay,_Tacoma,_WA_-_2017-04-09_-_11.jpg?width=2200") center 28%/cover no-repeat;
+  opacity:.38;
+}
+.admin-page .topline{background:rgba(3,12,19,.88);border-bottom:1px solid rgba(168,207,219,.18);backdrop-filter:blur(12px)}
+.admin-page .site-header{background:rgba(5,16,25,.88);border-bottom:1px solid rgba(168,207,219,.18);backdrop-filter:blur(18px)}
+.admin-page .statusbar{background:rgba(9,27,39,.86);border-bottom:1px solid rgba(168,207,219,.15);backdrop-filter:blur(14px)}
+.admin-page main#main{position:relative}
+.admin-workspace-top{
+  min-height:clamp(250px,30vw,390px)!important;display:flex;flex-direction:column;justify-content:flex-end;
+  isolation:isolate;overflow:hidden!important;padding:clamp(26px,5vw,58px)!important;
+  border:1px solid rgba(194,226,237,.3)!important;border-radius:26px!important;
+  background:
+    linear-gradient(90deg,rgba(3,13,21,.92) 0%,rgba(3,13,21,.70) 46%,rgba(3,13,21,.12) 100%),
+    linear-gradient(0deg,rgba(3,13,21,.9),transparent 70%),
+    url("https://commons.wikimedia.org/wiki/Special:FilePath/Commencement_Bay,_Tacoma,_WA_-_2017-04-09_-_11.jpg?width=2200") center 48%/cover no-repeat!important;
+  box-shadow:0 28px 80px rgba(0,0,0,.42)!important;
+}
+.admin-workspace-top:before{content:"TACOMA · WASHINGTON";position:absolute;top:24px;left:clamp(26px,5vw,58px);color:rgba(235,248,251,.78);font-size:.68rem;font-weight:800;letter-spacing:.22em}
+.admin-workspace-top:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(120deg,transparent 45%,rgba(116,190,207,.12))}
+.admin-workspace-top h2{max-width:850px;font-size:clamp(2.15rem,5vw,4.4rem)!important;line-height:.98!important;letter-spacing:-.065em!important;text-shadow:0 5px 24px #0009}
+.admin-workspace-top p{max-width:680px;color:#d0e0e5!important;font-size:clamp(.94rem,1.2vw,1.08rem)!important;line-height:1.7}
+.admin-workspace-top .eyebrow{color:#a6e5ed!important;letter-spacing:.2em!important}
+.admin-workspace-top .admin-top-actions{margin-top:24px}
+.admin-workspace-top .button,.admin-workspace-top a{box-shadow:0 8px 24px #0004}
+.cr-console-intro{border-color:var(--tacoma-line)!important;background:linear-gradient(110deg,rgba(15,39,53,.94),rgba(8,24,35,.91))!important;box-shadow:0 18px 48px #0003;backdrop-filter:blur(12px)}
+.admin-stats-grid{gap:14px!important}
+.admin-stat-card{border-color:var(--tacoma-line)!important;background:linear-gradient(145deg,rgba(17,43,57,.95),rgba(7,22,32,.96))!important;box-shadow:0 15px 38px #0004!important;backdrop-filter:blur(12px)}
+.admin-stat-card:after{content:"";position:absolute;inset:auto -25px -55px auto;width:130px;height:130px;border:1px solid rgba(126,206,220,.13);border-radius:50%;box-shadow:0 0 0 18px rgba(126,206,220,.035),0 0 0 38px rgba(126,206,220,.025);pointer-events:none}
+.admin-stat-card:hover{transform:translateY(-4px);border-color:rgba(130,215,228,.62)!important}
+.admin-workspace-status,.admin-commandbar,.admin-workspace-nav{
+  border-color:var(--tacoma-line)!important;background:rgba(7,23,34,.94)!important;backdrop-filter:blur(16px)
+}
+.admin-workspace-nav{box-shadow:0 18px 42px #0005!important}
+.admin-workspace-section,.admin3-section,.admin4-event,.admin7-alerts,#admin-traffic-records{
+  border-color:var(--tacoma-line)!important;
+  background:linear-gradient(145deg,rgba(15,38,52,.97),rgba(7,21,31,.97))!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.27)!important;
+  backdrop-filter:blur(14px)
+}
+.admin-workspace-section .admin-section-heading{border-bottom-color:rgba(180,215,226,.17)!important}
+.admin-workspace-section th,.admin-traffic-records th{background:rgba(7,24,35,.98)!important}
+.admin-workspace-section td,.admin-traffic-records td{border-bottom-color:rgba(180,215,226,.13)!important}
+.admin-workspace-section input,.admin-workspace-section select,.admin-workspace-section textarea,.admin-commandbar input{
+  background:rgba(3,15,23,.86)!important;border-color:rgba(160,203,216,.25)!important
+}
+.admin-workspace .button-primary,.admin-workspace button.button-primary{
+  background:linear-gradient(125deg,#25869a,#175d77)!important;border-color:#62c7d5!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.22)
+}
+.admin-workspace .button-primary:hover,.admin-workspace button.button-primary:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.admin-workspace a{ text-underline-offset:3px}
+.admin-workspace-nav a{transition:background .18s ease,border-color .18s ease,color .18s ease}
+.admin-page .admin-site-footer{background:linear-gradient(180deg,rgba(5,16,25,.72),rgba(3,11,17,.98));border-top:1px solid var(--tacoma-line)}
+.admin-page .admin-loading-state{min-height:48vh;border:1px solid var(--tacoma-line);border-radius:22px;background:linear-gradient(145deg,rgba(13,34,47,.9),rgba(5,17,26,.94))}
+.admin-page :focus-visible{outline:2px solid #8de4ee!important;outline-offset:3px}
+@media(max-width:760px){
+ .admin-workspace-top{min-height:300px!important;background-position:58% center!important;padding:28px 22px!important}
+ .admin-workspace-top:before{left:22px;top:18px}
+ .admin-workspace-top h2{font-size:clamp(2.15rem,11vw,3.1rem)!important}
+ .admin-stat-card:after{width:90px;height:90px}
+}
+@media(prefers-reduced-motion:reduce){.admin-workspace-nav a,.admin-stat-card,.admin-workspace .button-primary{transition:none!important}}
