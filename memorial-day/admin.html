@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b10"><meta name="robots" content="noindex,nofollow">
+<title>Memorials Administration | CrowRules Entertainment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://crowrulesentertainment-oss.github.io/crowrulesentertainment/assets/css/universal-admin-theme.css?v=20261112-memorials">
+<style>
+:root{--gold:#c8ad79;--line:rgba(194,207,220,.15);--muted:#98a9b8}
+body{margin:0;min-height:100vh;background:#080b10;color:#edf2f7;font-family:"DM Sans",sans-serif}
+body:before{background-image:linear-gradient(90deg,rgba(5,8,13,.9),rgba(5,8,13,.7)),url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=85");background-position:center;background-size:cover}
+.shell{max-width:1440px;margin:auto;padding:24px}
+header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 22px;border:1px solid var(--line);border-radius:16px;background:rgba(8,13,20,.86);backdrop-filter:blur(16px)}
+.brand{display:flex;align-items:center;gap:13px}.mark{width:44px;height:44px;display:grid;place-items:center;border:1px solid #8e7953;border-radius:12px;color:var(--gold);font-size:24px;background:#121b25}
+.brand h1{font:700 23px "Barlow Condensed";letter-spacing:1.4px;margin:0}.brand p{margin:3px 0 0;color:var(--muted);font-size:10px;letter-spacing:2px}
+a{color:#c5d7e5}.top-actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--line);border-radius:9px;background:#15212d;color:#eaf0f5;padding:9px 12px;text-decoration:none;font-size:11px;cursor:pointer}
+.hero{margin:18px 0;padding:30px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(90deg,rgba(5,9,14,.94),rgba(5,9,14,.6)),url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85") center/cover}
+.kicker{color:var(--gold);font-size:10px;letter-spacing:3px;text-transform:uppercase}.hero h2{font:800 clamp(34px,5vw,58px)/.98 "Barlow Condensed";margin:10px 0}.hero p{max-width:700px;color:#c2ccd5;font-size:13px;line-height:1.7}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}.metric,.panel{border:1px solid var(--line);border-radius:13px;background:linear-gradient(145deg,rgba(22,33,44,.94),rgba(9,14,21,.95));padding:16px}.metric small{color:var(--muted);font-size:10px;letter-spacing:1px;text-transform:uppercase}.metric strong{display:block;font:700 30px "Barlow Condensed";color:var(--gold);margin-top:5px}
+.tabs{display:flex;gap:8px;overflow:auto;margin:18px 0}.tabs button{white-space:nowrap}.tabs button[aria-selected=true]{border-color:#b59b6d;background:#27313a;color:#f4dfb5}
+.panel h3{font:700 24px "Barlow Condensed";margin:0 0 8px}.muted{color:var(--muted);font-size:12px}.toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:12px 0}
+input,select{padding:10px;border:1px solid var(--line);border-radius:8px;background:#0a121c;color:#edf3f8}.toolbar input{min-width:220px;flex:1}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:11px;vertical-align:top}th{color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-size:9px}td p{white-space:pre-wrap;max-width:430px;line-height:1.55;margin:5px 0}td small{color:var(--muted)}.actions{display:flex;gap:5px;flex-wrap:wrap}.actions button{font-size:10px;padding:7px 8px}.status{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:4px 7px;color:#d7c49e;font-size:9px}
+#login{max-width:430px;margin:8vh auto}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:11px;color:#c5d1db}.field input{width:100%;box-sizing:border-box}
+#app[hidden],#login[hidden]{display:none}.notice{padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin:12px 0;color:#c5d1db;font-size:11px}.danger{color:#efb3b3}
+footer{padding:22px 4px;color:var(--muted);font-size:10px}
+@media(max-width:720px){.shell{padding:12px}.metrics{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start;flex-direction:column}.hero{padding:20px}.hero h2{font-size:40px}.panel{padding:12px}}
+</style>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="../assets/js/config.js"></script>
+</head>
+<body>
+<div class="shell">
+<header><div class="brand"><div class="mark">🪶</div><div><h1>CROWRULES · MEMORIALS</h1><p>REMEMBRANCE · TRIBUTES · COMMUNITY OPERATIONS</p></div></div><div class="top-actions"><a class="btn" href="index.html">View Memorial Day project ↗</a><a class="btn" href="https://crowrulesentertainment-oss.github.io/crowrulesentertainment/universal-admin.html">Universal Admin ↗</a></div></header>
+<section class="hero"><div class="kicker">TACOMA · PIERCE COUNTY · SOUTH SOUND</div><h2>REMEMBER WITH HONOR.<br>MANAGE WITH CARE.</h2><p>Review community remembrances, preserve approved tributes, coordinate partners and events, and keep the Memorial Day in Tacoma archive respectful. Public submissions remain pending until reviewed.</p></section>
+<section id="login" class="panel"><h3>Administrator sign-in</h3><p class="muted">Sign in with your existing Supabase account. Database row-level security remains responsible for authorizing administrative access.</p><form id="loginForm"><div class="field"><label for="email">Email</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div><button class="btn" type="submit">Sign in securely</button></form><div id="loginMsg" class="notice" role="status"></div></section>
+<main id="app" hidden>
+<div class="top-actions" style="justify-content:flex-end"><span class="muted" id="userLabel"></span><button class="btn" id="refresh">↻ Refresh data</button><button class="btn" id="logout">Sign out</button></div>
+<section class="metrics"><div class="metric"><small>Pending tributes</small><strong id="pendingCount">—</strong></div><div class="metric"><small>Approved tributes</small><strong id="approvedCount">—</strong></div><div class="metric"><small>Partner requests</small><strong id="partnerCount">—</strong></div><div class="metric"><small>Event submissions</small><strong id="eventCount">—</strong></div></section>
+<div class="tabs" role="tablist"><button class="btn" data-tab="submissions" aria-selected="true">Tributes & submissions</button><button class="btn" data-tab="partners" aria-selected="false">Community partners</button><button class="btn" data-tab="events" aria-selected="false">Events</button><button class="btn" data-tab="resources" aria-selected="false">Resources</button></div>
+<section class="panel" id="workspace"><h3>Tributes & submissions</h3><p class="muted">Review the words and media links submitted by the community. Approve or feature appropriate entries; rejected entries remain in the database for auditability.</p><div class="toolbar"><input id="filter" type="search" placeholder="Search submissions…"><select id="statusFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="featured">Featured</option><option value="rejected">Rejected</option></select></div><div class="table-wrap"><table><thead id="thead"></thead><tbody id="tbody"><tr><td>Loading…</td></tr></tbody></table></div><div class="notice" id="dataMsg" role="status"></div></section>
+</main>
+<footer>Memorials Administration · CrowRules Entertainment · Existing public submission tables and RLS policies are retained.</footer>
+</div>
+<script>
+(()=>{"use strict";
+const $=id=>document.getElementById(id),slug="memorial-day-2027";let db=null,tab="submissions",cache={submissions:[],partners:[],events:[],resources:[]};
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const say=(id,s)=>$(id).textContent=s;
+function init(){const c=window.HUB_CONFIG;if(!window.supabase?.createClient||!c?.url||!c?.key){say("loginMsg","The public Supabase configuration could not be loaded.");return}db=window.supabase.createClient(c.url,c.key);db.auth.getSession().then(({data})=>{if(data.session)showApp()})}
+async function showApp(){const {data:{user}}=await db.auth.getUser();if(!user)return; $("login").hidden=true;$("app").hidden=false;say("userLabel",user.email||"Signed in");await loadAll()}
+async function loadAll(){say("dataMsg","Loading records. Access is controlled by existing database policies.");const specs={submissions:["hub_thanksgiving_submissions","id,category,display_name,city,title,message,media_url,media_type,status,created_at,allow_hub_display"],partners:["hub_thanksgiving_partners","id,organization_name,category,description,website_url,status,created_at"],events:["hub_thanksgiving_events","id,title,organization,description,starts_at,ends_at,location_text,website_url,category,status"],resources:["hub_thanksgiving_resources","id,title,organization,category,description,website_url,location_text,status,verification_status,created_at"]};
+for(const [key,[table,cols]] of Object.entries(specs)){const {data,error}=await db.from(table).select(cols).eq("campaign_slug",slug).order("created_at",{ascending:false}).limit(500);if(error){cache[key]=[];say("dataMsg",key+" could not be loaded: "+error.message+" (check existing RLS permissions).")}else cache[key]=data||[]}
+$("pendingCount").textContent=cache.submissions.filter(x=>x.status==="pending").length;$("approvedCount").textContent=cache.submissions.filter(x=>["approved","featured"].includes(x.status)).length;$("partnerCount").textContent=cache.partners.filter(x=>x.status==="pending").length;$("eventCount").textContent=cache.events.filter(x=>x.status==="pending").length;render()}
+function render(){const labels={submissions:"Tributes & submissions",partners:"Community partners",events:"Events",resources:"Resources"};const rows=cache[tab]||[];const q=$("filter").value.toLowerCase();const status=$("statusFilter").value;const filtered=rows.filter(x=>(status==="all"||x.status===status)&&JSON.stringify(x).toLowerCase().includes(q));
+$("workspace").querySelector("h3").textContent=labels[tab];$("workspace").querySelector(".muted").textContent=tab==="submissions"?"Review community remembrances and stories of service.":"Review "+labels[tab].toLowerCase()+" submitted for Memorial Day in Tacoma 2027.";
+const columns={submissions:["Submission","Details","Status","Review"],partners:["Organization","Details","Status","Review"],events:["Event","Details","Status","Review"],resources:["Resource","Details","Status","Review"]}[tab];$("thead").innerHTML="<tr>"+columns.map(x=>"<th>"+x+"</th>").join("")+"</tr>";
+$("tbody").innerHTML=filtered.length?filtered.map(x=>{const title=tab==="submissions"?(x.title||"Community tribute"):tab==="partners"?x.organization_name:x.title;const detail=tab==="submissions"?[x.display_name,x.city,x.category,x.message,x.media_url].filter(Boolean).join(" · "):tab==="partners"?[x.category,x.description,x.website_url].filter(Boolean).join(" · "):tab==="events"?[x.organization,x.starts_at,x.location_text,x.description,x.website_url].filter(Boolean).join(" · "):[x.organization,x.category,x.description,x.location_text,x.website_url].filter(Boolean).join(" · ");return "<tr><td><b>"+esc(title)+"</b><br><small>"+esc(x.id)+"</small></td><td><p>"+esc(detail)+"</p></td><td><span class='status'>"+esc(x.status||x.verification_status||"unknown")+"</span></td><td><div class='actions'>"+(tab==="submissions"?action("approved","Approve")+action("featured","Feature")+action("rejected","Reject"):tab==="resources"?action("published","Publish")+action("rejected","Reject"):action(tab==="partners"||tab==="events"?"published":"approved","Approve / publish")+action("rejected","Reject"))+"</div></td></tr>".replaceAll("{{id}}",esc(x.id)).replace(/data-status="([^"]+)"/g,(m,s)=>m)}).join(""):"<tr><td colspan='4'>No matching records found.</td></tr>";
+$("tbody").querySelectorAll("button[data-id]").forEach(b=>b.addEventListener("click",()=>update(b.dataset.id,b.dataset.status)))}
+function action(status,label){return "<button class='btn' data-status='"+status+"' data-id='{{id}}'>"+label+"</button>"}
+async function update(id,status){const table={submissions:"hub_thanksgiving_submissions",partners:"hub_thanksgiving_partners",events:"hub_thanksgiving_events",resources:"hub_thanksgiving_resources"}[tab];const values=tab==="resources"&&status==="published"?{status:"published",verification_status:"verified"}:{status};const {error}=await db.from(table).update(values).eq("id",id).eq("campaign_slug",slug);if(error){say("dataMsg","Update not permitted or failed: "+error.message);return}say("dataMsg","Record updated.");await loadAll()}
+$("loginForm").addEventListener("submit",async e=>{e.preventDefault();const {error}=await db.auth.signInWithPassword({email:$("email").value,password:$("password").value});if(error){say("loginMsg",error.message);return}say("loginMsg","Signed in.");await showApp()});
+$("logout").addEventListener("click",async()=>{await db.auth.signOut();$("app").hidden=true;$("login").hidden=false;say("loginMsg","Signed out.")});
+$("refresh").addEventListener("click",loadAll);$("filter").addEventListener("input",render);$("statusFilter").addEventListener("change",render);
+document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;tab=b.dataset.tab;document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",String(x===b)));$("statusFilter").value="all";$("filter").value="";render()});
+document.addEventListener("DOMContentLoaded",init);
+})();
+</script>
+</body></html>
