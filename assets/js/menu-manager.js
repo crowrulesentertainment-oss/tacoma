@@ -108,7 +108,16 @@ document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>boot().catch(e=
 document.addEventListener("DOMContentLoaded",()=>{
  const cfg=window.HUB_CONFIG||{};
  if(window.supabase&&cfg.url&&cfg.key){
-  const c=window.supabase.createClient(cfg.url,cfg.key,{auth:{storageKey:"tacoma-community-hub-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+  const sharedKey="sb-cevylpnoexugwgygvtgu-auth-token";
+  try{
+   if(!localStorage.getItem(sharedKey)){
+    const legacy=localStorage.getItem("tacoma-community-hub-auth");
+    if(legacy)localStorage.setItem(sharedKey,legacy);
+   }
+   const verifier=localStorage.getItem("tacoma-community-hub-auth-code-verifier");
+   if(verifier&&!localStorage.getItem(sharedKey+"-code-verifier"))localStorage.setItem(sharedKey+"-code-verifier",verifier);
+  }catch(error){console.warn("Hub shared-session migration skipped:",error)}
+  const c=window.supabase.createClient(cfg.url,cfg.key,{auth:{storage:window.localStorage,storageKey:sharedKey,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
   setTimeout(()=>{if(document.body.dataset.page!=="admin")return;c.auth.onAuthStateChange(()=>setTimeout(()=>boot().catch(console.warn),250))},900);
  }
 });
