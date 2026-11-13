@@ -39,7 +39,16 @@ handoffField.addEventListener("input",()=>{try{localStorage.setItem(handoffKey,h
 $("#copy-handoff-log").onclick=()=>{const stamp=new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",dateStyle:"full",timeStyle:"short"}).format(new Date());copyText("24 HOURS OF TACOMA — SHIFT HANDOFF\n"+stamp+" Pacific\n\n"+(handoffField.value.trim()||"No notes entered.")+"\n\nConfirm current program scene, YouTube output, local recording, next segment, incoming host and unresolved incidents with the next operator.",$("#copy-handoff-log"))};
 $("#clear-handoff-log").onclick=()=>{if(!confirm("Clear the locally saved handoff notes from this browser?"))return;handoffField.value="";try{localStorage.removeItem(handoffKey)}catch{}handoffSaved.textContent="Local notes cleared."};
 $("#reset-checks").onclick=()=>{if(confirm("Clear all preflight checks in this browser?")){localStorage.removeItem(key);renderChecks()}};
-function init(){if(!window.supabase||!cfg.url||!cfg.key)throw Error("Supabase configuration did not load.");db=window.supabase.createClient(cfg.url,cfg.key,{auth:{storageKey:"tacoma-community-hub-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}
+function init(){if(!window.supabase||!cfg.url||!cfg.key)throw Error("Supabase configuration did not load.");const sharedKey="sb-cevylpnoexugwgygvtgu-auth-token";
+try{
+ if(!localStorage.getItem(sharedKey)){
+  const legacy=localStorage.getItem("tacoma-community-hub-auth");
+  if(legacy)localStorage.setItem(sharedKey,legacy);
+ }
+ const verifier=localStorage.getItem("tacoma-community-hub-auth-code-verifier");
+ if(verifier&&!localStorage.getItem(sharedKey+"-code-verifier"))localStorage.setItem(sharedKey+"-code-verifier",verifier);
+}catch(error){console.warn("Broadcast shared-session migration skipped:",error)}
+db=window.supabase.createClient(cfg.url,cfg.key,{auth:{storage:window.localStorage,storageKey:sharedKey,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}
 async function authorize(){const {data,error}=await db.auth.getUser();if(error)throw error;if(!data.user)return false;const {data:row,error:re}=await db.from("hub_admins").select("role").eq("user_id",data.user.id).maybeSingle();if(re)throw re;if(String(row?.role||"").toLowerCase()!=="admin")throw Error("This account is not assigned the Hub administrator role.");user=data.user;return true}
 async function control(body){const {data,error}=await db.functions.invoke("tacoma-obs-control",{body});if(error)throw error;if(data?.error)throw Error(data.error);return data}
 function fmt(v){return v?new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}).format(new Date(v)):"Time not set"}
