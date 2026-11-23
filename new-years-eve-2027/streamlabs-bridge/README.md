@@ -28,23 +28,20 @@ Streamlabs documents the local RPC API, SockJS connection and token authenticati
 4. Copy the one-time Tacoma bridge credential. It is separate from the Streamlabs API token.
 5. Download this `streamlabs-bridge` folder onto the computer running Streamlabs Desktop.
 
-## 3. Configure and run
+## 3. Windows guided setup (recommended)
 
-Copy `.env.example` to `.env`. Fill in both credentials locally:
+1. Extract this folder on the Streamlabs production computer.
+2. Double-click `setup-bridge.bat`.
+3. If Node.js is missing, install Node.js 20.11 LTS or newer from https://nodejs.org/en/download, then run setup again.
+4. Enter the one-time Tacoma bridge token and the separate Streamlabs API token when prompted. The prompts hide the characters as you type. The script writes them to a local `.env` file and runs `npm install`.
+5. Open Streamlabs Desktop and enable **Settings → Remote Control**.
+6. Double-click `start-bridge.bat` to start the bridge in the background. Use `stop-bridge.bat` to stop it.
 
-- `STREAMLABS_BRIDGE_TOKEN`: the one-time token from Broadcast Studio.
-- `STREAMLABS_API_TOKEN`: the token from Streamlabs Settings → Remote Control.
+The launcher writes `bridge.log` and `bridge-error.log` beside the bridge files. The PID file is local. Keep the folder on the production computer and never upload or commit `.env`, the logs, or the PID file.
 
-Leave the local API URL at `http://127.0.0.1:59650/api` unless Streamlabs shows a different local port. Never upload or commit `.env`.
+### Manual setup
 
-Then run:
-
-```bash
-npm install
-npm start
-```
-
-On Windows, `start-bridge.bat` launches the bridge after configuration.
+If you prefer the command line, copy `.env.example` to `.env`, fill in both credentials locally, then run `npm install` and `npm start`. The local API URL should normally remain `http://127.0.0.1:59650/api`.
 
 ## 4. Test
 
