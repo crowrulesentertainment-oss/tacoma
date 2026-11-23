@@ -1,0 +1,6 @@
+# Local credentials and machine-specific runtime files
+.env
+node_modules/
+bridge.pid
+bridge.log
+bridge-error.log
